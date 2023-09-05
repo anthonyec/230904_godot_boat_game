@@ -32,8 +32,8 @@ func _physics_process(delta: float) -> void:
 		if not probe:
 			continue
 
-		var wave_height: float = water.get_height(probe.global_position)
-#		wave_height = 0
+		var wave_height = water.get_height_at_position(probe.global_position)
+		
 		var depth = water_height + wave_height - probe.global_position.y
 		var multiplier = probe.float_force_multiplier
 		var force = Vector3.UP * float_force * gravity * depth * multiplier

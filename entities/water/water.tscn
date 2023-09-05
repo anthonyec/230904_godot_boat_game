@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://x78jf5rl7om"]
+[gd_scene load_steps=5 format=3 uid="uid://x78jf5rl7om"]
 
-[ext_resource type="Shader" uid="uid://cki2q5dqcausf" path="res://simple_water.tres" id="1_5dbmu"]
+[ext_resource type="Script" path="res://entities/water/water.gd" id="1_cy8l5"]
+[ext_resource type="Shader" uid="uid://cki2q5dqcausf" path="res://entities/water/water.tres" id="1_i2bg8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vnt51"]
 render_priority = 0
-shader = ExtResource("1_5dbmu")
+shader = ExtResource("1_i2bg8")
+shader_parameter/Direction1 = Vector2(0.1, 0.1)
+shader_parameter/Direction2 = Vector2(0.1, 0.1)
 shader_parameter/CellWaveHeight = 1.0
 shader_parameter/WaterBaseColor = Color(0, 0.360784, 0.356863, 1)
 
@@ -15,6 +18,7 @@ subdivide_width = 256
 subdivide_depth = 256
 
 [node name="Water" type="Node3D"]
+script = ExtResource("1_cy8l5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.341501, 0.0553026, -0.403914)
