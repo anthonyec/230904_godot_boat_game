@@ -1,13 +1,45 @@
-[gd_scene load_steps=9 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=19 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="Script" path="res://buoyancy.gd" id="1_axg7x"]
+[ext_resource type="Script" path="res://water.gd" id="1_dlmw5"]
+[ext_resource type="Material" uid="uid://bcn18eidml0pt" path="res://water.tres" id="1_itro2"]
 [ext_resource type="Script" path="res://probe.gd" id="2_ukv4q"]
+[ext_resource type="Shader" uid="uid://cki2q5dqcausf" path="res://simple_water.tres" id="3_2n0i4"]
+[ext_resource type="Script" path="res://player_controls.gd" id="3_h2wjn"]
+[ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
+
+[sub_resource type="Environment" id="Environment_h648m"]
+background_mode = 1
+background_color = Color(0.552941, 0.909804, 0.952941, 1)
+fog_enabled = true
+fog_light_color = Color(0.552941, 0.909804, 0.952941, 1)
+fog_light_energy = 0.8
+fog_sky_affect = 0.0
+fog_height = 2.13163e-14
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_l7776"]
+material = ExtResource("1_itro2")
+size = Vector2(500, 500)
+subdivide_width = 500
+subdivide_depth = 500
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mt7ga"]
-transparency = 1
-albedo_color = Color(0, 1, 1, 0.478431)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pfwj5"]
+render_priority = 0
+shader = ExtResource("3_2n0i4")
+shader_parameter/CellWaveHeight = 1.0
+shader_parameter/WaterBaseColor = Color(0, 0.360784, 0.356863, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ad1ce"]
+material = SubResource("ShaderMaterial_pfwj5")
+size = Vector2(100, 100)
+subdivide_width = 500
+subdivide_depth = 500
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ll868"]
+material = SubResource("ShaderMaterial_pfwj5")
+size = Vector2(100, 100)
+subdivide_width = 256
+subdivide_depth = 256
 
 [sub_resource type="SphereMesh" id="SphereMesh_hylnw"]
 radius = 0.2
@@ -16,20 +48,91 @@ height = 0.4
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skvv8"]
 no_depth_test = true
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_pf6gs"]
+size = Vector3(6, 5, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gttni"]
+size = Vector3(6, 5, 10)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_lohbm"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_55eei"]
 
 [node name="Main" type="Node3D"]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h648m")
+
 [node name="Water" type="MeshInstance3D" parent="."]
-transform = Transform3D(9.94395, 0, 0, 0, 9.94395, 0, 0, 0, 9.94395, 0, 0, 0)
+transform = Transform3D(0.0837213, 0, 0, 0, 0.0837213, 0, 0, 0, 0.0837213, 0, 0, 0)
+visible = false
 mesh = SubResource("PlaneMesh_l7776")
 skeleton = NodePath("../DirectionalLight3D")
-surface_material_override/0 = SubResource("StandardMaterial3D_mt7ga")
+script = ExtResource("1_dlmw5")
+
+[node name="Water2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 2.23873, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_ad1ce")
+skeleton = NodePath("../DirectionalLight3D")
+
+[node name="Water3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 2.23873, 0, 0, 0, 1, 0, 0, -99.9463)
+mesh = SubResource("PlaneMesh_ll868")
+skeleton = NodePath("../DirectionalLight3D")
+
+[node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
+target = NodePath("../Player")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.467651, 0.548516, 0.693132, -0.798373, -0.0744178, 0.597547, 0.379346, -0.832822, 0.403119, -0.00466442, 2.23942, 0.0191052)
+
+[node name="Player" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, -15.7366)
+mass = 50.0
+script = ExtResource("1_axg7x")
+float_force = 50.0
+
+[node name="PlayerControls" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4472)
+script = ExtResource("3_h2wjn")
+
+[node name="BuoyancyProbeFL" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, -5)
+script = ExtResource("2_ukv4q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeFL"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbeFR" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, -5)
+script = ExtResource("2_ukv4q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeFR"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbeBL" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, 5)
+script = ExtResource("2_ukv4q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeBL"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbeBR" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, 5)
+script = ExtResource("2_ukv4q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeBR"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("BoxShape3D_pf6gs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("BoxMesh_gttni")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5529, 0)
@@ -364,7 +467,7 @@ transform = Transform3D(1, -4.26393e-08, -1.15576e-09, 9.04024e-09, 3.12902, -3.
 mesh = SubResource("BoxMesh_55eei")
 
 [node name="RigidBody3D4" type="RigidBody3D" parent="."]
-transform = Transform3D(0.0432149, 0.99906, 0.00342369, 0.0203204, 0.00254725, -0.99979, -0.998859, 0.0432754, -0.0201912, 2.35538, 0.479338, -5.70314)
+transform = Transform3D(0.0198331, 0.760564, 0.64896, 0.0434408, 0.647819, -0.760555, -0.998859, 0.0432755, -0.0201912, 2.35538, 0.479338, -5.70314)
 mass = 10.0
 center_of_mass_mode = 1
 script = ExtResource("1_axg7x")
@@ -480,6 +583,3 @@ shape = SubResource("BoxShape3D_lohbm")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4"]
 transform = Transform3D(1, -4.26393e-08, -1.15576e-09, 9.04024e-09, 3.12902, -3.79113e-08, -7.38375e-09, 2.58509e-07, 1, 2.98023e-08, -1.1485, 1.19209e-07)
 mesh = SubResource("BoxMesh_55eei")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.959107, 0.283045, 0, -0.283045, 0.959107, 0, 1.68664, 3.57267)
