@@ -22,4 +22,5 @@ script = ExtResource("1_cy8l5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.341501, 0.0553026, -0.403914)
+layers = 2
 mesh = SubResource("PlaneMesh_mvg8i")

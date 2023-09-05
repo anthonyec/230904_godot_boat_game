@@ -233,7 +233,7 @@ void vertex() {
 
 
 // MultiplyAdd:25
-	vec4 n_out25p0 = (n_out11p0 * vec4(n_out23p0)) + n_out26p0;
+	vec4 n_out25p0 = fma(n_out11p0, vec4(n_out23p0), n_out26p0);
 
 
 // Input:7
@@ -253,7 +253,7 @@ void vertex() {
 
 
 // MultiplyAdd:8
-	vec3 n_out8p0 = (vec3(n_out25p0.xyz) * n_out10p0) + n_out6p0;
+	vec3 n_out8p0 = fma(vec3(n_out25p0.xyz), n_out10p0, n_out6p0);
 
 
 // Output:0

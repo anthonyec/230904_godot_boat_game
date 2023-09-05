@@ -1,10 +1,19 @@
-[gd_scene load_steps=13 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=16 format=3 uid="uid://be3homwduf1qf"]
 
+[ext_resource type="Shader" path="res://depth.gdshader" id="1_7adq3"]
 [ext_resource type="Script" path="res://buoyancy.gd" id="1_axg7x"]
 [ext_resource type="PackedScene" uid="uid://x78jf5rl7om" path="res://entities/water/water.tscn" id="1_ti7de"]
 [ext_resource type="Script" path="res://probe.gd" id="2_ukv4q"]
 [ext_resource type="Script" path="res://player_controls.gd" id="3_h2wjn"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vd1jn"]
+render_priority = 0
+shader = ExtResource("1_7adq3")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ax1wi"]
+material = SubResource("ShaderMaterial_vd1jn")
+size = Vector2(60, 60)
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
@@ -34,20 +43,36 @@ size = Vector3(6, 5, 10)
 
 [node name="Main" type="Node3D"]
 
+[node name="SubViewport" type="SubViewport" parent="."]
+canvas_cull_mask = 4293918722
+
+[node name="WaterDepthCamera" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(1, -6.97574e-16, -1.52459e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 2.08165e-12, 25, 2.08165e-12)
+cull_mask = 2
+projection = 1
+size = 50.0
+near = 0.5
+far = 30.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 24, 2.08165e-12)
+layers = 2
+mesh = SubResource("PlaneMesh_ax1wi")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")
 
-[node name="Water" parent="." instance=ExtResource("1_ti7de")]
+[node name="Water" parent="." node_paths=PackedStringArray("depth_viewport") instance=ExtResource("1_ti7de")]
+depth_viewport = NodePath("../SubViewport")
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
 target = NodePath("../Player")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.467651, 0.548516, 0.693132, -0.798373, -0.0744178, 0.597547, 0.379346, -0.832822, 0.403119, -0.00466442, 2.23942, 0.0191052)
-shadow_enabled = true
 
 [node name="Player" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, -15.7366)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, -40.0941)
 mass = 50.0
 script = ExtResource("1_axg7x")
 float_force = 50.0
