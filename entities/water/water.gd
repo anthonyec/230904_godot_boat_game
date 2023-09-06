@@ -13,9 +13,5 @@ func _ready():
 func _process(_delta: float) -> void:
 	var texture = depth_viewport.get_texture()
 	
-	print(texture.get_image().get_size())
-	var pixel = texture.get_image().get_pixel(1, 1)
-	print(pixel)
-	
 func get_height_at_position(world_position: Vector3) -> float:
 	return 0

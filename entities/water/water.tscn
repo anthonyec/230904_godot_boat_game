@@ -1,17 +1,18 @@
 [gd_scene load_steps=5 format=3 uid="uid://x78jf5rl7om"]
 
 [ext_resource type="Script" path="res://entities/water/water.gd" id="1_cy8l5"]
-[ext_resource type="Shader" uid="uid://cki2q5dqcausf" path="res://entities/water/water.tres" id="1_i2bg8"]
+[ext_resource type="Shader" uid="uid://y4ogc70l5tds" path="res://entities/water/water_heightmap.tres" id="2_ej5g4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vnt51"]
 render_priority = 0
-shader = ExtResource("1_i2bg8")
+shader = ExtResource("2_ej5g4")
 shader_parameter/Direction1 = Vector2(0.1, 0.1)
-shader_parameter/Direction2 = Vector2(0.1, 0.1)
+shader_parameter/Direction2 = Vector2(-0.1, -0.1)
 shader_parameter/CellWaveHeight = 1.0
 shader_parameter/WaterBaseColor = Color(0, 0.360784, 0.356863, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_mvg8i"]
+lightmap_size_hint = Vector2i(252, 252)
 material = SubResource("ShaderMaterial_vnt51")
 size = Vector2(50, 50)
 subdivide_width = 256

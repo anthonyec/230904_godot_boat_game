@@ -44,6 +44,7 @@ size = Vector3(6, 5, 10)
 [node name="Main" type="Node3D"]
 
 [node name="SubViewport" type="SubViewport" parent="."]
+canvas_item_default_texture_repeat = 1
 canvas_cull_mask = 4293918722
 
 [node name="WaterDepthCamera" type="Camera3D" parent="SubViewport"]
@@ -63,6 +64,10 @@ mesh = SubResource("PlaneMesh_ax1wi")
 environment = SubResource("Environment_h648m")
 
 [node name="Water" parent="." node_paths=PackedStringArray("depth_viewport") instance=ExtResource("1_ti7de")]
+depth_viewport = NodePath("../SubViewport")
+
+[node name="Water2" parent="." node_paths=PackedStringArray("depth_viewport") instance=ExtResource("1_ti7de")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.9891, 0, 0)
 depth_viewport = NodePath("../SubViewport")
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
