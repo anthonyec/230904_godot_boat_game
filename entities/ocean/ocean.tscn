@@ -1,11 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://bki4o2smxksy7"]
+[gd_scene load_steps=11 format=3 uid="uid://bki4o2smxksy7"]
 
 [ext_resource type="Script" path="res://entities/ocean/ocean.gd" id="1_73v6r"]
 [ext_resource type="Shader" uid="uid://ccdpylfhde54n" path="res://entities/ocean/simulation.tres" id="2_urw8w"]
+[ext_resource type="Texture2D" uid="uid://bw3ncgu5n5ivh" path="res://entities/ocean/noise_1.tres" id="3_5oned"]
 [ext_resource type="Shader" uid="uid://3k5tqhuvd85x" path="res://entities/ocean/plane.tres" id="3_bivtf"]
+[ext_resource type="Texture2D" uid="uid://ce5ui2gthr2ic" path="res://entities/ocean/noise_2.tres" id="4_7tblb"]
+[ext_resource type="Texture2D" uid="uid://toocs14n1xmp" path="res://entities/ocean/wave_1.tres" id="5_l67ha"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h8gt6"]
 shader = ExtResource("2_urw8w")
+shader_parameter/Noise1 = ExtResource("3_5oned")
+shader_parameter/Noise2 = ExtResource("4_7tblb")
+shader_parameter/Wave1 = ExtResource("5_l67ha")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_3vjlp"]
 viewport_path = NodePath("Simulation")
