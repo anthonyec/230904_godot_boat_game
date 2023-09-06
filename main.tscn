@@ -40,9 +40,6 @@ environment = SubResource("Environment_h648m")
 
 [node name="Ocean" parent="." instance=ExtResource("1_hxmui")]
 
-[node name="ColorRect" parent="Ocean/Simulation" index="0"]
-color = Color(0, 0.713726, 0, 1)
-
 [node name="Water" parent="." instance=ExtResource("1_ti7de")]
 visible = false
 script = null
@@ -550,5 +547,3 @@ shape = SubResource("BoxShape3D_lohbm")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4"]
 transform = Transform3D(1, -4.26393e-08, -1.15576e-09, 9.04024e-09, 3.12902, -3.79113e-08, -7.38375e-09, 2.58509e-07, 1, 2.98023e-08, -1.1485, 1.19209e-07)
 mesh = SubResource("BoxMesh_55eei")
-
-[editable path="Ocean"]
