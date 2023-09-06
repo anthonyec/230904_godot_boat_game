@@ -36,7 +36,7 @@ script = ExtResource("1_73v6r")
 [node name="Simulation" type="SubViewport" parent="."]
 disable_3d = true
 canvas_item_default_texture_repeat = 1
-size = Vector2i(514, 514)
+size = Vector2i(256, 256)
 
 [node name="Texture" type="ColorRect" parent="Simulation"]
 texture_repeat = 2

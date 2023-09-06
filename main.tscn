@@ -1,9 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=14 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="Script" path="res://buoyancy.gd" id="1_axg7x"]
 [ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="1_hxmui"]
 [ext_resource type="PackedScene" uid="uid://x78jf5rl7om" path="res://entities/water/water.tscn" id="1_ti7de"]
-[ext_resource type="Shader" uid="uid://ccdpylfhde54n" path="res://entities/ocean/simulation.tres" id="2_jat84"]
 [ext_resource type="Script" path="res://probe.gd" id="2_ukv4q"]
 [ext_resource type="Script" path="res://player_controls.gd" id="3_h2wjn"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
@@ -33,9 +32,6 @@ size = Vector3(6, 5, 10)
 [sub_resource type="BoxShape3D" id="BoxShape3D_lohbm"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_55eei"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wku4x"]
-shader = ExtResource("2_jat84")
 
 [node name="Main" type="Node3D"]
 
@@ -551,8 +547,3 @@ shape = SubResource("BoxShape3D_lohbm")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4"]
 transform = Transform3D(1, -4.26393e-08, -1.15576e-09, 9.04024e-09, 3.12902, -3.79113e-08, -7.38375e-09, 2.58509e-07, 1, 2.98023e-08, -1.1485, 1.19209e-07)
 mesh = SubResource("BoxMesh_55eei")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_wku4x")
-offset_right = 678.0
-offset_bottom = 606.0
