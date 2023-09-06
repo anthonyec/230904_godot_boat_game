@@ -1,19 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=14 format=3 uid="uid://be3homwduf1qf"]
 
-[ext_resource type="Shader" path="res://depth.gdshader" id="1_7adq3"]
 [ext_resource type="Script" path="res://buoyancy.gd" id="1_axg7x"]
+[ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="1_hxmui"]
 [ext_resource type="PackedScene" uid="uid://x78jf5rl7om" path="res://entities/water/water.tscn" id="1_ti7de"]
 [ext_resource type="Script" path="res://probe.gd" id="2_ukv4q"]
 [ext_resource type="Script" path="res://player_controls.gd" id="3_h2wjn"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vd1jn"]
-render_priority = 0
-shader = ExtResource("1_7adq3")
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_ax1wi"]
-material = SubResource("ShaderMaterial_vd1jn")
-size = Vector2(60, 60)
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
@@ -43,32 +35,17 @@ size = Vector3(6, 5, 10)
 
 [node name="Main" type="Node3D"]
 
-[node name="SubViewport" type="SubViewport" parent="."]
-canvas_item_default_texture_repeat = 1
-canvas_cull_mask = 4293918722
-
-[node name="WaterDepthCamera" type="Camera3D" parent="SubViewport"]
-transform = Transform3D(1, -6.97574e-16, -1.52459e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 2.08165e-12, 25, 2.08165e-12)
-cull_mask = 2
-projection = 1
-size = 50.0
-near = 0.5
-far = 30.0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 24, 2.08165e-12)
-layers = 2
-mesh = SubResource("PlaneMesh_ax1wi")
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")
 
-[node name="Water" parent="." node_paths=PackedStringArray("depth_viewport") instance=ExtResource("1_ti7de")]
-depth_viewport = NodePath("../SubViewport")
+[node name="Ocean" parent="." instance=ExtResource("1_hxmui")]
 
-[node name="Water2" parent="." node_paths=PackedStringArray("depth_viewport") instance=ExtResource("1_ti7de")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.9891, 0, 0)
-depth_viewport = NodePath("../SubViewport")
+[node name="ColorRect" parent="Ocean/Simulation" index="0"]
+color = Color(0, 0.713726, 0, 1)
+
+[node name="Water" parent="." instance=ExtResource("1_ti7de")]
+visible = false
+script = null
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
 target = NodePath("../Player")
@@ -573,3 +550,5 @@ shape = SubResource("BoxShape3D_lohbm")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4"]
 transform = Transform3D(1, -4.26393e-08, -1.15576e-09, 9.04024e-09, 3.12902, -3.79113e-08, -7.38375e-09, 2.58509e-07, 1, 2.98023e-08, -1.1485, 1.19209e-07)
 mesh = SubResource("BoxMesh_55eei")
+
+[editable path="Ocean"]

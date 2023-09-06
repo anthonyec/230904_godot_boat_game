@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://bki4o2smxksy7"]
+
+[ext_resource type="Script" path="res://entities/ocean/ocean.gd" id="1_73v6r"]
+[ext_resource type="Shader" uid="uid://ccdpylfhde54n" path="res://entities/ocean/simulation.tres" id="2_urw8w"]
+[ext_resource type="Shader" uid="uid://3k5tqhuvd85x" path="res://entities/ocean/plane.tres" id="3_bivtf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h8gt6"]
+shader = ExtResource("2_urw8w")
+shader_parameter/Direction1 = Vector2(0.1, 0.1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_3spn5"]
+viewport_path = NodePath("Simulation")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8l54v"]
+render_priority = 0
+shader = ExtResource("3_bivtf")
+shader_parameter/ColorParameter = Color(0.129301, 0.524426, 0.385699, 1)
+shader_parameter/Simulation = SubResource("ViewportTexture_3spn5")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wgfkp"]
+material = SubResource("ShaderMaterial_8l54v")
+size = Vector2(50, 50)
+subdivide_width = 500
+subdivide_depth = 500
+
+[node name="Ocean" type="Node3D"]
+script = ExtResource("1_73v6r")
+
+[node name="Simulation" type="SubViewport" parent="."]
+disable_3d = true
+size = Vector2i(1024, 1024)
+
+[node name="ColorRect" type="ColorRect" parent="Simulation"]
+material = SubResource("ShaderMaterial_h8gt6")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Plane" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_wgfkp")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.79927, 26.1871)

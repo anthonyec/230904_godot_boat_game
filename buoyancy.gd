@@ -3,7 +3,7 @@ extends RigidBody3D
 
 @export var float_force: float = 5
 
-@onready var water: Water = get_node('/root/Main/Water') as Water
+@onready var water: Ocean = get_node("/root/Main/Ocean") as Ocean
 
 var water_height: float = 0
 var water_drag: float = 0.05
@@ -32,7 +32,7 @@ func _physics_process(delta: float) -> void:
 		if not probe:
 			continue
 
-		var wave_height = water.get_height_at_position(probe.global_position)
+		var wave_height = water.get_height(probe.global_position)
 		
 		var depth = water_height + wave_height - probe.global_position.y
 		var multiplier = probe.float_force_multiplier

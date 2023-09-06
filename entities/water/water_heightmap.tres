@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=41 format=3 uid="uid://y4ogc70l5tds"]
+[gd_resource type="VisualShader" load_steps=42 format=3 uid="uid://y4ogc70l5tds"]
 
 [sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_s3rcp"]
 constant = 3.0
@@ -14,6 +14,10 @@ varying_type = 5
 
 [sub_resource type="VisualShaderNodeVaryingGetter" id="VisualShaderNodeVaryingGetter_sjbfn"]
 varying_name = "waves_texture_2"
+varying_type = 5
+
+[sub_resource type="VisualShaderNodeVaryingGetter" id="VisualShaderNodeVaryingGetter_3yu6c"]
+varying_name = "vertex_height_map"
 varying_type = 5
 
 [sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_kwtdr"]
@@ -332,7 +336,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-829.523, -138.906)
 varyings/vertex_height_map = "0,5"
 varyings/waves_texture_1 = "0,5"
 varyings/waves_texture_2 = "0,5"
@@ -342,7 +345,7 @@ nodes/vertex/6/position = Vector2(-1500, 2040)
 nodes/vertex/7/node = SubResource("VisualShaderNodeInput_8grca")
 nodes/vertex/7/position = Vector2(-1500, 1360)
 nodes/vertex/8/node = SubResource("VisualShaderNodeMultiplyAdd_s0nmw")
-nodes/vertex/8/position = Vector2(-60, 680)
+nodes/vertex/8/position = Vector2(-160, 680)
 nodes/vertex/9/node = SubResource("VisualShaderNodeFloatParameter_kffdp")
 nodes/vertex/9/position = Vector2(-1500, 1540)
 nodes/vertex/10/node = SubResource("VisualShaderNodeVectorOp_pfus5")
@@ -391,7 +394,7 @@ nodes/vertex/34/node = SubResource("VisualShaderNodeVaryingSetter_uowam")
 nodes/vertex/34/position = Vector2(-3000, 500)
 nodes/vertex/35/node = SubResource("VisualShaderNodeInput_x4fnl")
 nodes/vertex/35/position = Vector2(-4900, 860)
-nodes/vertex/connections = PackedInt32Array(8, 0, 0, 0, 6, 0, 8, 2, 9, 0, 10, 1, 7, 0, 10, 0, 10, 0, 8, 1, 12, 0, 11, 0, 19, 0, 17, 0, 22, 0, 14, 1, 17, 0, 23, 0, 13, 0, 14, 0, 14, 0, 12, 2, 18, 0, 19, 2, 25, 0, 8, 0, 23, 0, 25, 1, 11, 0, 25, 0, 24, 0, 26, 0, 26, 0, 25, 2, 27, 0, 26, 1, 30, 0, 29, 2, 21, 0, 18, 1, 31, 0, 30, 0, 29, 0, 32, 0, 32, 0, 24, 0, 25, 0, 28, 0, 11, 0, 33, 0, 17, 0, 34, 0, 35, 0, 18, 0)
+nodes/vertex/connections = PackedInt32Array(6, 0, 8, 2, 9, 0, 10, 1, 7, 0, 10, 0, 10, 0, 8, 1, 12, 0, 11, 0, 19, 0, 17, 0, 22, 0, 14, 1, 17, 0, 23, 0, 13, 0, 14, 0, 14, 0, 12, 2, 18, 0, 19, 2, 25, 0, 8, 0, 23, 0, 25, 1, 11, 0, 25, 0, 24, 0, 26, 0, 26, 0, 25, 2, 27, 0, 26, 1, 30, 0, 29, 2, 21, 0, 18, 1, 31, 0, 30, 0, 29, 0, 32, 0, 32, 0, 24, 0, 25, 0, 28, 0, 11, 0, 33, 0, 17, 0, 34, 0, 35, 0, 18, 0, 8, 0, 0, 0)
 nodes/fragment/0/position = Vector2(480, 400)
 nodes/fragment/7/node = SubResource("VisualShaderNodeVectorOp_kwtdr")
 nodes/fragment/7/position = Vector2(-100, 720)
@@ -407,4 +410,6 @@ nodes/fragment/15/node = SubResource("VisualShaderNodeVaryingGetter_h40qa")
 nodes/fragment/15/position = Vector2(-1820, 520)
 nodes/fragment/16/node = SubResource("VisualShaderNodeVaryingGetter_sjbfn")
 nodes/fragment/16/position = Vector2(-1820, 740)
-nodes/fragment/connections = PackedInt32Array(10, 0, 9, 1, 8, 0, 7, 1, 7, 0, 0, 0, 9, 0, 7, 0, 14, 0, 9, 0, 15, 0, 14, 0, 16, 0, 14, 1)
+nodes/fragment/17/node = SubResource("VisualShaderNodeVaryingGetter_3yu6c")
+nodes/fragment/17/position = Vector2(-260, 360)
+nodes/fragment/connections = PackedInt32Array(10, 0, 9, 1, 8, 0, 7, 1, 9, 0, 7, 0, 14, 0, 9, 0, 15, 0, 14, 0, 16, 0, 14, 1, 7, 0, 0, 0)

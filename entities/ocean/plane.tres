@@ -1,0 +1,135 @@
+[gd_resource type="VisualShader" load_steps=12 format=3 uid="uid://3k5tqhuvd85x"]
+
+[sub_resource type="VisualShaderNodeVaryingGetter" id="VisualShaderNodeVaryingGetter_jkplp"]
+varying_name = "simulation"
+varying_type = 4
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_n6vhh"]
+parameter_name = "ColorParameter"
+default_value_enabled = true
+default_value = Color(0.129301, 0.524426, 0.385699, 1)
+
+[sub_resource type="VisualShaderNodeColorOp" id="VisualShaderNodeColorOp_t0i0v"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_vm6nx"]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(2, 2, 2)]
+operator = 5
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_p14w5"]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_sf2dp"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_fdobb"]
+varying_name = "simulation"
+varying_type = 4
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_ex0bm"]
+parameter_name = "Simulation"
+texture_repeat = 1
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_30g0n"]
+expanded_output_ports = [0]
+source = 5
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_6o5fw"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_rpeys"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying vec3 simulation;
+
+uniform sampler2D Simulation : repeat_enable;
+uniform vec4 ColorParameter : source_color = vec4(0.129301, 0.524426, 0.385699, 1.000000);
+
+
+
+void vertex() {
+// Input:10
+	vec3 n_out10p0 = VERTEX;
+
+
+// Input:11
+	vec3 n_out11p0 = NORMAL;
+
+
+	vec4 n_out7p0;
+// Texture2D:7
+	n_out7p0 = texture(Simulation, UV);
+
+
+// VectorOp:8
+	vec3 n_out8p0 = n_out11p0 * vec3(n_out7p0.xyz);
+
+
+// VectorOp:9
+	vec3 n_out9p0 = n_out10p0 + n_out8p0;
+
+
+// Output:0
+	VERTEX = n_out9p0;
+
+
+// VaryingSetter:12
+	simulation = vec3(n_out7p0.xyz);
+
+
+}
+
+void fragment() {
+// VaryingGetter:2
+	vec3 n_out2p0 = simulation;
+
+
+// VectorOp:6
+	vec3 n_in6p1 = vec3(2.00000, 2.00000, 2.00000);
+	vec3 n_out6p0 = pow(n_out2p0, n_in6p1);
+
+
+// ColorParameter:3
+	vec4 n_out3p0 = ColorParameter;
+
+
+// ColorOp:5
+	vec3 n_out5p0 = vec3(1.0) - (vec3(1.0) - n_out6p0) * (vec3(1.0) - vec3(n_out3p0.xyz));
+
+
+// Output:0
+	ALBEDO = n_out5p0;
+
+
+}
+"
+varyings/simulation = "0,4"
+nodes/vertex/0/position = Vector2(760, -40)
+nodes/vertex/2/node = SubResource("VisualShaderNodeTexture2DParameter_ex0bm")
+nodes/vertex/2/position = Vector2(-1460, 580)
+nodes/vertex/7/node = SubResource("VisualShaderNodeTexture_30g0n")
+nodes/vertex/7/position = Vector2(-700, 560)
+nodes/vertex/8/node = SubResource("VisualShaderNodeVectorOp_6o5fw")
+nodes/vertex/8/position = Vector2(-160, 160)
+nodes/vertex/9/node = SubResource("VisualShaderNodeVectorOp_rpeys")
+nodes/vertex/9/position = Vector2(320, 80)
+nodes/vertex/10/node = SubResource("VisualShaderNodeInput_p14w5")
+nodes/vertex/10/position = Vector2(-340, -120)
+nodes/vertex/11/node = SubResource("VisualShaderNodeInput_sf2dp")
+nodes/vertex/11/position = Vector2(-820, 220)
+nodes/vertex/12/node = SubResource("VisualShaderNodeVaryingSetter_fdobb")
+nodes/vertex/12/position = Vector2(-140, 700)
+nodes/vertex/connections = PackedInt32Array(2, 0, 7, 2, 11, 0, 8, 0, 8, 0, 9, 1, 10, 0, 9, 0, 9, 0, 0, 0, 7, 0, 8, 1, 7, 0, 12, 0)
+nodes/fragment/2/node = SubResource("VisualShaderNodeVaryingGetter_jkplp")
+nodes/fragment/2/position = Vector2(-1240, 160)
+nodes/fragment/3/node = SubResource("VisualShaderNodeColorParameter_n6vhh")
+nodes/fragment/3/position = Vector2(-1180, 520)
+nodes/fragment/5/node = SubResource("VisualShaderNodeColorOp_t0i0v")
+nodes/fragment/5/position = Vector2(-300, 200)
+nodes/fragment/6/node = SubResource("VisualShaderNodeVectorOp_vm6nx")
+nodes/fragment/6/position = Vector2(-660, 80)
+nodes/fragment/connections = PackedInt32Array(3, 0, 5, 1, 5, 0, 0, 0, 2, 0, 6, 0, 6, 0, 5, 0)
