@@ -12,6 +12,7 @@ var water_angular_drag: float = 0.1
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+var current_depth: float = 0
 var submerged_percent: float = 0
 var is_any_submerged: bool = false
 
@@ -43,6 +44,11 @@ func _physics_process(delta: float) -> void:
 		var wave_height = water.get_height(probe.global_position)
 		
 		var depth = water_height + wave_height - probe.global_position.y
+		
+		current_depth = lerp(current_depth, depth, delta)
+		
+		DebugDraw.draw_cube(Vector3(probe.global_position.x, water_height, probe.global_position.z), 0.1, Color.BLUE)
+		
 		var multiplier = probe.float_force_multiplier
 		var force = Vector3.UP * float_force * gravity * depth * multiplier
 		

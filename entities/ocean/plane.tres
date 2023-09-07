@@ -3,7 +3,7 @@
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_n6vhh"]
 parameter_name = "ColorParameter"
 default_value_enabled = true
-default_value = Color(0.129301, 0.524426, 0.385699, 1)
+default_value = Color(0.323353, 0.490241, 0.427527, 1)
 
 [sub_resource type="VisualShaderNodeColorOp" id="VisualShaderNodeColorOp_t0i0v"]
 
@@ -50,7 +50,7 @@ uniform sampler2D Simulation : repeat_enable;
 // Varyings
 varying vec3 simulation;
 
-uniform vec4 ColorParameter : source_color = vec4(0.129301, 0.524426, 0.385699, 1.000000);
+uniform vec4 ColorParameter : source_color = vec4(0.323353, 0.490241, 0.427527, 1.000000);
 
 
 
@@ -111,6 +111,7 @@ void fragment() {
 
 }
 "
+graph_offset = Vector2(-629.76, 134.4)
 varyings/simulation = "0,4"
 nodes/vertex/0/position = Vector2(760, -40)
 nodes/vertex/2/node = SubResource("VisualShaderNodeTexture2DParameter_ex0bm")

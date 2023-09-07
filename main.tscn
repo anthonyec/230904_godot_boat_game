@@ -1,19 +1,17 @@
-[gd_scene load_steps=14 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=13 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="Script" path="res://buoyancy.gd" id="1_axg7x"]
 [ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="1_hxmui"]
-[ext_resource type="PackedScene" uid="uid://x78jf5rl7om" path="res://entities/water/water.tscn" id="1_ti7de"]
 [ext_resource type="Script" path="res://probe.gd" id="2_ukv4q"]
 [ext_resource type="Script" path="res://player_controls.gd" id="3_h2wjn"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
-background_color = Color(0.552941, 0.909804, 0.952941, 1)
+background_color = Color(0.819608, 0.94902, 0.94902, 1)
 fog_enabled = true
-fog_light_color = Color(0.552941, 0.909804, 0.952941, 1)
-fog_light_energy = 0.8
-fog_sky_affect = 0.0
+fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
+fog_density = 0.02
 fog_height = 2.13163e-14
 
 [sub_resource type="SphereMesh" id="SphereMesh_hylnw"]
@@ -39,10 +37,6 @@ size = Vector3(6, 5, 10)
 environment = SubResource("Environment_h648m")
 
 [node name="Ocean" parent="." instance=ExtResource("1_hxmui")]
-
-[node name="Water" parent="." instance=ExtResource("1_ti7de")]
-visible = false
-script = null
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
 target = NodePath("../Player")
