@@ -71,5 +71,5 @@ func get_height(at_position: Vector3) -> float:
 	
 	return image.get_pixel(
 		percent_on_plane.x * image_size.x,
-		percent_on_plane.x * image_size.y
+		percent_on_plane.y * image_size.y
 	).r
