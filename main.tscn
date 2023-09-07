@@ -547,3 +547,24 @@ shape = SubResource("BoxShape3D_lohbm")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4"]
 transform = Transform3D(1, -4.26393e-08, -1.15576e-09, 9.04024e-09, 3.12902, -3.79113e-08, -7.38375e-09, 2.58509e-07, 1, 2.98023e-08, -1.1485, 1.19209e-07)
 mesh = SubResource("BoxMesh_55eei")
+
+[node name="RigidBody3D5" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5334, 0, -0.298489)
+mass = 10.0
+center_of_mass_mode = 1
+script = ExtResource("1_axg7x")
+
+[node name="BuoyancyProbe" type="Node3D" parent="RigidBody3D5"]
+transform = Transform3D(1, -7.21643e-09, -2.29754e-10, 4.979e-09, 1, -1.75597e-08, -2.97036e-09, 2.66215e-08, 1, 0, 0, 0)
+script = ExtResource("2_ukv4q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D5/BuoyancyProbe"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D5"]
+shape = SubResource("BoxShape3D_lohbm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D5"]
+transform = Transform3D(1, -4.26393e-08, -1.15576e-09, 9.04024e-09, 3.12902, -3.79113e-08, -7.38375e-09, 2.58509e-07, 1, 2.98023e-08, -1.1485, 1.19209e-07)
+mesh = SubResource("BoxMesh_55eei")

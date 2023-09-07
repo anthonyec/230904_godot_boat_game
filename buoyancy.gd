@@ -1,6 +1,7 @@
 class_name BuoyantBody
 extends RigidBody3D
 
+@export var enabled: bool = true
 @export var float_force: float = 5
 
 @onready var water: Ocean = get_node("/root/Main/Ocean") as Ocean
@@ -14,6 +15,10 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var submerged_percent: float = 0
 var is_any_submerged: bool = false
 
+func _ready() -> void:
+	if not enabled:
+		freeze = true
+
 func get_probes() -> Array[Probe]:
 	var probes: Array[Probe] = []
 	
@@ -23,6 +28,9 @@ func get_probes() -> Array[Probe]:
 	return probes
 
 func _physics_process(delta: float) -> void:
+	if not enabled:
+		return
+		
 	var probes = get_probes()
 	var submerged_count: int = 0
 
