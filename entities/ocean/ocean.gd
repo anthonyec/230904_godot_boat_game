@@ -6,11 +6,20 @@ extends Node3D
 
 var plane_width: float = 50
 var plane_height: float = 50
-var max_planes: int = 6
+var max_planes: int = 10 # Even numbers work best for even spread around camera.
 
 var last_call_time: int = 0
 var image: Image
 var image_size: Vector2 
+var planes: Array[MeshInstance3D] = []
+
+func _ready() -> void:
+	var number_of_planes = max_planes * max_planes
+	
+	for index in number_of_planes:
+		var duplicated_plane = plane.duplicate()
+		add_child(duplicated_plane)
+		planes.append(duplicated_plane)
 
 func _process(delta: float) -> void:
 	var now = Time.get_ticks_msec()
@@ -31,15 +40,14 @@ func _process(delta: float) -> void:
 		round(camera.global_position.z / plane_height) * plane_height,
 	)
 	
-	DebugDraw.draw_box(nearest_plane_position, Vector3(0.5, 3, 0.5), Color.RED)
+	var index: int = 0
 	
 	for x in range(-max_planes / 2, max_planes / 2):
 		for z in range(-max_planes / 2, max_planes / 2):
-			if x == 0 and z == 0:
-				continue
-				
 			var surrounding_plane_position = nearest_plane_position - Vector3(plane_width * x, 0, plane_height * z)
-			DebugDraw.draw_box(surrounding_plane_position, Vector3(0.5, 3, 0.5), Color.BLACK)
+			
+			planes[index].global_position = surrounding_plane_position
+			index += 1
 		
 func get_position_on_plane(other_position: Vector3) -> Vector2:
 	return Vector2(
