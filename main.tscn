@@ -1,10 +1,49 @@
-[gd_scene load_steps=13 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=17 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="Script" path="res://buoyancy.gd" id="1_axg7x"]
 [ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="1_hxmui"]
 [ext_resource type="Script" path="res://probe.gd" id="2_ukv4q"]
 [ext_resource type="Script" path="res://player_controls.gd" id="3_h2wjn"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
+[ext_resource type="Script" path="res://debug.gd" id="6_xhnwx"]
+
+[sub_resource type="Animation" id="Animation_vid2y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ocean:wave_direction_1")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.05, 0.05)]
+}
+
+[sub_resource type="Animation" id="Animation_4n8xm"]
+resource_name = "test_wave"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ocean:wave_direction_1")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.05, 0.05), Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_37l05"]
+_data = {
+"RESET": SubResource("Animation_vid2y"),
+"test_wave": SubResource("Animation_4n8xm")
+}
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
@@ -33,10 +72,19 @@ size = Vector3(6, 5, 10)
 
 [node name="Main" type="Node3D"]
 
+[node name="Debug" type="Node" parent="."]
+script = ExtResource("6_xhnwx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_37l05")
+}
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")
 
 [node name="Ocean" parent="." instance=ExtResource("1_hxmui")]
+wave_direction_2 = Vector2(0.05, 0.07)
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
 target = NodePath("../Player")

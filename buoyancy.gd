@@ -6,13 +6,12 @@ extends RigidBody3D
 
 @onready var water: Ocean = get_node("/root/Main/Ocean") as Ocean
 
-var water_height: float = 0
 var water_drag: float = 0.05
 var water_angular_drag: float = 0.1
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-var current_depth: float = 0
+var current_wave_height: float = 0
 var submerged_percent: float = 0
 var is_any_submerged: bool = false
 
@@ -41,11 +40,8 @@ func _physics_process(delta: float) -> void:
 		if not probe:
 			continue
 
-		var wave_height = water.get_height(probe.global_position)
-		
-		var depth = water_height + wave_height - probe.global_position.y
-		
-		current_depth = lerp(current_depth, depth, delta)
+		var water_height = water.get_height(probe.global_position)
+		var depth = water_height - probe.global_position.y
 		
 		DebugDraw.draw_cube(Vector3(probe.global_position.x, water_height, probe.global_position.z), 0.1, Color.BLUE)
 		

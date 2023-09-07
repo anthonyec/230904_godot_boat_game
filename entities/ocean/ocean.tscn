@@ -9,6 +9,8 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h8gt6"]
 shader = ExtResource("2_urw8w")
+shader_parameter/WaveDirection1 = Vector2(0.05, 0.05)
+shader_parameter/WaveDirection2 = Vector2(0.05, -0.05)
 shader_parameter/Noise1 = ExtResource("3_5oned")
 shader_parameter/Noise2 = ExtResource("4_7tblb")
 shader_parameter/Wave1 = ExtResource("5_l67ha")
@@ -20,7 +22,7 @@ viewport_path = NodePath("Simulation")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_bivtf")
-shader_parameter/MaxWaveHeight = 5.0
+shader_parameter/MaxWaveHeight = 1.0
 shader_parameter/ColorParameter = Color(0.323353, 0.490241, 0.427527, 1)
 shader_parameter/Simulation = SubResource("ViewportTexture_3vjlp")
 

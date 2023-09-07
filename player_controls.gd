@@ -30,7 +30,8 @@ func _physics_process(delta: float) -> void:
 	
 	DebugDraw.draw_ray_3d(rudder_position, rudder_direction, 1, Color.WHITE)
 	
-	var is_rudder_in_water: bool = (player.global_position + rudder_offset).y < water_height
+#	var is_rudder_in_water: bool = (player.global_position + rudder_offset).y < water_height
+	var is_rudder_in_water: bool = true
 	
 	if not is_rudder_in_water:
 		return
