@@ -336,6 +336,7 @@ void fragment() {
 
 }
 "
+graph_offset = Vector2(-564.313, 301.12)
 varyings/vertex_height_map = "0,5"
 varyings/waves_texture_1 = "0,5"
 varyings/waves_texture_2 = "0,5"

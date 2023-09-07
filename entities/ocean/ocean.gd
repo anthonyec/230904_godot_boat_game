@@ -1,6 +1,8 @@
 class_name Ocean
 extends Node3D
 
+@export var max_wave_height: float = 2
+
 @onready var simulation: SubViewport = $Simulation
 @onready var plane: MeshInstance3D = $Plane
 
@@ -11,17 +13,23 @@ var max_planes: int = 10 # Even numbers work best for even spread around camera.
 var last_call_time: int = 0
 var image: Image
 var image_size: Vector2 
+var plane_material: ShaderMaterial
 var planes: Array[MeshInstance3D] = []
 
 func _ready() -> void:
+	# Spawn plane pool for moving them around to simulate infinite planes.
 	var number_of_planes = max_planes * max_planes
 	
 	for index in number_of_planes:
 		var duplicated_plane = plane.duplicate()
 		add_child(duplicated_plane)
 		planes.append(duplicated_plane)
+		
+	var material = plane.mesh.surface_get_material(0)
+	plane_material = material
 
 func _process(delta: float) -> void:
+	# Update texture image cache.
 	var now = Time.get_ticks_msec()
 	var difference = now - last_call_time
 	
@@ -31,7 +39,11 @@ func _process(delta: float) -> void:
 		image = simulation.get_texture().get_image()
 		image_size = Vector2(float(image.get_width()), float(image.get_height()))
 		last_call_time = Time.get_ticks_msec()
-		
+	
+	# Set wave shader parameters.
+	plane_material.set_shader_parameter("MaxWaveHeight", max_wave_height)
+	
+	# Infinite planes.
 	var camera = get_viewport().get_camera_3d()
 	
 	var nearest_plane_position: Vector3 = Vector3(
@@ -69,7 +81,9 @@ func get_height(at_position: Vector3) -> float:
 	
 	var percent_on_plane = get_percent_on_plane(at_position)
 	
-	return image.get_pixel(
+	var color = image.get_pixel(
 		percent_on_plane.x * image_size.x,
 		percent_on_plane.y * image_size.y
 	).r
+	
+	return color * max_wave_height
