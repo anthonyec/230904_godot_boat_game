@@ -22,16 +22,16 @@ viewport_path = NodePath("Simulation")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_bivtf")
-shader_parameter/MaxWaveHeight = 1.0
+shader_parameter/MaxWaveHeight = 2.0
 shader_parameter/ColorParameter = Color(0.323353, 0.490241, 0.427527, 1)
 shader_parameter/Simulation = SubResource("ViewportTexture_3vjlp")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wgfkp"]
 resource_local_to_scene = true
 material = SubResource("ShaderMaterial_0anan")
-size = Vector2(50, 50)
-subdivide_width = 128
-subdivide_depth = 128
+size = Vector2(100, 100)
+subdivide_width = 256
+subdivide_depth = 256
 
 [node name="Ocean" type="Node3D"]
 script = ExtResource("1_73v6r")

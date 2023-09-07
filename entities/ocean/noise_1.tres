@@ -2,6 +2,7 @@
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_kbspt"]
 noise_type = 2
+frequency = 0.015
 fractal_type = 0
 cellular_jitter = 1.0
 

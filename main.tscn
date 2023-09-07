@@ -50,7 +50,7 @@ background_mode = 1
 background_color = Color(0.819608, 0.94902, 0.94902, 1)
 fog_enabled = true
 fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
-fog_density = 0.02
+fog_density = 0.015
 fog_height = 2.13163e-14
 
 [sub_resource type="SphereMesh" id="SphereMesh_hylnw"]
@@ -84,7 +84,8 @@ libraries = {
 environment = SubResource("Environment_h648m")
 
 [node name="Ocean" parent="." instance=ExtResource("1_hxmui")]
-wave_direction_2 = Vector2(0.05, 0.07)
+max_wave_height = 3.0
+wave_direction_2 = Vector2(-0.015, -0.015)
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
 target = NodePath("../Player")

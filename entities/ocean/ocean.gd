@@ -9,9 +9,9 @@ extends Node3D
 @onready var simulation_texture: ColorRect = $Simulation/Texture
 @onready var plane: MeshInstance3D = $Plane
 
-var plane_width: float = 50
-var plane_height: float = 50
-var max_planes: int = 10 # Even numbers work best for even spread around camera.
+var plane_width: float = 100
+var plane_height: float = 100
+var max_planes: int = 6 # Even numbers work best for even spread around camera.
 
 var time: float = 0
 var last_call_time: int = 0
