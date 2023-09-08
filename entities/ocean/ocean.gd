@@ -1,9 +1,12 @@
 class_name Ocean
 extends Node3D
 
-@export var max_wave_height: float = 2
-@export var wave_direction_1: Vector2 = Vector2(0.05, 0.05)
-@export var wave_direction_2: Vector2 = Vector2(0.05, -0.05)
+const max_wave_height: float = 10
+
+@export var wave_direction_1: Vector2 = Vector2(3, 3)
+@export var wave_direction_2: Vector2 = Vector2(0.5, 0.5)
+@export var wave_height_1: float = 1.5
+@export var wave_height_2: float = 1.5
 
 @onready var simulation: SubViewport = $Simulation
 @onready var simulation_texture: ColorRect = $Simulation/Texture
@@ -14,12 +17,19 @@ var plane_height: float = 100
 var max_planes: int = 6 # Even numbers work best for even spread around camera.
 
 var time: float = 0
+var time_to_render_image: int = 0
 var last_call_time: int = 0
 var image: Image
 var image_size: Vector2 
 var plane_material: ShaderMaterial
 var simulation_material: ShaderMaterial
 var planes: Array[MeshInstance3D] = []
+
+var wave_offset_1: Vector2
+var wave_offset_2: Vector2
+
+func round_to_dec(num, digit):
+	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 
 func _ready() -> void:
 	# Spawn plane pool for moving them around to simulate infinite planes.
@@ -36,6 +46,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	time += delta
 	
+	var rid = simulation.get_viewport_rid()
+	RenderingServer.viewport_set_measure_render_time(rid, true)
+	var render_time = RenderingServer.viewport_get_measured_render_time_gpu(rid)
+	DebugDraw.set_text("water image time: ", str(time_to_render_image) + "ms")
+	
 	# Update texture image cache.
 	var now = Time.get_ticks_msec()
 	var difference = now - last_call_time
@@ -43,15 +58,23 @@ func _process(delta: float) -> void:
 	# TODO: Maybe make this time dynamic based on the average time the GPU 
 	# takes to send back the image?
 	if difference > 150:
+		var time_before_image = Time.get_ticks_msec()
 		image = simulation.get_texture().get_image()
+		time_to_render_image = Time.get_ticks_msec() - time_before_image
+		
 		image_size = Vector2(float(image.get_width()), float(image.get_height()))
 		last_call_time = Time.get_ticks_msec()
 	
 	# Set wave shader parameters.
 	plane_material.set_shader_parameter("MaxWaveHeight", max_wave_height)
-	simulation_material.set_shader_parameter("Time", time)
-	simulation_material.set_shader_parameter("WaveDirection1", wave_direction_1)
-	simulation_material.set_shader_parameter("WaveDirection2", wave_direction_2)
+	
+	simulation_material.set_shader_parameter("WaveOffset1", wave_offset_1)
+	simulation_material.set_shader_parameter("WaveOffset2", wave_offset_2)
+	simulation_material.set_shader_parameter("WaveHeightPercent1", wave_height_1 / max_wave_height)
+	simulation_material.set_shader_parameter("WaveHeightPercent2", wave_height_2 / max_wave_height)
+	
+	wave_offset_1 += wave_direction_1 * 0.01 * delta
+	wave_offset_2 += wave_direction_2 * 0.01 * delta
 	
 	# Infinite planes.
 	var camera = get_viewport().get_camera_3d()
@@ -95,5 +118,5 @@ func get_height(at_position: Vector3) -> float:
 		percent_on_plane.x * image_size.x,
 		percent_on_plane.y * image_size.y
 	).r
-	
+
 	return color * max_wave_height

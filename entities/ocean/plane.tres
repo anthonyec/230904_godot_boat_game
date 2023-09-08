@@ -6,7 +6,7 @@ input_name = "uv"
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_n6vhh"]
 parameter_name = "ColorParameter"
 default_value_enabled = true
-default_value = Color(0.323353, 0.490241, 0.427527, 1)
+default_value = Color(0.315361, 0.417197, 0.385723, 1)
 
 [sub_resource type="VisualShaderNodeColorOp" id="VisualShaderNodeColorOp_t0i0v"]
 
@@ -38,7 +38,7 @@ varying_type = 4
 [sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_fbfsj"]
 parameter_name = "MaxWaveHeight"
 default_value_enabled = true
-default_value = 1.0
+default_value = 10.0
 
 [sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_4rjm1"]
 operator = 2
@@ -65,8 +65,8 @@ uniform sampler2D Simulation : repeat_enable;
 // Varyings
 varying vec3 simulation;
 
-uniform float MaxWaveHeight = 1;
-uniform vec4 ColorParameter : source_color = vec4(0.323353, 0.490241, 0.427527, 1.000000);
+uniform float MaxWaveHeight = 10;
+uniform vec4 ColorParameter : source_color = vec4(0.315361, 0.417197, 0.385723, 1.000000);
 
 
 
@@ -111,14 +111,10 @@ void vertex() {
 }
 
 void fragment() {
-	vec4 n_out8p0;
-// Texture2D:8
-	n_out8p0 = texture(Simulation, UV);
-
-
 // VectorOp:6
+	vec3 n_in6p0 = vec3(0.00000, 0.00000, 0.00000);
 	vec3 n_in6p1 = vec3(2.00000, 2.00000, 2.00000);
-	vec3 n_out6p0 = pow(vec3(n_out8p0.xyz), n_in6p1);
+	vec3 n_out6p0 = pow(n_in6p0, n_in6p1);
 
 
 // ColorParameter:3
@@ -135,7 +131,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-786.775, -307.463)
+graph_offset = Vector2(-690.24, 286.56)
 varyings/simulation = "0,4"
 nodes/vertex/0/position = Vector2(760, -40)
 nodes/vertex/2/node = SubResource("VisualShaderNodeTexture2DParameter_ex0bm")
@@ -171,4 +167,4 @@ nodes/fragment/9/node = SubResource("VisualShaderNodeTextureParameterTriplanar_g
 nodes/fragment/9/position = Vector2(-1980, -1180)
 nodes/fragment/10/node = SubResource("VisualShaderNodeInput_0hpwg")
 nodes/fragment/10/position = Vector2(-2620, -680)
-nodes/fragment/connections = PackedInt32Array(3, 0, 5, 1, 6, 0, 5, 0, 5, 0, 0, 0, 7, 0, 8, 2, 8, 0, 6, 0)
+nodes/fragment/connections = PackedInt32Array(3, 0, 5, 1, 6, 0, 5, 0, 7, 0, 8, 2, 5, 0, 0, 0)

@@ -7,5 +7,7 @@ fractal_type = 0
 cellular_jitter = 1.0
 
 [resource]
+width = 1024
+height = 1024
 seamless = true
 noise = SubResource("FastNoiseLite_kbspt")

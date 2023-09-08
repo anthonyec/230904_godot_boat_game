@@ -40,11 +40,7 @@ func _physics_process(delta: float) -> void:
 		if not probe:
 			continue
 
-		var water_height = water.get_height(probe.global_position)
-		var depth = water_height - probe.global_position.y
-		
-		DebugDraw.draw_cube(Vector3(probe.global_position.x, water_height, probe.global_position.z), 0.1, Color.BLUE)
-		
+		var depth = probe.water_height - probe.global_position.y
 		var multiplier = probe.float_force_multiplier
 		var force = Vector3.UP * float_force * gravity * depth * multiplier
 		
