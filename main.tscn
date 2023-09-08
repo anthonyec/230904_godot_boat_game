@@ -1,11 +1,11 @@
 [gd_scene load_steps=14 format=3 uid="uid://be3homwduf1qf"]
 
-[ext_resource type="Script" path="res://buoyancy.gd" id="1_axg7x"]
 [ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="1_hxmui"]
-[ext_resource type="Script" path="res://probe.gd" id="2_ukv4q"]
-[ext_resource type="Script" path="res://player_controls.gd" id="3_h2wjn"]
+[ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_w46ff"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
-[ext_resource type="Script" path="res://debug.gd" id="6_xhnwx"]
+[ext_resource type="Script" path="res://entities/buoyant_object/buoyancy.gd" id="4_wqy3j"]
+[ext_resource type="Script" path="res://entities/player/player_controls.gd" id="5_dt4r7"]
+[ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="6_qu8c6"]
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
@@ -34,8 +34,7 @@ size = Vector3(6, 5, 10)
 
 [node name="Main" type="Node3D"]
 
-[node name="Debug" type="Node" parent="."]
-script = ExtResource("6_xhnwx")
+[node name="Debug" parent="." instance=ExtResource("1_w46ff")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")
@@ -51,16 +50,16 @@ transform = Transform3D(0.467651, 0.548516, 0.693132, -0.798373, -0.0744178, 0.5
 [node name="Player" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 21.7425)
 mass = 50.0
-script = ExtResource("1_axg7x")
+script = ExtResource("4_wqy3j")
 float_force = 50.0
 
 [node name="PlayerControls" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4472)
-script = ExtResource("3_h2wjn")
+script = ExtResource("5_dt4r7")
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, -5)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeFL"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -68,7 +67,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeFR" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, -5)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeFR"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -76,7 +75,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBL" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, 5)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeBL"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -84,7 +83,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBR" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, 5)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeBR"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -98,11 +97,11 @@ mesh = SubResource("BoxMesh_gttni")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5529, 0)
-script = ExtResource("1_axg7x")
+script = ExtResource("4_wqy3j")
 
 [node name="BuoyancyProbe" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300138, 0.293912, 0.299165)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -110,7 +109,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe9" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0345554, -0.0384927, -0.687219)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe9"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -118,7 +117,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe10" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.647859, 0.0369871, 0.0148917)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe10"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -126,7 +125,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe11" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.696804, 0.0369871, -0.0058279)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe11"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -134,7 +133,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe12" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170244, 0.0369871, 0.657937)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe12"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -142,7 +141,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe2" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300993, 0.297413, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -150,7 +149,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe3" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, 0.297413, 0.298368)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe3"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -158,7 +157,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe4" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, 0.297413, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe4"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -166,7 +165,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe5" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300993, -0.293218, 0.298368)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe5"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -174,7 +173,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe6" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300993, -0.293218, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe6"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -182,7 +181,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe7" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, -0.293218, 0.298368)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe7"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -190,7 +189,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe8" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, -0.293218, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbe8"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -205,11 +204,11 @@ mesh = SubResource("BoxMesh_55eei")
 [node name="RigidBody3D2" type="RigidBody3D" parent="."]
 transform = Transform3D(0.0904935, -0.916918, -0.38868, 6.79617e-18, -0.390281, 0.920696, -0.995897, -0.083317, -0.0353179, -1.61485, 5.10738, 0)
 mass = 10.0
-script = ExtResource("1_axg7x")
+script = ExtResource("4_wqy3j")
 
 [node name="BuoyancyProbe" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300138, 0.293912, 0.299165)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -217,7 +216,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe9" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0345554, -0.0384927, -0.687219)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe9"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -225,7 +224,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe10" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.647859, 0.0369871, 0.0148917)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe10"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -233,7 +232,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe11" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.696804, 0.0369871, -0.0058279)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe11"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -241,7 +240,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe12" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170244, 0.0369871, 0.657937)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe12"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -249,7 +248,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe2" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300993, 0.297413, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -257,7 +256,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe3" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, 0.297413, 0.298368)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe3"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -265,7 +264,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe4" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, 0.297413, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe4"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -273,7 +272,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe5" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300993, -0.293218, 0.298368)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe5"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -281,7 +280,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe6" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300993, -0.293218, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe6"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -289,7 +288,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe7" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, -0.293218, 0.298368)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe7"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -297,7 +296,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe8" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, -0.293218, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbe8"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -313,11 +312,11 @@ mesh = SubResource("BoxMesh_55eei")
 transform = Transform3D(0.0198331, 0.760564, 0.64896, 0.0434408, 0.647819, -0.760555, -0.998859, 0.0432755, -0.0201912, 2.35538, 0.479338, -5.70314)
 mass = 10.0
 center_of_mass_mode = 1
-script = ExtResource("1_axg7x")
+script = ExtResource("4_wqy3j")
 
 [node name="BuoyancyProbe" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, -7.21643e-09, -2.29754e-10, 4.979e-09, 1, -1.75597e-08, -2.97036e-09, 2.66215e-08, 1, -0.300138, 0.293913, 0.299165)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -325,7 +324,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe13" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(0.999885, -0.00843534, -0.0124716, 0.00413807, 0.950386, -0.311045, 0.0144766, 0.310958, 0.950313, -0.0190029, -2.50385, 0.0279794)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 float_force_multiplier = 1.2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe13"]
@@ -334,7 +333,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe9" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0345554, -0.0384927, -0.687219)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe9"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -342,7 +341,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe10" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.647859, 0.0369871, 0.0148917)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe10"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -350,7 +349,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe11" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.696804, 0.0369871, -0.0058279)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe11"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -358,7 +357,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe12" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170244, 0.0369871, 0.657937)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe12"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -366,7 +365,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe2" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300993, 0.297413, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -374,7 +373,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe3" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, 0.297413, 0.298368)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe3"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -382,7 +381,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe4" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, 0.297413, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe4"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -390,7 +389,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe5" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300993, -0.293218, 0.298368)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe5"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -398,7 +397,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe6" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300993, -0.293218, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe6"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -406,7 +405,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe7" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, -0.293218, 0.298368)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe7"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -414,7 +413,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbe8" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295745, -0.293218, -0.294225)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D4/BuoyancyProbe8"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -431,11 +430,11 @@ mesh = SubResource("BoxMesh_55eei")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5334, 0, -0.298489)
 mass = 10.0
 center_of_mass_mode = 1
-script = ExtResource("1_axg7x")
+script = ExtResource("4_wqy3j")
 
 [node name="BuoyancyProbe" type="Node3D" parent="RigidBody3D5"]
 transform = Transform3D(1, -7.21643e-09, -2.29754e-10, 4.979e-09, 1, -1.75597e-08, -2.97036e-09, 2.66215e-08, 1, 0, 0, 0)
-script = ExtResource("2_ukv4q")
+script = ExtResource("6_qu8c6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D5/BuoyancyProbe"]
 mesh = SubResource("SphereMesh_hylnw")

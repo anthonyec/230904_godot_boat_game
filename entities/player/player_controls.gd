@@ -17,8 +17,6 @@ func _ready() -> void:
 	
 func _physics_process(delta: float) -> void:
 	var forward_velocity = player.linear_velocity.dot(-player.global_transform.basis.z)
-	var flow_percent = clamp(forward_velocity / flow_speed, 0, 1)
-
 	DebugDraw.draw_ray_3d(player.global_position, -player.global_transform.basis.z, forward_velocity, Color.RED)
 	
 	var rudder_offset = (player.global_transform.basis.z * 2) - (player.global_transform.basis.y)

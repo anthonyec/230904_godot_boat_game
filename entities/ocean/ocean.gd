@@ -46,9 +46,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	time += delta
 	
-	var rid = simulation.get_viewport_rid()
-	RenderingServer.viewport_set_measure_render_time(rid, true)
-	var render_time = RenderingServer.viewport_get_measured_render_time_gpu(rid)
 	DebugDraw.set_text("water image time: ", str(time_to_render_image) + "ms")
 	
 	# Update texture image cache.
