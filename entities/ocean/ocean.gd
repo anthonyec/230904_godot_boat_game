@@ -46,7 +46,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	time += delta
 	
-	DebugDraw.set_text("water image time: ", str(time_to_render_image) + "ms")
+#	DebugDraw.set_text("water image time: ", str(time_to_render_image) + "ms")
 	
 	# Update texture image cache.
 	var now = Time.get_ticks_msec()

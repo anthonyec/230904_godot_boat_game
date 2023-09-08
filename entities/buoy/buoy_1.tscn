@@ -1,0 +1,109 @@
+[gd_scene load_steps=6 format=3 uid="uid://c42yh8kckxtks"]
+
+[ext_resource type="PackedScene" uid="uid://ddc3ska1ni8ya" path="res://buoy_1.glb" id="1_sqie2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n0kao"]
+albedo_color = Color(0.627451, 0.239216, 0.14902, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_23m3t"]
+albedo_color = Color(0.627451, 0.239216, 0.14902, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m7qsj"]
+albedo_color = Color(0.431373, 0.403922, 0.321569, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b3pke"]
+albedo_color = Color(0.0117647, 0, 0, 1)
+
+[node name="buoy_1" instance=ExtResource("1_sqie2")]
+
+[node name="Cylinder" parent="." index="0"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cylinder_001" parent="." index="1"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cylinder_002" parent="." index="2"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Torus" parent="." index="3"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cylinder_003" parent="." index="4"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cylinder_004" parent="." index="5"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Torus_001" parent="." index="6"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cylinder_005" parent="." index="7"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_004" parent="." index="8"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube" parent="." index="9"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_001" parent="." index="10"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_002" parent="." index="11"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_003" parent="." index="12"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_006" parent="." index="13"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_007" parent="." index="14"]
+material_override = SubResource("StandardMaterial3D_23m3t")
+
+[node name="Cube_008" parent="." index="15"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_009" parent="." index="16"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_005" parent="." index="17"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cylinder_006" parent="." index="18"]
+material_override = SubResource("StandardMaterial3D_m7qsj")
+
+[node name="Cylinder_007" parent="." index="19"]
+transform = Transform3D(0.258599, 0, 0, 0, 2.20007, 0, 0, 0, 0.258599, -0.000567198, 1.24836, -0.00126547)
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Torus_002" parent="." index="20"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_010" parent="." index="21"]
+material_override = SubResource("StandardMaterial3D_b3pke")
+
+[node name="Cube_011" parent="." index="22"]
+material_override = SubResource("StandardMaterial3D_b3pke")
+
+[node name="Cube_012" parent="." index="23"]
+material_override = SubResource("StandardMaterial3D_b3pke")
+
+[node name="Cube_013" parent="." index="24"]
+material_override = SubResource("StandardMaterial3D_b3pke")
+
+[node name="Cube_015" parent="." index="25"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_014" parent="." index="26"]
+transform = Transform3D(0.0122505, 0, 0, 0, 0.194078, 0.019558, 0, -0.348578, 0.0108893, -0.399365, 2.81703, -0.00731965)
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_016" parent="." index="27"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cube_017" parent="." index="28"]
+material_override = SubResource("StandardMaterial3D_n0kao")
+
+[node name="Cylinder_008" parent="." index="29"]
+material_override = SubResource("StandardMaterial3D_n0kao")

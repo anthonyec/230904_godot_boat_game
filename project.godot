@@ -22,9 +22,13 @@ DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 
 [display]
 
-window/size/viewport_width=1280
+window/size/viewport_width=1064
 window/size/viewport_height=800
 window/dpi/allow_hidpi=false
+
+[editor]
+
+movie_writer/movie_file="/Users/anthony/projects/misc/230904_godot_boat_game/movie_2.avi"
 
 [rendering]
 

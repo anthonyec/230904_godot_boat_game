@@ -16,6 +16,6 @@ func _process(delta: float) -> void:
 	
 	var water_height_position = Vector3(global_position.x, current_water_height, global_position.z)
 	
-	DebugDraw.draw_cube(global_position, 0.05, Color.BLACK)
-	DebugDraw.draw_cube(water_height_position, 0.1, Color.BLUE)
-	DebugDraw.draw_cube(water_height_position, 0.2, Color.RED)
+#	DebugDraw.draw_cube(global_position, 0.05, Color.BLACK)
+#	DebugDraw.draw_cube(water_height_position, 0.1, Color.BLUE)
+#	DebugDraw.draw_cube(water_height_position, 0.2, Color.RED)
