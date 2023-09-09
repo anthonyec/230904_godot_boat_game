@@ -107,7 +107,7 @@ func update_infinite_planes() -> void:
 			
 			if debug:
 				DebugDraw.draw_ray_3d(duplicate_position, Vector3.UP, 10, Color.BLUE)
-				DebugDraw.draw_box(duplicate_position, Vector3(plane_size.x, 50, plane_size.y), Color.BLUE)
+				DebugDraw.draw_box(duplicate_position + Vector3.UP * 25, Vector3(plane_size.x, 50, plane_size.y), Color.BLACK)
 
 func get_position_on_plane(target: Vector3) -> Vector2:
 	# Note if ` + plane_origin.x` is removed from plane positioning, it needs to

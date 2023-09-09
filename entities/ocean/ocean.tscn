@@ -12,6 +12,7 @@ resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_bivtf")
 shader_parameter/MaxWaveHeight = 10.0
+shader_parameter/ColorParameter = Color(0.315361, 0.417197, 0.385723, 1)
 shader_parameter/Simulation = SubResource("ViewportTexture_3vjlp")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wgfkp"]
