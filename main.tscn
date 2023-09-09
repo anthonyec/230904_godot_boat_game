@@ -1,8 +1,12 @@
-[gd_scene load_steps=16 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=20 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="1_hxmui"]
+[ext_resource type="PackedScene" uid="uid://v7u1ci5w4e5x" path="res://entities/debug_cam/debug_cam.tscn" id="1_onxbc"]
 [ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_w46ff"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
+[ext_resource type="Script" path="res://entities/debug/debug_water.gd" id="3_uju2q"]
+[ext_resource type="Script" path="res://debug_water_overlay.gd" id="4_avsgn"]
+[ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="4_w17dr"]
 [ext_resource type="Script" path="res://entities/buoyant_object/buoyancy.gd" id="4_wqy3j"]
 [ext_resource type="Script" path="res://entities/player/player_controls.gd" id="5_dt4r7"]
 [ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="6_qu8c6"]
@@ -11,11 +15,9 @@
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
 background_color = Color(0.819608, 0.94902, 0.94902, 1)
-fog_enabled = true
 fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
-fog_density = 0.015
+fog_density = 0.0135
 fog_height = 2.13163e-14
-volumetric_fog_enabled = true
 volumetric_fog_density = 0.2
 
 [sub_resource type="SphereMesh" id="SphereMesh_hylnw"]
@@ -43,13 +45,40 @@ radius = 1.0404
 
 [node name="Debug" parent="." instance=ExtResource("1_w46ff")]
 
+[node name="DebugCam" parent="." instance=ExtResource("1_onxbc")]
+current = true
+
+[node name="DebugWater" type="Node3D" parent="DebugCam" node_paths=PackedStringArray("water")]
+script = ExtResource("3_uju2q")
+water = NodePath("../../Ocean")
+
+[node name="SimulationTexture" type="ColorRect" parent="DebugCam/DebugWater"]
+material = ExtResource("4_w17dr")
+offset_left = 11.0
+offset_top = 528.0
+offset_right = 267.0
+offset_bottom = 784.0
+
+[node name="Overlay" type="Control" parent="DebugCam/DebugWater"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 11.0
+offset_top = 528.0
+offset_right = 267.0
+offset_bottom = 784.0
+script = ExtResource("4_avsgn")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")
 
 [node name="Ocean" parent="." instance=ExtResource("1_hxmui")]
+wave_height_1 = 2.08165e-12
+wave_height_2 = 2.08165e-12
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
+current = false
 target = NodePath("../Player")
+offset = Vector3(2.08165e-12, 5, 2.08165e-12)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.467651, 0.548516, 0.693132, -0.798373, -0.0744178, 0.597547, 0.379346, -0.832822, 0.403119, -0.00466442, 2.23942, 0.0191052)
@@ -59,10 +88,10 @@ light_energy = 0.8
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 39.6514)
 mass = 50.0
 script = ExtResource("4_wqy3j")
+enabled = false
 float_force = 50.0
 
 [node name="PlayerControls" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4472)
 script = ExtResource("5_dt4r7")
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Player"]
@@ -106,6 +135,7 @@ mesh = SubResource("BoxMesh_gttni")
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5529, 0)
 script = ExtResource("4_wqy3j")
+enabled = false
 
 [node name="BuoyancyProbe" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300138, 0.293912, 0.299165)
@@ -213,6 +243,7 @@ mesh = SubResource("BoxMesh_55eei")
 transform = Transform3D(0.0904935, -0.916918, -0.38868, 6.79617e-18, -0.390281, 0.920696, -0.995897, -0.083317, -0.0353179, -1.61485, 5.10738, 0)
 mass = 10.0
 script = ExtResource("4_wqy3j")
+enabled = false
 
 [node name="BuoyancyProbe" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300138, 0.293912, 0.299165)
@@ -321,6 +352,7 @@ transform = Transform3D(0.0198331, 0.760564, 0.64896, 0.0434408, 0.647819, -0.76
 mass = 10.0
 center_of_mass_mode = 1
 script = ExtResource("4_wqy3j")
+enabled = false
 
 [node name="BuoyancyProbe" type="Node3D" parent="RigidBody3D4"]
 transform = Transform3D(1, -7.21643e-09, -2.29754e-10, 4.979e-09, 1, -1.75597e-08, -2.97036e-09, 2.66215e-08, 1, -0.300138, 0.293913, 0.299165)
@@ -439,6 +471,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5334, 0, -0.298489)
 mass = 10.0
 center_of_mass_mode = 1
 script = ExtResource("4_wqy3j")
+enabled = false
 
 [node name="BuoyancyProbe" type="Node3D" parent="RigidBody3D5"]
 transform = Transform3D(1, -7.21643e-09, -2.29754e-10, 4.979e-09, 1, -1.75597e-08, -2.97036e-09, 2.66215e-08, 1, 0, 0, 0)
@@ -455,15 +488,11 @@ shape = SubResource("BoxShape3D_lohbm")
 transform = Transform3D(1, -4.26393e-08, -1.15576e-09, 9.04024e-09, 3.12902, -3.79113e-08, -7.38375e-09, 2.58509e-07, 1, 2.98023e-08, -1.1485, 1.19209e-07)
 mesh = SubResource("BoxMesh_55eei")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.509041, -0.0483629, -0.859382, 1.36956e-09, 0.99842, -0.0561875, 0.860742, -0.0286017, -0.508237, -10.8126, 2.80445, 8.15498)
-current = true
-fov = 60.0
-
 [node name="RigidBody3D3" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.55621, 1.00064, 13.5349)
 mass = 45.0
 script = ExtResource("4_wqy3j")
+enabled = false
 float_force = 35.0
 
 [node name="BuoyancyProbe2" type="Node3D" parent="RigidBody3D3"]

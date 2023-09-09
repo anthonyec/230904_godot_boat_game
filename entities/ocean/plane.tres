@@ -1,7 +1,4 @@
-[gd_resource type="VisualShader" load_steps=17 format=3 uid="uid://3k5tqhuvd85x"]
-
-[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_0hpwg"]
-input_name = "uv"
+[gd_resource type="VisualShader" load_steps=15 format=3 uid="uid://3k5tqhuvd85x"]
 
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_n6vhh"]
 parameter_name = "ColorParameter"
@@ -20,10 +17,6 @@ param_type = 9
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_ibe7a"]
 source = 5
-
-[sub_resource type="VisualShaderNodeTextureParameterTriplanar" id="VisualShaderNodeTextureParameterTriplanar_gr0jl"]
-parameter_name = "SimulationTriplanar"
-texture_repeat = 1
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_p14w5"]
 input_name = "vertex"
@@ -66,7 +59,6 @@ uniform sampler2D Simulation : repeat_enable;
 varying vec3 simulation;
 
 uniform float MaxWaveHeight = 10;
-uniform vec4 ColorParameter : source_color = vec4(0.315361, 0.417197, 0.385723, 1.000000);
 
 
 
@@ -111,22 +103,13 @@ void vertex() {
 }
 
 void fragment() {
-// VectorOp:6
-	vec3 n_in6p0 = vec3(0.00000, 0.00000, 0.00000);
-	vec3 n_in6p1 = vec3(2.00000, 2.00000, 2.00000);
-	vec3 n_out6p0 = pow(n_in6p0, n_in6p1);
-
-
-// ColorParameter:3
-	vec4 n_out3p0 = ColorParameter;
-
-
-// ColorOp:5
-	vec3 n_out5p0 = vec3(1.0) - (vec3(1.0) - n_out6p0) * (vec3(1.0) - vec3(n_out3p0.xyz));
+	vec4 n_out8p0;
+// Texture2D:8
+	n_out8p0 = texture(Simulation, UV);
 
 
 // Output:0
-	ALBEDO = n_out5p0;
+	ALBEDO = vec3(n_out8p0.xyz);
 
 
 }
@@ -159,11 +142,7 @@ nodes/fragment/5/position = Vector2(-300, 200)
 nodes/fragment/6/node = SubResource("VisualShaderNodeVectorOp_vm6nx")
 nodes/fragment/6/position = Vector2(-660, 80)
 nodes/fragment/7/node = SubResource("VisualShaderNodeParameterRef_fd8gq")
-nodes/fragment/7/position = Vector2(-2020, -40)
+nodes/fragment/7/position = Vector2(-1000, -280)
 nodes/fragment/8/node = SubResource("VisualShaderNodeTexture_ibe7a")
-nodes/fragment/8/position = Vector2(-1500, -180)
-nodes/fragment/9/node = SubResource("VisualShaderNodeTextureParameterTriplanar_gr0jl")
-nodes/fragment/9/position = Vector2(-1980, -1180)
-nodes/fragment/10/node = SubResource("VisualShaderNodeInput_0hpwg")
-nodes/fragment/10/position = Vector2(-2620, -680)
-nodes/fragment/connections = PackedInt32Array(3, 0, 5, 1, 6, 0, 5, 0, 7, 0, 8, 2, 5, 0, 0, 0)
+nodes/fragment/8/position = Vector2(-480, -420)
+nodes/fragment/connections = PackedInt32Array(3, 0, 5, 1, 6, 0, 5, 0, 7, 0, 8, 2, 8, 0, 0, 0)

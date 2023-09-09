@@ -1,0 +1,12 @@
+[gd_resource type="GradientTexture2D" load_steps=2 format=3 uid="uid://cpj8px8qaqg08"]
+
+[sub_resource type="Gradient" id="Gradient_hev61"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.22898)
+
+[resource]
+gradient = SubResource("Gradient_hev61")
+width = 128
+height = 128
+fill = 1
+repeat = 1

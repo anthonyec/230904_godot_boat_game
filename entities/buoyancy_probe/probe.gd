@@ -9,6 +9,7 @@ func _ready() -> void:
 	visible = false
 	
 func _process(delta: float) -> void:
+	pass
 	var water = get_parent().water
 	var current_water_height = water.get_height(global_position)
 	

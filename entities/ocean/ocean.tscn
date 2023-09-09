@@ -1,19 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bki4o2smxksy7"]
+[gd_scene load_steps=7 format=3 uid="uid://bki4o2smxksy7"]
 
 [ext_resource type="Script" path="res://entities/ocean/ocean.gd" id="1_73v6r"]
-[ext_resource type="Shader" uid="uid://ccdpylfhde54n" path="res://entities/ocean/simulation.tres" id="2_urw8w"]
-[ext_resource type="Texture2D" uid="uid://bw3ncgu5n5ivh" path="res://entities/ocean/noise_1.tres" id="3_5oned"]
+[ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="2_f6fc1"]
 [ext_resource type="Shader" uid="uid://3k5tqhuvd85x" path="res://entities/ocean/plane.tres" id="3_bivtf"]
-[ext_resource type="Texture2D" uid="uid://ce5ui2gthr2ic" path="res://entities/ocean/noise_2.tres" id="4_7tblb"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h8gt6"]
-shader = ExtResource("2_urw8w")
-shader_parameter/WaveOffset1 = Vector2(0.05, 0.05)
-shader_parameter/WaveHeightPercent1 = 0.1
-shader_parameter/WaveOffset2 = Vector2(0.05, -0.05)
-shader_parameter/WaveHeightPercent2 = 0.1
-shader_parameter/Noise1 = ExtResource("3_5oned")
-shader_parameter/Noise2 = ExtResource("4_7tblb")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_3vjlp"]
 viewport_path = NodePath("Simulation")
@@ -23,7 +12,6 @@ resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_bivtf")
 shader_parameter/MaxWaveHeight = 10.0
-shader_parameter/ColorParameter = Color(0.337255, 0.384314, 0.364706, 1)
 shader_parameter/Simulation = SubResource("ViewportTexture_3vjlp")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wgfkp"]
@@ -43,7 +31,7 @@ size = Vector2i(1024, 1024)
 
 [node name="Texture" type="ColorRect" parent="Simulation"]
 texture_repeat = 2
-material = SubResource("ShaderMaterial_h8gt6")
+material = ExtResource("2_f6fc1")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

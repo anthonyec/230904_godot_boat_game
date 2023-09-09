@@ -1,6 +1,8 @@
 class_name Ocean
 extends Node3D
 
+const plane_size: Vector2 = Vector2(100, 100)
+const plane_origin: Vector2 = Vector2(50, 50)
 const max_wave_height: float = 10
 
 @export var wave_direction_1: Vector2 = Vector2(3, 3)
@@ -25,6 +27,7 @@ var plane_material: ShaderMaterial
 var simulation_material: ShaderMaterial
 var planes: Array[MeshInstance3D] = []
 
+
 var wave_offset_1: Vector2
 var wave_offset_2: Vector2
 
@@ -46,7 +49,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	time += delta
 	
-#	DebugDraw.set_text("water image time: ", str(time_to_render_image) + "ms")
+	DebugDraw.set_text("water image time: ", str(time_to_render_image) + "ms")
 	
 	# Update texture image cache.
 	var now = Time.get_ticks_msec()
@@ -88,22 +91,20 @@ func _process(delta: float) -> void:
 		for z in range(-max_planes / 2, max_planes / 2):
 			var surrounding_plane_position = nearest_plane_position - Vector3(plane_width * x, 0, plane_height * z)
 			
+			DebugDraw.draw_box(planes[index].global_position, Vector3(0.5, 5, 0.5), Color.RED)
 			planes[index].global_position = surrounding_plane_position
 			index += 1
 		
-func get_position_on_plane(other_position: Vector3) -> Vector2:
+func get_position_on_plane(target: Vector3) -> Vector2:
 	return Vector2(
-		fmod(other_position.x + plane_width / 2, plane_width),
-		fmod(other_position.z + plane_width / 2, plane_height)
-	).abs()
-	
+		wrapf(target.x + plane_origin.x, 0, plane_size.x),
+		wrapf(target.z + plane_origin.y, 0, plane_size.y)
+	)
+
 func get_percent_on_plane(other_position: Vector3) -> Vector2:
 	var position_on_plane = get_position_on_plane(other_position)
 	
-	return Vector2(
-		position_on_plane.x / plane_width,
-		position_on_plane.y / plane_height,
-	)
+	return position_on_plane / plane_size
 	
 func get_height(at_position: Vector3) -> float:
 	if not image:
@@ -111,9 +112,8 @@ func get_height(at_position: Vector3) -> float:
 	
 	var percent_on_plane = get_percent_on_plane(at_position)
 	
-	var color = image.get_pixel(
-		percent_on_plane.x * image_size.x,
-		percent_on_plane.y * image_size.y
-	).r
-
-	return color * max_wave_height
+	var sample_position = percent_on_plane * image_size
+	var color = image.get_pixel(sample_position.x, sample_position.y)
+	
+	# Only sample the red channel, all colors the same because it's greyscale.
+	return color.r * max_wave_height

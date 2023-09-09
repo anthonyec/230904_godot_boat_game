@@ -1,11 +1,15 @@
 [gd_resource type="NoiseTexture2D" load_steps=2 format=3 uid="uid://h4flp4v17tck"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_kbspt"]
-noise_type = 0
-frequency = 0.002
+noise_type = 4
+seed = 5
+offset = Vector3(2.08167e-08, 2.08167e-08, 2.08167e-08)
 fractal_type = 0
 cellular_jitter = 1.0
+domain_warp_type = 2
+domain_warp_fractal_octaves = 10
 
 [resource]
 seamless = true
+seamless_blend_skirt = 0.5
 noise = SubResource("FastNoiseLite_kbspt")
