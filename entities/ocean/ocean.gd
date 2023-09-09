@@ -4,6 +4,7 @@ extends Node3D
 const plane_size: Vector2 = Vector2(100, 100)
 const plane_origin: Vector2 = Vector2(50, 50)
 const max_wave_height: float = 10
+const plane_grid_size: int = 6 # E.g 4x4 or 10x10
 
 @export var wave_direction_1: Vector2 = Vector2(3, 3)
 @export var wave_direction_2: Vector2 = Vector2(0.5, 0.5)
@@ -16,7 +17,6 @@ const max_wave_height: float = 10
 
 var plane_width: float = 100
 var plane_height: float = 100
-var max_planes: int = 6 # Even numbers work best for even spread around camera.
 
 var time: float = 0
 var time_to_render_image: int = 0
@@ -36,7 +36,7 @@ func round_to_dec(num, digit):
 
 func _ready() -> void:
 	# Spawn plane pool for moving them around to simulate infinite planes.
-	var number_of_planes = max_planes * max_planes
+	var number_of_planes = plane_grid_size * plane_grid_size
 	
 	for index in number_of_planes:
 		var duplicated_plane = plane.duplicate()
@@ -45,6 +45,9 @@ func _ready() -> void:
 		
 	plane_material = plane.mesh.surface_get_material(0)
 	simulation_material = simulation_texture.material
+	
+	# Remove the original plane used to duplicate.
+	remove_child(plane)
 
 func _process(delta: float) -> void:
 	time += delta
@@ -80,21 +83,31 @@ func _process(delta: float) -> void:
 	var camera = get_viewport().get_camera_3d()
 	
 	var nearest_plane_position: Vector3 = Vector3(
-		round(camera.global_position.x / plane_width) * plane_width,
+		# Adding the origin surrounds the player with even number of planes.
+		(round(camera.global_position.x / plane_size.x) * plane_size.x) + plane_origin.x,
 		global_position.y,
-		round(camera.global_position.z / plane_height) * plane_height,
+		(round(camera.global_position.z / plane_size.y) * plane_size.y) + plane_origin.y,
 	)
 	
-	var index: int = 0
+	DebugDraw.draw_box(nearest_plane_position, Vector3(1, 20, 1), Color.RED)
 	
-	for x in range(-max_planes / 2, max_planes / 2):
-		for z in range(-max_planes / 2, max_planes / 2):
-			var surrounding_plane_position = nearest_plane_position - Vector3(plane_width * x, 0, plane_height * z)
-			
-			DebugDraw.draw_box(planes[index].global_position, Vector3(0.5, 5, 0.5), Color.RED)
-			planes[index].global_position = surrounding_plane_position
-			index += 1
+	var index: int = 0
 		
+	for x in plane_grid_size:
+		for z in plane_grid_size:
+			var duplicate_position = Vector3(
+				(nearest_plane_position.x + plane_size.x * x) - (plane_size.x / 2 * plane_grid_size),
+				0,
+				nearest_plane_position.z + plane_size.y * z - (plane_size.y / 2 * plane_grid_size)
+			)
+			
+			planes[index].global_position = duplicate_position
+			index += 1
+			
+			DebugDraw.draw_ray_3d(duplicate_position, Vector3.UP, 10, Color.BLUE)
+			DebugDraw.draw_box(duplicate_position, Vector3(plane_size.x, 50, plane_size.y), Color.BLUE)
+			
+
 func get_position_on_plane(target: Vector3) -> Vector2:
 	return Vector2(
 		wrapf(target.x + plane_origin.x, 0, plane_size.x),
