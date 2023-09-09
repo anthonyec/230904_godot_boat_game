@@ -72,6 +72,7 @@ script = ExtResource("4_avsgn")
 environment = SubResource("Environment_h648m")
 
 [node name="Ocean" parent="." instance=ExtResource("1_hxmui")]
+debug = true
 wave_height_1 = 2.08165e-12
 wave_height_2 = 2.08165e-12
 
