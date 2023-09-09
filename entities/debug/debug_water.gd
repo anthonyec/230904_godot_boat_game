@@ -15,4 +15,6 @@ func _process(_delta: float) -> void:
 		for x in int(size):
 			var pos = Vector3(global_position.x, 0, global_position.z) + Vector3(x, 0, y) - Vector3(size / 2, 0, size / 2)
 			var height = water.get_height(pos)
-			DebugDraw.draw_cube(Vector3(pos.x, height, pos.z), 0.2, Color.BLUE)
+			
+			var color = Color.BLUE.lerp(Color.CYAN, height)
+			DebugDraw.draw_cube(Vector3(pos.x, height, pos.z), 0.2, color)

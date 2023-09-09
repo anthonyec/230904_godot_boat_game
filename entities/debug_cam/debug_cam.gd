@@ -1,5 +1,7 @@
 extends Camera3D
 
+@export var enabled: bool = true
+
 var mouse_sensitivity: float = 0.2
 var speed: float = 50
 
@@ -10,6 +12,14 @@ func _ready() -> void:
 	load_camera()
 
 func _process(delta: float) -> void:
+	current = enabled
+	
+	for child in get_children():
+		child.set_process(enabled)
+		
+	if not enabled:
+		return
+		
 	var direction: Vector3 = Vector3.ZERO
 	
 	if Input.is_action_pressed("ui_left"):

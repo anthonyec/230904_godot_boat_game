@@ -20,7 +20,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var debug_cam = get_parent().get_parent().get_node_or_null("DebugCam")
 	
-	if debug_cam and debug_cam.current:
+	if debug_cam and debug_cam.enabled:
 		return
 		
 	input_direction = Input.get_action_strength("turn_right") - Input.get_action_strength("turn_left")

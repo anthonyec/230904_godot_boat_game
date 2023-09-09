@@ -86,7 +86,7 @@ func update_infinite_planes() -> void:
 		# Adding the origin surrounds the player with even number of planes.
 		(round(camera.global_position.x / plane_size.x) * plane_size.x) + plane_origin.x,
 		global_position.y,
-		(round(camera.global_position.z / plane_size.y) * plane_size.y) + plane_origin.y,
+		(round(camera.global_position.z / plane_size.y) * plane_size.y) + plane_origin.x,
 	)
 	
 	if debug:
@@ -110,9 +110,11 @@ func update_infinite_planes() -> void:
 				DebugDraw.draw_box(duplicate_position, Vector3(plane_size.x, 50, plane_size.y), Color.BLUE)
 
 func get_position_on_plane(target: Vector3) -> Vector2:
+	# Note if ` + plane_origin.x` is removed from plane positioning, it needs to
+	# added here like `target.x + plane_origin.x`. This keeps them in sync.
 	return Vector2(
-		wrapf(target.x + plane_origin.x, 0, plane_size.x),
-		wrapf(target.z + plane_origin.y, 0, plane_size.y)
+		wrapf(target.x, 0, plane_size.x),
+		wrapf(target.z, 0, plane_size.y)
 	)
 
 func get_percent_on_plane(other_position: Vector3) -> Vector2:
