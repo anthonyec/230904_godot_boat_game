@@ -1,10 +1,9 @@
 extends Node3D
 
 @export var water: Ocean
-@export var show_grid: bool
 
 func _process(_delta: float) -> void:
-	if not show_grid:
+	if not Debug.is_flag_enabled(Debug.Flag.WATER_HEIGHT):
 		return
 		
 	DebugDraw.draw_cube(global_position + Vector3.DOWN * 10, 0.5, Color.RED)

@@ -6,7 +6,6 @@ const plane_size: Vector2 = Vector2(100, 100)
 const plane_origin: Vector2 = Vector2(50, 50)
 const plane_grid_size: int = 6 # E.g 4x4 or 10x10
 
-@export var debug: bool = false
 @export var wave_direction_1: Vector2 = Vector2(3, 3)
 @export var wave_direction_2: Vector2 = Vector2(0.5, 0.5)
 @export var wave_direction_3: Vector2 = Vector2(5, 0)
@@ -68,7 +67,7 @@ func update_shader_params(delta: float) -> void:
 	wave_offset_3 += wave_direction_3 * 0.01 * delta
 
 func update_simulation_image() -> void:
-	if debug:
+	if Debug.is_flag_enabled(Debug.Flag.OCEAN_PLANES):
 		DebugDraw.set_text("water image time: ", str(time_to_render_image) + "ms")
 	
 	# Update texture image cache.
@@ -95,7 +94,7 @@ func update_infinite_planes() -> void:
 		(round(camera.global_position.z / plane_size.y) * plane_size.y) + plane_origin.x,
 	)
 	
-	if debug:
+	if Debug.is_flag_enabled(Debug.Flag.OCEAN_PLANES):
 		DebugDraw.draw_box(nearest_plane_position, Vector3(1, 20, 1), Color.RED)
 	
 	var index: int = 0
@@ -111,7 +110,7 @@ func update_infinite_planes() -> void:
 			planes[index].global_position = duplicate_position
 			index += 1
 			
-			if debug:
+			if Debug.is_flag_enabled(Debug.Flag.OCEAN_PLANES):
 				DebugDraw.draw_ray_3d(duplicate_position, Vector3.UP, 10, Color.BLUE)
 				DebugDraw.draw_box(duplicate_position + Vector3.UP * 25, Vector3(plane_size.x, 50, plane_size.y), Color.BLACK)
 

@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 	if not enabled or not attachment_point_a or not attachment_point_b:
 		return
 		
-	if DebugFlags.is_enabled("rope"):
+	if Debug.is_flag_enabled(Debug.Flag.ROPE):
 		DebugDraw.draw_line_3d(attachment_point_a.global_position, attachment_point_b.global_position, Color.BLACK)
 	
 	var point_a = attachment_point_a.global_position
@@ -49,7 +49,7 @@ func _process(_delta: float) -> void:
 		rigid_body_a.apply_force(direction_a_to_b * force_a, offset_a)
 		rigid_body_b.apply_force(direction_b_to_a * force_b, offset_b)
 		
-		if DebugFlags.is_enabled("rope"):
+		if Debug.is_flag_enabled(Debug.Flag.ROPE):
 			DebugDraw.draw_cube(desired_point_a, 0.2, Color.BLUE)
 			DebugDraw.draw_ray_3d(point_a, direction_a_to_b, distance - max_length, Color.BLUE)
 			

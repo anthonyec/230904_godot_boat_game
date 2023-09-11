@@ -31,8 +31,9 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("throttle_reset"):
 		throttle = 0
 	
-	DebugDraw.set_text("input_direction", input_direction)
-	DebugDraw.set_text("throttle", throttle)
+	if Debug.is_flag_enabled(Debug.Flag.PLAYER_CONTROLS):
+		DebugDraw.set_text("input_direction", input_direction)
+		DebugDraw.set_text("throttle", throttle)
 	
 func _physics_process(delta: float) -> void:
 	var forward = -player.global_transform.basis.z

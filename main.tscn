@@ -65,10 +65,6 @@ material = SubResource("ShaderMaterial_5fldn")
 
 [node name="Debug" parent="." instance=ExtResource("1_w46ff")]
 
-[node name="DebugCam" parent="." instance=ExtResource("1_onxbc")]
-current = true
-enabled = false
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")
 
@@ -76,11 +72,14 @@ environment = SubResource("Environment_h648m")
 wave_direction_1 = Vector2(-1, -1)
 wave_direction_3 = Vector2(5, 2.08165e-12)
 wave_height_2 = 2.08165e-12
-wave_height_3 = 1.5
+
+[node name="DebugCam" parent="." instance=ExtResource("1_onxbc")]
+current = true
+enabled = false
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
-target = NodePath("../Player")
-distance = 50.0
+target = NodePath("../Player/CameraTarget")
+distance = 30.0
 offset = Vector3(2.08165e-12, 5, 2.08165e-12)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -92,6 +91,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 39.6514)
 mass = 50.0
 script = ExtResource("4_wqy3j")
 float_force = 50.0
+
+[node name="CameraTarget" type="Marker3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34955, 5.0515)
 
 [node name="DebugWater" type="Node3D" parent="Player" node_paths=PackedStringArray("water")]
 script = ExtResource("3_uju2q")
