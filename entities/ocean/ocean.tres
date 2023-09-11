@@ -13,6 +13,7 @@ shader_parameter/WaveHeightPercent1 = 2.08165e-12
 shader_parameter/WaveOffset2 = Vector2(0.05, -0.05)
 shader_parameter/WaveHeightPercent2 = 2.08165e-12
 shader_parameter/WaveHeightPercent3 = 2.08e-12
+shader_parameter/WaveOffset3 = Vector2(0, 0)
 shader_parameter/WaveHeightPercent4 = 0.3
 shader_parameter/Noise1 = ExtResource("3_ck6d2")
 shader_parameter/Noise2 = ExtResource("4_a4glt")

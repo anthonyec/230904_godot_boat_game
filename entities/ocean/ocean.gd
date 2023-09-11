@@ -9,8 +9,10 @@ const plane_grid_size: int = 6 # E.g 4x4 or 10x10
 @export var debug: bool = false
 @export var wave_direction_1: Vector2 = Vector2(3, 3)
 @export var wave_direction_2: Vector2 = Vector2(0.5, 0.5)
-@export var wave_height_1: float = 1.5
-@export var wave_height_2: float = 1.5
+@export var wave_direction_3: Vector2 = Vector2(5, 0)
+@export var wave_height_1: float = 1
+@export var wave_height_2: float = 1
+@export var wave_height_3: float = 1
 
 @onready var simulation: SubViewport = $Simulation
 @onready var simulation_texture: ColorRect = $Simulation/Texture
@@ -26,6 +28,7 @@ var planes: Array[MeshInstance3D] = []
 
 var wave_offset_1: Vector2
 var wave_offset_2: Vector2
+var wave_offset_3: Vector2
 
 func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
@@ -55,11 +58,14 @@ func update_shader_params(delta: float) -> void:
 	
 	simulation_material.set_shader_parameter("WaveOffset1", wave_offset_1)
 	simulation_material.set_shader_parameter("WaveOffset2", wave_offset_2)
+	simulation_material.set_shader_parameter("WaveOffset3", wave_offset_3)
 	simulation_material.set_shader_parameter("WaveHeightPercent1", wave_height_1 / max_wave_height)
 	simulation_material.set_shader_parameter("WaveHeightPercent2", wave_height_2 / max_wave_height)
+	simulation_material.set_shader_parameter("WaveHeightPercent3", wave_height_3 / max_wave_height)
 	
 	wave_offset_1 += wave_direction_1 * 0.01 * delta
 	wave_offset_2 += wave_direction_2 * 0.01 * delta
+	wave_offset_3 += wave_direction_3 * 0.01 * delta
 
 func update_simulation_image() -> void:
 	if debug:

@@ -1,0 +1,131 @@
+[gd_scene load_steps=10 format=3 uid="uid://cu8kgbo5oalxy"]
+
+[ext_resource type="Script" path="res://entities/buoyant_object/buoyancy.gd" id="1_df2h8"]
+[ext_resource type="Script" path="res://entities/buoy/bell.gd" id="2_bnshn"]
+[ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="2_mfpcj"]
+[ext_resource type="PackedScene" uid="uid://c42yh8kckxtks" path="res://entities/buoy/buoy_1.tscn" id="3_f3mdg"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wgcjm"]
+radius = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_i78ew"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_hylnw"]
+radius = 0.2
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skvv8"]
+no_depth_test = true
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ojem4"]
+height = 5.42086
+radius = 1.0404
+
+[node name="Buoy" type="RigidBody3D"]
+mass = 45.0
+script = ExtResource("1_df2h8")
+float_force = 35.0
+
+[node name="PinJoint3D" type="ConeTwistJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.77071, 0.0048033)
+node_a = NodePath("..")
+node_b = NodePath("../RigidBody3D")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.768035, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("SphereShape3D_wgcjm")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.766143, 0)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("2_bnshn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_i78ew")
+
+[node name="BuoyancyProbe2" type="Node3D" parent="."]
+transform = Transform3D(1.31552, -9.49338e-09, -3.02247e-10, 6.54999e-09, 1.31552, -2.31002e-08, -3.90758e-09, 3.50212e-08, 1.31552, -0.110349, -0.782314, 2.63167)
+script = ExtResource("2_mfpcj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BuoyancyProbe2"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbe3" type="Node3D" parent="."]
+transform = Transform3D(1.31552, -9.49338e-09, -3.02247e-10, 6.54999e-09, 1.31552, -2.31002e-08, -3.90758e-09, 3.50212e-08, 1.31552, -0.110349, -0.782314, -2.80901)
+script = ExtResource("2_mfpcj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BuoyancyProbe3"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbe4" type="Node3D" parent="."]
+transform = Transform3D(1.31552, -9.49338e-09, -3.02247e-10, 6.54999e-09, 1.31552, -2.31002e-08, -3.90758e-09, 3.50212e-08, 1.31552, -2.49409, -0.704231, -0.0569595)
+script = ExtResource("2_mfpcj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BuoyancyProbe4"]
+transform = Transform3D(1, 6.1164e-18, 0, -5.21586e-17, 1, 0, 0, 0, 1, -0.230659, 0, 0)
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbe5" type="Node3D" parent="."]
+transform = Transform3D(1.31552, -9.49338e-09, -3.02247e-10, 6.54999e-09, 1.31552, -2.31002e-08, -3.90758e-09, 3.50212e-08, 1.31552, 2.68661, -0.782314, 0.155814)
+script = ExtResource("2_mfpcj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BuoyancyProbe5"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbe6" type="Node3D" parent="."]
+transform = Transform3D(0.919898, 1.83969e-08, 0.940419, 6.54999e-09, 1.31552, -2.31002e-08, -0.940419, 3.12755e-08, 0.919898, 1.81602, -0.782314, 1.90818)
+script = ExtResource("2_mfpcj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BuoyancyProbe6"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbe7" type="Node3D" parent="."]
+transform = Transform3D(0.919898, 1.83969e-08, 0.940419, 6.54999e-09, 1.31552, -2.31002e-08, -0.940419, 3.12755e-08, 0.919898, -2.07332, -0.782314, -1.8963)
+script = ExtResource("2_mfpcj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BuoyancyProbe7"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbe8" type="Node3D" parent="."]
+transform = Transform3D(0.919898, 1.83969e-08, 0.940419, 6.54999e-09, 1.31552, -2.31002e-08, -0.940419, 3.12755e-08, 0.919898, -1.77283, -0.704231, 1.73217)
+script = ExtResource("2_mfpcj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BuoyancyProbe8"]
+transform = Transform3D(1, 6.1164e-18, 0, -5.21586e-17, 1, 0, 0, 0, 1, -0.230659, 0, 0)
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbe9" type="Node3D" parent="."]
+transform = Transform3D(0.919898, 1.83969e-08, 0.940419, 6.54999e-09, 1.31552, -2.31002e-08, -0.940419, 3.12755e-08, 0.919898, 2.00195, -0.782314, -1.82255)
+script = ExtResource("2_mfpcj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BuoyancyProbe9"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="buoy_2" parent="." instance=ExtResource("3_f3mdg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.777632, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93457, 0)
+shape = SubResource("CylinderShape3D_ojem4")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.34343, 0)
+light_color = Color(1, 0, 0, 1)
+light_energy = 6.0
+omni_range = 6.891
+omni_attenuation = 0.466517
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]

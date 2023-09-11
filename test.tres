@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="Delivery" load_steps=2 format=3 uid="uid://dg68utso01uhw"]
+
+[ext_resource type="Script" path="res://delivery.gd" id="1_kmff5"]
+
+[resource]
+script = ExtResource("1_kmff5")
