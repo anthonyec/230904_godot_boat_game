@@ -1,6 +1,7 @@
 extends Node3D
 
-var water_height: float = 0
+@export var engine_marker: Marker3D
+
 var max_engine_power: float = 1000
 var max_rudder_rotation: float = deg_to_rad(60)
 var rudder_rotation_speed: float = 3
@@ -48,10 +49,21 @@ func _physics_process(delta: float) -> void:
 	
 	var turn_percent = clamp(abs(heading_velocity) / 5, 0, 1)
 	
-	DebugDraw.draw_ray_3d(global_position, forward, heading_velocity, Color.BLUE)
-	DebugDraw.draw_ray_3d(global_position, right, side_velocity, Color.RED)
+	var is_engined_submerged = engine_marker.global_position.y < get_parent().water.get_height(engine_marker.global_position)
+	
+	if is_engined_submerged:
+		player.apply_central_force(forward * max_engine_power * throttle)
+		player.apply_torque(up * max_engine_power * -input_direction * turn_percent)
+	
+	if Debug.is_flag_enabled(Debug.Flag.PLAYER_CONTROLS):
+		DebugDraw.set_text("position", global_position.round())
 		
-	player.apply_central_force(forward * max_engine_power * throttle)
-	player.apply_torque(up * max_engine_power * -input_direction * turn_percent)
+		if is_engined_submerged:
+			DebugDraw.draw_cube(engine_marker.global_position, 0.5, Color.RED)
+		else:
+			DebugDraw.draw_cube(engine_marker.global_position, 0.5, Color.BLACK)
+			
+		DebugDraw.draw_ray_3d(global_position, forward, heading_velocity, Color.BLUE)
+		DebugDraw.draw_ray_3d(global_position, right, side_velocity, Color.RED)
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=28 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="1_hxmui"]
 [ext_resource type="PackedScene" uid="uid://v7u1ci5w4e5x" path="res://entities/debug_cam/debug_cam.tscn" id="1_onxbc"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://rope.gd" id="11_far31"]
 [ext_resource type="PackedScene" uid="uid://cu8kgbo5oalxy" path="res://entities/buoy/buoy.tscn" id="12_43pcp"]
 [ext_resource type="Shader" uid="uid://8p8nrs0opqkg" path="res://fog_particle.tres" id="13_5ieym"]
+[ext_resource type="PackedScene" uid="uid://jncyhw3e5i20" path="res://wind_turbine.tscn" id="14_k7g24"]
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
@@ -21,7 +22,6 @@ fog_enabled = true
 fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
 fog_density = 0.012
 fog_height = 2.13163e-14
-volumetric_fog_density = 0.2
 
 [sub_resource type="SphereMesh" id="SphereMesh_hylnw"]
 radius = 0.2
@@ -70,7 +70,7 @@ environment = SubResource("Environment_h648m")
 
 [node name="Ocean" parent="." instance=ExtResource("1_hxmui")]
 wave_direction_1 = Vector2(-1, -1)
-wave_direction_3 = Vector2(5, 2.08165e-12)
+wave_direction_3 = Vector2(6, 2.08165e-12)
 wave_height_2 = 2.08165e-12
 
 [node name="DebugCam" parent="." instance=ExtResource("1_onxbc")]
@@ -92,8 +92,9 @@ mass = 50.0
 script = ExtResource("4_wqy3j")
 float_force = 50.0
 
-[node name="CameraTarget" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34955, 5.0515)
+[node name="PlayerControls" type="Node3D" parent="Player" node_paths=PackedStringArray("engine_marker")]
+script = ExtResource("5_dt4r7")
+engine_marker = NodePath("../EnginePosition")
 
 [node name="DebugWater" type="Node3D" parent="Player" node_paths=PackedStringArray("water")]
 script = ExtResource("3_uju2q")
@@ -115,15 +116,18 @@ offset_right = 267.0
 offset_bottom = 784.0
 script = ExtResource("4_avsgn")
 
-[node name="PlayerControls" type="Node3D" parent="Player"]
-script = ExtResource("5_dt4r7")
+[node name="CameraTarget" type="Marker3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34955, 5.0515)
+
+[node name="EnginePosition" type="Marker3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 5.051)
 
 [node name="AttachmentPointBL2" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.5, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.25, 5)
 gizmo_extents = 1.0
 
 [node name="AttachmentPointBR2" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.5, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.25, 5)
 gizmo_extents = 1.0
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Player"]
@@ -180,24 +184,24 @@ attachment_point_b = NodePath("../Bardge/AttachmentPointFR")
 
 [node name="Bardge" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, 0.70556, 56.6924)
-mass = 50.0
+mass = 25.0
 script = ExtResource("4_wqy3j")
-float_force = 50.0
+float_force = 35.0
 
 [node name="AttachmentPointFL" type="Marker3D" parent="Bardge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, -7.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, -7.5)
 gizmo_extents = 1.0
 
 [node name="AttachmentPointFR" type="Marker3D" parent="Bardge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, -7.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, -7.5)
 gizmo_extents = 1.0
 
 [node name="AttachmentPointBL" type="Marker3D" parent="Bardge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, 7.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, 7.5)
 gizmo_extents = 1.0
 
 [node name="AttachmentPointBR" type="Marker3D" parent="Bardge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, 7.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, 7.5)
 gizmo_extents = 1.0
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Bardge"]
@@ -356,24 +360,24 @@ attachment_point_b = NodePath("../Bardge2/AttachmentPointFR")
 
 [node name="Bardge2" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, 0.70556, 77.1958)
-mass = 50.0
+mass = 25.0
 script = ExtResource("4_wqy3j")
-float_force = 50.0
+float_force = 35.0
 
 [node name="AttachmentPointFL" type="Marker3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, -7.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, -7.5)
 gizmo_extents = 1.0
 
 [node name="AttachmentPointFR" type="Marker3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, -7.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, -7.5)
 gizmo_extents = 1.0
 
 [node name="AttachmentPointBL" type="Marker3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, 7.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, 7.5)
 gizmo_extents = 1.0
 
 [node name="AttachmentPointBR" type="Marker3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, 7.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, 7.5)
 gizmo_extents = 1.0
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Bardge2"]
@@ -432,3 +436,14 @@ initial_velocity_min = 2.0
 initial_velocity_max = 2.0
 scale_amount_min = 25.0
 scale_amount_max = 50.0
+
+[node name="WindTurbine" parent="." instance=ExtResource("14_k7g24")]
+
+[node name="WindTurbine2" parent="." instance=ExtResource("14_k7g24")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -103.63, -1.39438, -127.673)
+
+[node name="WindTurbine3" parent="." instance=ExtResource("14_k7g24")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 91.762, -1.39438, -209.788)
+
+[node name="WindTurbine4" parent="." instance=ExtResource("14_k7g24")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.5112, -1.39438, -209.788)

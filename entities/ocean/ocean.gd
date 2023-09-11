@@ -67,7 +67,7 @@ func update_shader_params(delta: float) -> void:
 	wave_offset_3 += wave_direction_3 * 0.01 * delta
 
 func update_simulation_image() -> void:
-	if Debug.is_flag_enabled(Debug.Flag.OCEAN_PLANES):
+	if Debug.is_flag_enabled(Debug.Flag.WATER_RENDER_TIME):
 		DebugDraw.set_text("water image time: ", str(time_to_render_image) + "ms")
 	
 	# Update texture image cache.
