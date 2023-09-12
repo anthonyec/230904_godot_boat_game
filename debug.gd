@@ -7,14 +7,14 @@ enum Flag {
 	PLAYER_CONTROLS,
 	OCEAN_PLANES,
 	WATER_HEIGHT,
-	WATER_RENDER_TIME
+	WATER_RENDER_TIME,
+	TIME
 }
 
 static var flags: Array[Flag] = [
 	Flag.FPS,
 	Flag.ROPE,
-	Flag.PLAYER_CONTROLS,
-	Flag.WATER_RENDER_TIME
+	Flag.WATER_RENDER_TIME,
 ]
 
 static func is_flag_enabled(flag: Flag) -> bool:

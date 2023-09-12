@@ -54,8 +54,3 @@ func _physics_process(_delta: float) -> void:
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	state.linear_velocity *=  1 - (water_drag * submerged_percent)
 	state.angular_velocity *= 1 - (water_angular_drag * submerged_percent)
-	
-#	if is_any_submerged:
-#		state.linear_velocity *=  1 - water_drag
-#		state.angular_velocity *= 1 - water_angular_drag * submerged_percent
-	

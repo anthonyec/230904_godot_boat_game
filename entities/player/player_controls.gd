@@ -2,6 +2,9 @@ extends Node3D
 
 @export var engine_marker: Marker3D
 
+@onready var hitch_front: Hitch = $"../HitchFront" as Hitch
+@onready var hitch_back: Hitch = $"../HitchBack" as Hitch
+
 var max_engine_power: float = 1000
 var max_rudder_rotation: float = deg_to_rad(60)
 var rudder_rotation_speed: float = 3
@@ -31,6 +34,10 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("throttle_reset"):
 		throttle = 0
+		
+	if Input.is_action_just_pressed("toggle_attachment"):
+		hitch_front.toggle_nearby_attachment()
+		hitch_back.toggle_nearby_attachment()
 	
 	if Debug.is_flag_enabled(Debug.Flag.PLAYER_CONTROLS):
 		DebugDraw.set_text("input_direction", input_direction)

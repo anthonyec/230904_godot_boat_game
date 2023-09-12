@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxxcgb1b68xbq"]
+
+[ext_resource type="Script" path="res://entities/spring_joint/spring_joint.gd" id="1_5lg5p"]
+
+[node name="SpringJoint" type="Node"]
+script = ExtResource("1_5lg5p")

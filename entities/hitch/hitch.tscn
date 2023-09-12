@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dalg0mdmrt0p0"]
+
+[ext_resource type="Script" path="res://entities/hitch/hitch.gd" id="1_1uc44"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_52dfq"]
+radius = 3.0
+
+[node name="Hitch" type="Area3D" groups=["hitch"]]
+script = ExtResource("1_1uc44")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_52dfq")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

@@ -1,19 +1,24 @@
-[gd_scene load_steps=28 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=35 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="1_hxmui"]
 [ext_resource type="PackedScene" uid="uid://v7u1ci5w4e5x" path="res://entities/debug_cam/debug_cam.tscn" id="1_onxbc"]
 [ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_w46ff"]
+[ext_resource type="Script" path="res://world.gd" id="2_ke0sq"]
+[ext_resource type="Script" path="res://ui.gd" id="3_6auge"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
 [ext_resource type="Script" path="res://entities/debug/debug_water.gd" id="3_uju2q"]
 [ext_resource type="Script" path="res://debug_water_overlay.gd" id="4_avsgn"]
+[ext_resource type="Script" path="res://compass.gd" id="4_badxs"]
 [ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="4_w17dr"]
 [ext_resource type="Script" path="res://entities/buoyant_object/buoyancy.gd" id="4_wqy3j"]
+[ext_resource type="Script" path="res://map.gd" id="5_aroj5"]
 [ext_resource type="Script" path="res://entities/player/player_controls.gd" id="5_dt4r7"]
+[ext_resource type="Script" path="res://player_marker.gd" id="6_qj0ym"]
 [ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="6_qu8c6"]
-[ext_resource type="Script" path="res://rope.gd" id="11_far31"]
 [ext_resource type="PackedScene" uid="uid://cu8kgbo5oalxy" path="res://entities/buoy/buoy.tscn" id="12_43pcp"]
-[ext_resource type="Shader" uid="uid://8p8nrs0opqkg" path="res://fog_particle.tres" id="13_5ieym"]
 [ext_resource type="PackedScene" uid="uid://jncyhw3e5i20" path="res://wind_turbine.tscn" id="14_k7g24"]
+[ext_resource type="PackedScene" uid="uid://dalg0mdmrt0p0" path="res://entities/hitch/hitch.tscn" id="15_kx8x5"]
+[ext_resource type="Script" path="res://entities/rain/rain.gd" id="18_bidd2"]
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
@@ -54,16 +59,81 @@ size = Vector3(5, 5, 5)
 [sub_resource type="BoxMesh" id="BoxMesh_y0c0t"]
 size = Vector3(5, 5, 5)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5fldn"]
-render_priority = 0
-shader = ExtResource("13_5ieym")
+[sub_resource type="Gradient" id="Gradient_rrsm6"]
+offsets = PackedFloat32Array(0, 0.583904)
+colors = PackedColorArray(0.831373, 0.937255, 0.913725, 0.513726, 0.831373, 0.937255, 0.913725, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7w5eb"]
+gradient = SubResource("Gradient_rrsm6")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ydvss"]
+transparency = 1
+albedo_texture = SubResource("GradientTexture2D_7w5eb")
+billboard_mode = 2
+proximity_fade_distance = 60.02
+distance_fade_max_distance = 116.23
 
 [sub_resource type="QuadMesh" id="QuadMesh_fsv3v"]
-material = SubResource("ShaderMaterial_5fldn")
+material = SubResource("StandardMaterial3D_ydvss")
+size = Vector2(0.1, 3)
 
 [node name="Main" type="Node3D"]
 
 [node name="Debug" parent="." instance=ExtResource("1_w46ff")]
+
+[node name="World" type="Node" parent="."]
+script = ExtResource("2_ke0sq")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_6auge")
+
+[node name="Compass" type="Control" parent="UI"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -139.0
+offset_top = -139.0
+offset_right = -64.0
+offset_bottom = -64.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("4_badxs")
+
+[node name="Map" type="Control" parent="UI"]
+visible = false
+layout_mode = 2
+anchors_preset = 0
+offset_left = 203.0
+offset_top = 92.0
+offset_right = 1003.0
+offset_bottom = 692.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_aroj5")
+center = Vector2(400, 300)
+
+[node name="PlayerMarker" type="Control" parent="UI/Map" node_paths=PackedStringArray("map", "player")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 62.0
+offset_top = 62.0
+offset_right = 72.0
+offset_bottom = 77.0
+pivot_offset = Vector2(5, 7.5)
+script = ExtResource("6_qj0ym")
+map = NodePath("..")
+player = NodePath("../../../Player")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")
@@ -97,10 +167,12 @@ script = ExtResource("5_dt4r7")
 engine_marker = NodePath("../EnginePosition")
 
 [node name="DebugWater" type="Node3D" parent="Player" node_paths=PackedStringArray("water")]
+visible = false
 script = ExtResource("3_uju2q")
 water = NodePath("../../Ocean")
 
 [node name="SimulationTexture" type="ColorRect" parent="Player/DebugWater"]
+visible = false
 material = ExtResource("4_w17dr")
 offset_left = 11.0
 offset_top = 528.0
@@ -108,6 +180,7 @@ offset_right = 267.0
 offset_bottom = 784.0
 
 [node name="Overlay" type="Control" parent="Player/DebugWater"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 11.0
@@ -122,12 +195,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34955, 5.0515)
 [node name="EnginePosition" type="Marker3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 5.051)
 
-[node name="AttachmentPointBL2" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.25, 5)
+[node name="HitchFront" parent="Player" instance=ExtResource("15_kx8x5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.92891)
+
+[node name="AttachmentPointBR2" type="Marker3D" parent="Player/HitchFront"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.99989, 1.25, -0.0559883)
 gizmo_extents = 1.0
 
-[node name="AttachmentPointBR2" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.25, 5)
+[node name="AttachmentPointBL2" type="Marker3D" parent="Player/HitchFront"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96301, 1.25, -0.0559883)
+gizmo_extents = 1.0
+
+[node name="HitchBack" parent="Player" instance=ExtResource("15_kx8x5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="AttachmentPointBL2" type="Marker3D" parent="Player/HitchBack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -0.0559883)
+gizmo_extents = 1.0
+
+[node name="AttachmentPointBR2" type="Marker3D" parent="Player/HitchBack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -0.0559883)
 gizmo_extents = 1.0
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Player"]
@@ -168,40 +255,32 @@ shape = SubResource("BoxShape3D_pf6gs")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
 mesh = SubResource("BoxMesh_gttni")
 
-[node name="Rope" type="Node" parent="." node_paths=PackedStringArray("rigid_body_a", "rigid_body_b", "attachment_point_a", "attachment_point_b")]
-script = ExtResource("11_far31")
-rigid_body_a = NodePath("../Player")
-rigid_body_b = NodePath("../Bardge")
-attachment_point_a = NodePath("../Player/AttachmentPointBL2")
-attachment_point_b = NodePath("../Bardge/AttachmentPointFL")
-
-[node name="Rope2" type="Node" parent="." node_paths=PackedStringArray("rigid_body_a", "rigid_body_b", "attachment_point_a", "attachment_point_b")]
-script = ExtResource("11_far31")
-rigid_body_a = NodePath("../Player")
-rigid_body_b = NodePath("../Bardge")
-attachment_point_a = NodePath("../Player/AttachmentPointBR2")
-attachment_point_b = NodePath("../Bardge/AttachmentPointFR")
-
 [node name="Bardge" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, 0.70556, 56.6924)
 mass = 25.0
 script = ExtResource("4_wqy3j")
 float_force = 35.0
 
-[node name="AttachmentPointFL" type="Marker3D" parent="Bardge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, -7.5)
+[node name="HitchFront" parent="Bardge" instance=ExtResource("15_kx8x5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, -7.5)
+
+[node name="AttachmentPointFL" type="Marker3D" parent="Bardge/HitchFront"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.901, 0)
 gizmo_extents = 1.0
 
-[node name="AttachmentPointFR" type="Marker3D" parent="Bardge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, -7.5)
+[node name="AttachmentPointFR" type="Marker3D" parent="Bardge/HitchFront"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.901, 0)
 gizmo_extents = 1.0
 
-[node name="AttachmentPointBL" type="Marker3D" parent="Bardge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, 7.5)
+[node name="HitchBack" parent="Bardge" instance=ExtResource("15_kx8x5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, 7.5)
+
+[node name="AttachmentPointFL" type="Marker3D" parent="Bardge/HitchBack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.901, 0)
 gizmo_extents = 1.0
 
-[node name="AttachmentPointBR" type="Marker3D" parent="Bardge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, 7.5)
+[node name="AttachmentPointFR" type="Marker3D" parent="Bardge/HitchBack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.901, 0)
 gizmo_extents = 1.0
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Bardge"]
@@ -256,6 +335,88 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0159216, 2.28505, -7.1198)
 shape = SubResource("BoxShape3D_t5dhp")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge"]
+mesh = SubResource("BoxMesh_rhdxx")
+
+[node name="Bardge2" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.0045, 0.70556, 70.2187)
+mass = 25.0
+script = ExtResource("4_wqy3j")
+float_force = 35.0
+
+[node name="HitchFront" parent="Bardge2" instance=ExtResource("15_kx8x5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, -7.5)
+
+[node name="AttachmentPointFL" type="Marker3D" parent="Bardge2/HitchFront"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.901, 0)
+gizmo_extents = 1.0
+
+[node name="AttachmentPointFR" type="Marker3D" parent="Bardge2/HitchFront"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.901, 0)
+gizmo_extents = 1.0
+
+[node name="HitchBack" parent="Bardge2" instance=ExtResource("15_kx8x5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, 7.5)
+
+[node name="AttachmentPointFL" type="Marker3D" parent="Bardge2/HitchBack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.901, 0)
+gizmo_extents = 1.0
+
+[node name="AttachmentPointFR" type="Marker3D" parent="Bardge2/HitchBack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.901, 0)
+gizmo_extents = 1.0
+
+[node name="BuoyancyProbeFL" type="Node3D" parent="Bardge2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, -7.73619)
+script = ExtResource("6_qu8c6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeFL"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbeFR" type="Node3D" parent="Bardge2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, -7.73619)
+script = ExtResource("6_qu8c6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeFR"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbeBL" type="Node3D" parent="Bardge2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, 8.28667)
+script = ExtResource("6_qu8c6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeBL"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="BuoyancyProbeBR" type="Node3D" parent="Bardge2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, 8.28667)
+script = ExtResource("6_qu8c6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeBR"]
+mesh = SubResource("SphereMesh_hylnw")
+surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bardge2"]
+shape = SubResource("BoxShape3D_0dx3b")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Bardge2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.64925, 2.28505, 0)
+shape = SubResource("BoxShape3D_d728b")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Bardge2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.60522, 2.28505, 0)
+shape = SubResource("BoxShape3D_d728b")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Bardge2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0159216, 2.28505, 7.11253)
+shape = SubResource("BoxShape3D_t5dhp")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Bardge2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0159216, 2.28505, -7.1198)
+shape = SubResource("BoxShape3D_t5dhp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2"]
 mesh = SubResource("BoxMesh_rhdxx")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
@@ -344,98 +505,38 @@ script = ExtResource("6_qu8c6")
 mesh = SubResource("SphereMesh_hylnw")
 surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
-[node name="Rope3" type="Node" parent="." node_paths=PackedStringArray("rigid_body_a", "rigid_body_b", "attachment_point_a", "attachment_point_b")]
-script = ExtResource("11_far31")
-rigid_body_a = NodePath("../Bardge")
-rigid_body_b = NodePath("../Bardge2")
-attachment_point_a = NodePath("../Bardge/AttachmentPointBL")
-attachment_point_b = NodePath("../Bardge2/AttachmentPointFL")
-
-[node name="Rope4" type="Node" parent="." node_paths=PackedStringArray("rigid_body_a", "rigid_body_b", "attachment_point_a", "attachment_point_b")]
-script = ExtResource("11_far31")
-rigid_body_a = NodePath("../Bardge")
-rigid_body_b = NodePath("../Bardge2")
-attachment_point_a = NodePath("../Bardge/AttachmentPointBR")
-attachment_point_b = NodePath("../Bardge2/AttachmentPointFR")
-
-[node name="Bardge2" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, 0.70556, 77.1958)
-mass = 25.0
-script = ExtResource("4_wqy3j")
-float_force = 35.0
-
-[node name="AttachmentPointFL" type="Marker3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, -7.5)
-gizmo_extents = 1.0
-
-[node name="AttachmentPointFR" type="Marker3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, -7.5)
-gizmo_extents = 1.0
-
-[node name="AttachmentPointBL" type="Marker3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, 7.5)
-gizmo_extents = 1.0
-
-[node name="AttachmentPointBR" type="Marker3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, 7.5)
-gizmo_extents = 1.0
-
-[node name="BuoyancyProbeFL" type="Node3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, -7.73619)
-script = ExtResource("6_qu8c6")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeFL"]
-mesh = SubResource("SphereMesh_hylnw")
-surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
-
-[node name="BuoyancyProbeFR" type="Node3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, -7.73619)
-script = ExtResource("6_qu8c6")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeFR"]
-mesh = SubResource("SphereMesh_hylnw")
-surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
-
-[node name="BuoyancyProbeBL" type="Node3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, 8.28667)
-script = ExtResource("6_qu8c6")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeBL"]
-mesh = SubResource("SphereMesh_hylnw")
-surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
-
-[node name="BuoyancyProbeBR" type="Node3D" parent="Bardge2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, 8.28667)
-script = ExtResource("6_qu8c6")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeBR"]
-mesh = SubResource("SphereMesh_hylnw")
-surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Bardge2"]
-shape = SubResource("BoxShape3D_0dx3b")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2"]
-mesh = SubResource("BoxMesh_rhdxx")
-
 [node name="Buoy" parent="." instance=ExtResource("12_43pcp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.55621, 5.11431, 13.5349)
 
-[node name="FogParticles" type="CPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -9.33784, 0)
+[node name="Hitch" parent="Buoy" instance=ExtResource("15_kx8x5")]
+
+[node name="AttachmentPointBL2" type="Marker3D" parent="Buoy/Hitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.546308, 0.403996, -0.00508022)
+gizmo_extents = 1.0
+
+[node name="AttachmentPointBR2" type="Marker3D" parent="Buoy/Hitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545414, 0.420013, -0.0112848)
+gizmo_extents = 1.0
+
+[node name="Rain" type="Node3D" parent="." node_paths=PackedStringArray("world")]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 0, 0, 0)
 visible = false
-amount = 50
-lifetime = 5.0
+script = ExtResource("18_bidd2")
+world = NodePath("../World")
+
+[node name="RainParticles" type="CPUParticles3D" parent="Rain"]
+transform = Transform3D(1, -1.21652e-31, 0, -1.21652e-31, 1, 0, 0, 0, 1, 2.08165e-12, 25, 2.08165e-12)
+amount = 500
+lifetime = 0.2
+draw_order = 2
 mesh = SubResource("QuadMesh_fsv3v")
 emission_shape = 3
-emission_box_extents = Vector3(50, 10, 50)
-direction = Vector3(-10, 2.08165e-12, 2.08165e-12)
+emission_box_extents = Vector3(30, 10, 30)
+direction = Vector3(2.08165e-12, -10, 2.08165e-12)
 spread = 0.0
-gravity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-initial_velocity_min = 2.0
-initial_velocity_max = 2.0
-scale_amount_min = 25.0
-scale_amount_max = 50.0
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+scale_amount_min = 0.8
 
 [node name="WindTurbine" parent="." instance=ExtResource("14_k7g24")]
 

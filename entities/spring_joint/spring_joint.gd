@@ -1,4 +1,4 @@
-class_name Rope
+class_name SpringJoint
 extends Node
 
 @export var enabled: bool = true
@@ -11,7 +11,18 @@ extends Node
 @export var rigid: bool = false
 
 func _process(_delta: float) -> void:
-	if not enabled or not attachment_point_a or not attachment_point_b:
+	if Debug.is_flag_enabled(Debug.Flag.ROPE) and enabled:
+		DebugDraw.draw_line_3d(
+			attachment_point_a.global_position,
+			attachment_point_b.global_position,
+			Color.BLACK
+		)
+
+func _physics_process(delta: float) -> void:
+	if not enabled:
+		return
+		
+	if not rigid_body_a or not rigid_body_b or not attachment_point_a or not attachment_point_b:
 		return
 	
 	var point_a = attachment_point_a.global_position
@@ -34,6 +45,3 @@ func _process(_delta: float) -> void:
 	if not rigid and distance > max_length:
 		rigid_body_a.apply_force(direction_b_to_a * force_a, offset_a)
 		rigid_body_b.apply_force(direction_a_to_b * force_b, offset_b)
-		
-	if Debug.is_flag_enabled(Debug.Flag.ROPE):
-		DebugDraw.draw_line_3d(attachment_point_a.global_position, attachment_point_b.global_position, Color.BLACK)
