@@ -73,28 +73,21 @@ func _ready() -> void:
 	ocean = get_parent().get_node("Ocean")
 
 func _process(delta: float) -> void:
+	update_time()
+	
 	var target_wave_height: float
 	
 	match wave_type:
-		WaveType.NONE: target_wave_height = 0
-		WaveType.SMOOTH: target_wave_height = 0.5
-		WaveType.MODERATE: target_wave_height = 1.5
-		WaveType.ROUGH: target_wave_height = 2
-		WaveType.VERY_ROUGH: target_wave_height = 3
-		WaveType.HIGH: target_wave_height = 5
-		WaveType.VERY_HIGH: target_wave_height = 8
-		WaveType.PHENOMENAL: target_wave_height = 10
-			
+		WaveType.NONE:			target_wave_height = 0
+		WaveType.SMOOTH: 		target_wave_height = 0.5
+		WaveType.MODERATE: 		target_wave_height = 2
+		WaveType.ROUGH: 		target_wave_height = 3
+		WaveType.VERY_ROUGH: 	target_wave_height = 4
+		WaveType.HIGH: 			target_wave_height = 5
+		WaveType.VERY_HIGH: 	target_wave_height = 8
+		WaveType.PHENOMENAL: 	target_wave_height = 10
+		
 	ocean.wave_height_1 = move_toward(ocean.wave_height_1, target_wave_height, delta)
-	
-	DebugDraw.set_text("target_wave_height", target_wave_height)
-	DebugDraw.set_text("ocean.wave_height_1", ocean.wave_height_1)
-	
-#	ocean.wave_direction_1 = wave_direction
-#	ocean.wave_direction_2 = wave_direction
-#	ocean.wave_direction_3 = wave_direction
-	
-	update_time()
 	
 func update_time() -> void:
 	var now = Time.get_ticks_msec()

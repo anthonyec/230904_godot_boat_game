@@ -5,6 +5,6 @@
 
 [resource]
 shader = ExtResource("1_e8chd")
-shader_parameter/WaveOffset1 = Vector2(0.05, 0.05)
-shader_parameter/WaveHeightPercent = 0.3
+shader_parameter/WaveOffset1 = Vector2(0, 0)
+shader_parameter/WaveHeightPercent = 2.08165e-12
 shader_parameter/BigGradient1 = ExtResource("2_aq1gf")

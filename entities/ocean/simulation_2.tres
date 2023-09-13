@@ -1,6 +1,7 @@
 [gd_resource type="VisualShader" load_steps=10 format=3 uid="uid://brdqvtxba714h"]
 
 [sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_ubl3i"]
+output_port_for_preview = 0
 default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
 op_type = 2
 operator = 2
@@ -15,7 +16,6 @@ seamless = true
 noise = SubResource("FastNoiseLite_ti6u3")
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_aw2wu"]
-output_port_for_preview = 0
 source = 5
 texture = SubResource("NoiseTexture2D_w6nti")
 
@@ -83,7 +83,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-684.565, 549.079)
+graph_offset = Vector2(-1640.72, 435.799)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(-520, 1280)
