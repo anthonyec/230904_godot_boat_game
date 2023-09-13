@@ -1,23 +1,10 @@
 class_name World
 extends Node
 
-enum RainType {
-	NONE,
-	DRIZZLE,
-	LIGHT,
-	HEAVY
-}
-
-enum WindType {
-	NONE,
-	SLOW,
-	STEADY,
-	QUICK,
-	RAPID
-}
+static var instance: World
 
 # Based on: https://www.metoffice.gov.uk/weather/guides/coast-and-sea/glossary
-enum WaveType {
+enum WaveHeight {
 	NONE,
 	SMOOTH,
 	MODERATE,
@@ -28,41 +15,26 @@ enum WaveType {
 	PHENOMENAL
 }
 
-enum FogType {
-	NONE,
-	MIST,
-	MILD,
-	DENSE
-}
-
-enum LightningType {
-	NONE,
-	LIGHT,
-	HEAVY,
+enum WaveLength {
+	SMALL,
+	MEDIUM,
+	LARGE,
+	VERY_LARGE
 }
 
 @export_group("Clock")
 @export_range(0, 23) var hour: int = 8
 @export_range(0, 59) var minute: int = 0
 
-@export_group("Weather")
-@export var wind_direction: Vector2 = Vector2.ZERO
-@export var wind: WindType = WindType.NONE
-
-@export var rain: RainType = RainType.NONE
-@export var fog: FogType = FogType.NONE
-@export var lightning: LightningType = LightningType.NONE
-
 @export_group("Ocean")
 @export var wave_direction: Vector2 = Vector2.ZERO
-@export var wave_type: WaveType = WaveType.NONE
+@export var wave_height: WaveHeight = WaveHeight.MODERATE
+@export var wave_length: WaveLength = WaveLength.MEDIUM
 
 var player: Node3D
 var ocean: Ocean
 
 var last_time: int = 0
-
-static var instance: World
 
 func _ready() -> void:
 	if instance != null:
@@ -76,18 +48,38 @@ func _process(delta: float) -> void:
 	update_time()
 	
 	var target_wave_height: float
+	var target_wave_length: float
 	
-	match wave_type:
-		WaveType.NONE:			target_wave_height = 0
-		WaveType.SMOOTH: 		target_wave_height = 0.5
-		WaveType.MODERATE: 		target_wave_height = 2
-		WaveType.ROUGH: 		target_wave_height = 3
-		WaveType.VERY_ROUGH: 	target_wave_height = 4
-		WaveType.HIGH: 			target_wave_height = 5
-		WaveType.VERY_HIGH: 	target_wave_height = 8
-		WaveType.PHENOMENAL: 	target_wave_height = 10
+	match wave_height:
+		WaveHeight.NONE:
+			target_wave_height = 0
+		WaveHeight.SMOOTH:
+			target_wave_height = 0.5
+		WaveHeight.MODERATE:
+			target_wave_height = 2
+		WaveHeight.ROUGH:
+			target_wave_height = 3
+		WaveHeight.VERY_ROUGH:
+			target_wave_height = 4
+		WaveHeight.HIGH:
+			target_wave_height = 5
+		WaveHeight.VERY_HIGH:
+			target_wave_height = 8
+		WaveHeight.PHENOMENAL:
+			target_wave_height = 10
+			
+	match wave_length:
+		WaveLength.SMALL:
+			target_wave_length = 20
+		WaveLength.MEDIUM:
+			target_wave_length = 50
+		WaveLength.LARGE:
+			target_wave_length = 70
+		WaveLength.VERY_LARGE:
+			target_wave_length = 100
 		
-	ocean.wave_height_1 = move_toward(ocean.wave_height_1, target_wave_height, delta)
+	ocean.wave_height = move_toward(ocean.wave_height, target_wave_height, delta)
+	ocean.wave_length = move_toward(ocean.wave_length, target_wave_length, delta)
 	
 func update_time() -> void:
 	var now = Time.get_ticks_msec()
@@ -109,6 +101,9 @@ func update_time() -> void:
 	
 func get_display_time() -> String:
 	return str(hour).lpad(2, "0") + ":" + str(minute).lpad(2, "0")
+	
+func get_time_percent() -> float:
+	return 0
 	
 func get_player() -> Node3D:
 	return player

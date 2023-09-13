@@ -2,12 +2,14 @@ class_name Ocean
 extends Node3D
 
 const max_wave_height: float = 10
+const max_wave_length: float = 100
 const plane_size: Vector2 = Vector2(100, 100)
 const plane_origin: Vector2 = Vector2(50, 50)
 const plane_grid_size: int = 6 # E.g 4x4 or 10x10
 
 @export var wave_direction_1: Vector2 = Vector2(1, 0)
-@export var wave_height_1: float = 1
+@export_range(0, max_wave_height) var wave_height: float = 1
+@export_range(10, max_wave_length) var wave_length: float = 50
 
 @onready var simulation: SubViewport = $Simulation
 @onready var simulation_texture: ColorRect = $Simulation/Texture
@@ -50,7 +52,8 @@ func update_shader_params(delta: float) -> void:
 	plane_material.set_shader_parameter("MaxWaveHeight", max_wave_height)
 	
 	simulation_material.set_shader_parameter("WaveOffset1", wave_offset_1)
-	simulation_material.set_shader_parameter("WaveHeightPercent", wave_height_1 / max_wave_height)
+	simulation_material.set_shader_parameter("WaveScale", max_wave_length / wave_length)
+	simulation_material.set_shader_parameter("WaveHeightPercent", wave_height / max_wave_height)
 	
 	wave_offset_1 += wave_direction_1 * 0.1 * delta
 	

@@ -5,7 +5,7 @@ extends Node3D
 @onready var hitch_front: Hitch = $"../HitchFront" as Hitch
 @onready var hitch_back: Hitch = $"../HitchBack" as Hitch
 
-var max_engine_power: float = 1000
+var max_engine_power: float = 10000
 var max_rudder_rotation: float = deg_to_rad(60)
 var rudder_rotation_speed: float = 3
 
@@ -64,6 +64,7 @@ func _physics_process(delta: float) -> void:
 	
 	if Debug.is_flag_enabled(Debug.Flag.PLAYER_CONTROLS):
 		DebugDraw.set_text("position", global_position.round())
+		DebugDraw.set_text("speed (kph)", heading_velocity)
 		
 		if is_engined_submerged:
 			DebugDraw.draw_cube(engine_marker.global_position, 0.5, Color.RED)

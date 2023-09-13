@@ -164,9 +164,9 @@ light_energy = 0.8
 
 [node name="Player" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 39.6514)
-mass = 50.0
+mass = 700.0
 script = ExtResource("4_wqy3j")
-float_force = 50.0
+float_force = 200.0
 
 [node name="PlayerControls" type="Node3D" parent="Player" node_paths=PackedStringArray("engine_marker")]
 script = ExtResource("5_dt4r7")

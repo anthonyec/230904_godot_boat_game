@@ -16,7 +16,10 @@ static var flags: Array[Flag] = [
 	Flag.FPS,
 	Flag.ROPE,
 	Flag.WATER_RENDER_TIME,
-	Flag.OCEAN_SHADER_PARAMS
+	Flag.OCEAN_SHADER_PARAMS,
+	Flag.PLAYER_CONTROLS,
+#	Flag.WATER_HEIGHT,
+#	Flag.OCEAN_PLANES
 ]
 
 static func is_flag_enabled(flag: Flag) -> bool:
