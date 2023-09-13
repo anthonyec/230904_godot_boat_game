@@ -1,0 +1,104 @@
+[gd_resource type="VisualShader" load_steps=10 format=3 uid="uid://brdqvtxba714h"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_ubl3i"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
+op_type = 2
+operator = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ti6u3"]
+noise_type = 2
+fractal_type = 0
+cellular_jitter = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_w6nti"]
+seamless = true
+noise = SubResource("FastNoiseLite_ti6u3")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_aw2wu"]
+output_port_for_preview = 0
+source = 5
+texture = SubResource("NoiseTexture2D_w6nti")
+
+[sub_resource type="VisualShaderNodeUVFunc" id="VisualShaderNodeUVFunc_b3uor"]
+function = 1
+
+[sub_resource type="VisualShaderNodeUVFunc" id="VisualShaderNodeUVFunc_khmpx"]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_78f4h"]
+parameter_name = "WaveHeightPercent"
+default_value_enabled = true
+default_value = 0.3
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_4dovd"]
+parameter_name = "BigGradient1"
+texture_repeat = 1
+
+[sub_resource type="VisualShaderNodeVec2Parameter" id="VisualShaderNodeVec2Parameter_u448j"]
+parameter_name = "WaveOffset1"
+default_value_enabled = true
+default_value = Vector2(2.08165e-12, 2.08165e-12)
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec2 WaveOffset1 = vec2(0.000000, 0.000000);
+uniform sampler2D BigGradient1 : repeat_enable;
+uniform float WaveHeightPercent = 0.30000001192093;
+
+
+
+void fragment() {
+// Vector2Parameter:62
+	vec2 n_out62p0 = WaveOffset1;
+
+
+// UVFunc:57
+	vec2 n_in57p1 = vec2(1.00000, 1.00000);
+	vec2 n_out57p0 = n_out62p0 * n_in57p1 + UV;
+
+
+// UVFunc:56
+	vec2 n_in56p1 = vec2(1.00000, 1.00000);
+	vec2 n_in56p2 = vec2(0.00000, 0.00000);
+	vec2 n_out56p0 = (n_out57p0 - n_in56p2) * n_in56p1 + n_in56p2;
+
+
+	vec4 n_out55p0;
+// Texture2D:55
+	n_out55p0 = texture(BigGradient1, n_out56p0);
+
+
+// FloatParameter:59
+	float n_out59p0 = WaveHeightPercent;
+
+
+// VectorOp:54
+	vec4 n_out54p0 = n_out55p0 * vec4(n_out59p0);
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out54p0.xyz);
+
+
+}
+"
+graph_offset = Vector2(-684.565, 549.079)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(-520, 1280)
+nodes/fragment/54/node = SubResource("VisualShaderNodeVectorOp_ubl3i")
+nodes/fragment/54/position = Vector2(-1220, 1200)
+nodes/fragment/55/node = SubResource("VisualShaderNodeTexture_aw2wu")
+nodes/fragment/55/position = Vector2(-2300, 1220)
+nodes/fragment/56/node = SubResource("VisualShaderNodeUVFunc_b3uor")
+nodes/fragment/56/position = Vector2(-2900, 1580)
+nodes/fragment/57/node = SubResource("VisualShaderNodeUVFunc_khmpx")
+nodes/fragment/57/position = Vector2(-3400, 1620)
+nodes/fragment/59/node = SubResource("VisualShaderNodeFloatParameter_78f4h")
+nodes/fragment/59/position = Vector2(-1820, 1780)
+nodes/fragment/60/node = SubResource("VisualShaderNodeTexture2DParameter_4dovd")
+nodes/fragment/60/position = Vector2(-2960, 1980)
+nodes/fragment/62/node = SubResource("VisualShaderNodeVec2Parameter_u448j")
+nodes/fragment/62/position = Vector2(-4020, 1780)
+nodes/fragment/connections = PackedInt32Array(60, 0, 55, 2, 55, 0, 54, 0, 59, 0, 54, 1, 56, 0, 55, 0, 57, 0, 56, 0, 62, 0, 57, 2, 54, 0, 0, 0)

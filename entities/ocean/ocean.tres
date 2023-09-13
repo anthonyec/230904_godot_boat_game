@@ -1,21 +1,10 @@
-[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://bdllr5cfye1l8"]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://bdllr5cfye1l8"]
 
-[ext_resource type="Shader" uid="uid://ccdpylfhde54n" path="res://entities/ocean/simulation.tres" id="1_ea64l"]
+[ext_resource type="Shader" uid="uid://brdqvtxba714h" path="res://entities/ocean/simulation_2.tres" id="1_e8chd"]
 [ext_resource type="Texture2D" uid="uid://dhij7bl6ucn10" path="res://entities/ocean/big_gradient_1.tres" id="2_aq1gf"]
-[ext_resource type="Texture2D" uid="uid://h4flp4v17tck" path="res://entities/ocean/big_noise_1.tres" id="2_gyh7m"]
-[ext_resource type="Texture2D" uid="uid://bw3ncgu5n5ivh" path="res://entities/ocean/noise_1.tres" id="3_ck6d2"]
-[ext_resource type="Texture2D" uid="uid://ce5ui2gthr2ic" path="res://entities/ocean/noise_2.tres" id="4_a4glt"]
 
 [resource]
-shader = ExtResource("1_ea64l")
+shader = ExtResource("1_e8chd")
 shader_parameter/WaveOffset1 = Vector2(0.05, 0.05)
-shader_parameter/WaveHeightPercent1 = 2.08165e-12
-shader_parameter/WaveOffset2 = Vector2(0.05, -0.05)
-shader_parameter/WaveHeightPercent2 = 2.08165e-12
-shader_parameter/WaveHeightPercent3 = 2.08e-12
-shader_parameter/WaveOffset3 = Vector2(0, 0)
-shader_parameter/WaveHeightPercent4 = 0.3
-shader_parameter/Noise1 = ExtResource("3_ck6d2")
-shader_parameter/Noise2 = ExtResource("4_a4glt")
-shader_parameter/BigNoise1 = ExtResource("2_gyh7m")
+shader_parameter/WaveHeightPercent = 0.3
 shader_parameter/BigGradient1 = ExtResource("2_aq1gf")

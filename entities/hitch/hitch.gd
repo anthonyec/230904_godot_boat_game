@@ -1,6 +1,8 @@
 class_name Hitch
 extends Area3D
 
+@export var rope_max_length: float = 10
+
 var spring_joint_scene: PackedScene = preload("res://entities/spring_joint/spring_joint.tscn")
 
 var nearby_hitch: Hitch = null
@@ -35,6 +37,7 @@ func attach_to_nearby() -> void:
 		spring.rigid_body_b = nearby_hitch.get_parent()
 		spring.attachment_point_a = point
 		spring.attachment_point_b = other_point
+		spring.max_length = rope_max_length
 		
 		add_child(spring)
 	

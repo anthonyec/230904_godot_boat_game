@@ -22,8 +22,8 @@ boot_splash/show_image=false
 
 [autoload]
 
-DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 SFX="*res://addons/anthonyec.sfx/sfx.gd"
+DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 
 [display]
 
