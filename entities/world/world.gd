@@ -96,7 +96,7 @@ func update_time() -> void:
 		hour = 0
 		minute = 0
 		
-	if Flags.is_enabled(Flags.TIME):
+	if Flags.is_enabled(Flags.DEBUG_TIME):
 		DebugDraw.set_text("time", get_display_time())
 	
 func get_display_time() -> String:

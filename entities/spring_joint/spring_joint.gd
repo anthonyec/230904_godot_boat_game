@@ -11,7 +11,7 @@ extends Node
 @export var rigid: bool = false
 
 func _process(_delta: float) -> void:
-	if Flags.is_enabled(Flags.ROPE) and enabled:
+	if Flags.is_enabled(Flags.DEBUG_ROPE) and enabled:
 		DebugDraw.draw_line_3d(
 			attachment_point_a.global_position,
 			attachment_point_b.global_position,

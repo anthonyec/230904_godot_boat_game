@@ -85,6 +85,11 @@ size = Vector2(0.1, 3)
 [node name="Debug" parent="." instance=ExtResource("1_o5n6o")]
 
 [node name="World" parent="." instance=ExtResource("2_4n3kf")]
+hour = null
+minute = null
+wave_direction = null
+wave_height = null
+wave_length = null
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
