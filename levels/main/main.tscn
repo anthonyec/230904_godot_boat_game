@@ -1,25 +1,25 @@
 [gd_scene load_steps=36 format=3 uid="uid://be3homwduf1qf"]
 
-[ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="1_hxmui"]
-[ext_resource type="PackedScene" uid="uid://v7u1ci5w4e5x" path="res://entities/debug_cam/debug_cam.tscn" id="1_onxbc"]
-[ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_w46ff"]
-[ext_resource type="Script" path="res://world.gd" id="2_ke0sq"]
-[ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="3_hxa1h"]
-[ext_resource type="Script" path="res://ui/ui.gd" id="3_hxcvn"]
-[ext_resource type="Script" path="res://entities/debug/debug_water.gd" id="3_uju2q"]
-[ext_resource type="Script" path="res://debug_water_overlay.gd" id="4_avsgn"]
-[ext_resource type="Script" path="res://ui/components/compass.gd" id="4_fixso"]
-[ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="4_w17dr"]
-[ext_resource type="Script" path="res://entities/buoyant_object/buoyancy.gd" id="4_wqy3j"]
-[ext_resource type="Script" path="res://ui/components/map.gd" id="5_7wcpx"]
-[ext_resource type="Script" path="res://entities/player/player_controls.gd" id="5_dt4r7"]
-[ext_resource type="Script" path="res://player_marker.gd" id="6_qj0ym"]
-[ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="6_qu8c6"]
-[ext_resource type="Script" path="res://clock.gd" id="7_ec0oi"]
-[ext_resource type="PackedScene" uid="uid://cu8kgbo5oalxy" path="res://entities/buoy/buoy.tscn" id="12_43pcp"]
-[ext_resource type="PackedScene" uid="uid://jncyhw3e5i20" path="res://wind_turbine.tscn" id="14_k7g24"]
-[ext_resource type="PackedScene" uid="uid://dalg0mdmrt0p0" path="res://entities/hitch/hitch.tscn" id="15_kx8x5"]
-[ext_resource type="Script" path="res://entities/rain/rain.gd" id="18_bidd2"]
+[ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_o5n6o"]
+[ext_resource type="Script" path="res://world.gd" id="2_vnvn0"]
+[ext_resource type="Script" path="res://ui/ui.gd" id="3_wendr"]
+[ext_resource type="Script" path="res://ui/components/compass.gd" id="4_wdsws"]
+[ext_resource type="Script" path="res://ui/components/map.gd" id="5_hcp8c"]
+[ext_resource type="Script" path="res://player_marker.gd" id="6_tyttt"]
+[ext_resource type="Script" path="res://clock.gd" id="7_o0vd7"]
+[ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="8_vs8rq"]
+[ext_resource type="PackedScene" uid="uid://v7u1ci5w4e5x" path="res://entities/debug_cam/debug_cam.tscn" id="9_c7767"]
+[ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="10_cmtmm"]
+[ext_resource type="Script" path="res://entities/buoyant_object/buoyancy.gd" id="11_sh3wf"]
+[ext_resource type="Script" path="res://entities/player/player_controls.gd" id="12_wccre"]
+[ext_resource type="Script" path="res://entities/debug/debug_water.gd" id="13_cvgv5"]
+[ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="14_no4cm"]
+[ext_resource type="Script" path="res://debug_water_overlay.gd" id="15_5uyer"]
+[ext_resource type="PackedScene" uid="uid://dalg0mdmrt0p0" path="res://entities/hitch/hitch.tscn" id="16_jikcx"]
+[ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="17_jsk0u"]
+[ext_resource type="PackedScene" uid="uid://cu8kgbo5oalxy" path="res://entities/buoy/buoy.tscn" id="18_tqxts"]
+[ext_resource type="Script" path="res://entities/rain/rain.gd" id="19_hf5os"]
+[ext_resource type="PackedScene" path="res://wind_turbine.tscn" id="20_xjyiy"]
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
@@ -82,10 +82,10 @@ size = Vector2(0.1, 3)
 
 [node name="Main" type="Node3D"]
 
-[node name="Debug" parent="." instance=ExtResource("1_w46ff")]
+[node name="Debug" parent="." instance=ExtResource("1_o5n6o")]
 
 [node name="World" type="Node" parent="."]
-script = ExtResource("2_ke0sq")
+script = ExtResource("2_vnvn0")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -94,7 +94,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_hxcvn")
+script = ExtResource("3_wendr")
 
 [node name="Compass" type="Control" parent="UI"]
 layout_mode = 1
@@ -109,7 +109,7 @@ offset_right = -64.0
 offset_bottom = -64.0
 grow_horizontal = 0
 grow_vertical = 0
-script = ExtResource("4_fixso")
+script = ExtResource("4_wdsws")
 
 [node name="Map" type="Control" parent="UI"]
 visible = false
@@ -121,7 +121,7 @@ offset_right = 1003.0
 offset_bottom = 692.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("5_7wcpx")
+script = ExtResource("5_hcp8c")
 center = Vector2(400, 300)
 
 [node name="PlayerMarker" type="Control" parent="UI/Map" node_paths=PackedStringArray("map", "player")]
@@ -132,7 +132,7 @@ offset_top = 62.0
 offset_right = 72.0
 offset_bottom = 77.0
 pivot_offset = Vector2(5, 7.5)
-script = ExtResource("6_qj0ym")
+script = ExtResource("6_tyttt")
 map = NodePath("..")
 player = NodePath("../../../Player")
 
@@ -142,18 +142,18 @@ offset_left = 1069.0
 offset_top = 717.0
 offset_right = 1109.0
 offset_bottom = 757.0
-script = ExtResource("7_ec0oi")
+script = ExtResource("7_o0vd7")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")
 
-[node name="Ocean" parent="." instance=ExtResource("1_hxmui")]
+[node name="Ocean" parent="." instance=ExtResource("8_vs8rq")]
 
-[node name="DebugCam" parent="." instance=ExtResource("1_onxbc")]
+[node name="DebugCam" parent="." instance=ExtResource("9_c7767")]
 current = true
 enabled = false
 
-[node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_hxa1h")]
+[node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("10_cmtmm")]
 target = NodePath("../Player/CameraTarget")
 distance = 30.0
 offset = Vector3(2.08165e-12, 5, 2.08165e-12)
@@ -165,20 +165,20 @@ light_energy = 0.8
 [node name="Player" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 39.6514)
 mass = 700.0
-script = ExtResource("4_wqy3j")
+script = ExtResource("11_sh3wf")
 float_force = 200.0
 
 [node name="PlayerControls" type="Node3D" parent="Player" node_paths=PackedStringArray("engine_marker")]
-script = ExtResource("5_dt4r7")
+script = ExtResource("12_wccre")
 engine_marker = NodePath("../EnginePosition")
 
 [node name="DebugWater" type="Node3D" parent="Player" node_paths=PackedStringArray("water")]
 visible = false
-script = ExtResource("3_uju2q")
+script = ExtResource("13_cvgv5")
 water = NodePath("../../Ocean")
 
 [node name="SimulationTexture" type="ColorRect" parent="Player/DebugWater"]
-material = ExtResource("4_w17dr")
+material = ExtResource("14_no4cm")
 offset_left = 11.0
 offset_top = 528.0
 offset_right = 267.0
@@ -192,7 +192,7 @@ offset_left = 11.0
 offset_top = 528.0
 offset_right = 267.0
 offset_bottom = 784.0
-script = ExtResource("4_avsgn")
+script = ExtResource("15_5uyer")
 
 [node name="CameraTarget" type="Marker3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34955, 5.0515)
@@ -200,7 +200,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34955, 5.0515)
 [node name="EnginePosition" type="Marker3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 5.051)
 
-[node name="HitchFront" parent="Player" instance=ExtResource("15_kx8x5")]
+[node name="HitchFront" parent="Player" instance=ExtResource("16_jikcx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.92891)
 rope_max_length = 1.0
 
@@ -212,7 +212,7 @@ gizmo_extents = 1.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96301, 1.25, -0.0559883)
 gizmo_extents = 1.0
 
-[node name="HitchBack" parent="Player" instance=ExtResource("15_kx8x5")]
+[node name="HitchBack" parent="Player" instance=ExtResource("16_jikcx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 
 [node name="AttachmentPointBL2" type="Marker3D" parent="Player/HitchBack"]
@@ -225,7 +225,7 @@ gizmo_extents = 1.0
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, -5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeFL"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -233,7 +233,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeFR" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, -5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeFR"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -241,7 +241,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBL" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, 5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeBL"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -249,7 +249,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBR" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, 5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeBR"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -264,10 +264,10 @@ mesh = SubResource("BoxMesh_gttni")
 [node name="Bardge" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, 0.70556, 56.6924)
 mass = 25.0
-script = ExtResource("4_wqy3j")
+script = ExtResource("11_sh3wf")
 float_force = 35.0
 
-[node name="HitchFront" parent="Bardge" instance=ExtResource("15_kx8x5")]
+[node name="HitchFront" parent="Bardge" instance=ExtResource("16_jikcx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, -7.5)
 
 [node name="AttachmentPointFL" type="Marker3D" parent="Bardge/HitchFront"]
@@ -278,7 +278,7 @@ gizmo_extents = 1.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.901, 0)
 gizmo_extents = 1.0
 
-[node name="HitchBack" parent="Bardge" instance=ExtResource("15_kx8x5")]
+[node name="HitchBack" parent="Bardge" instance=ExtResource("16_jikcx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, 7.5)
 
 [node name="AttachmentPointFL" type="Marker3D" parent="Bardge/HitchBack"]
@@ -291,7 +291,7 @@ gizmo_extents = 1.0
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Bardge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, -7.73619)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge/BuoyancyProbeFL"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -299,7 +299,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeFR" type="Node3D" parent="Bardge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, -7.73619)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge/BuoyancyProbeFR"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -307,7 +307,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBL" type="Node3D" parent="Bardge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, 8.28667)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge/BuoyancyProbeBL"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -315,7 +315,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBR" type="Node3D" parent="Bardge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, 8.28667)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge/BuoyancyProbeBR"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -346,10 +346,10 @@ mesh = SubResource("BoxMesh_rhdxx")
 [node name="Bardge2" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.0045, 0.70556, 70.2187)
 mass = 25.0
-script = ExtResource("4_wqy3j")
+script = ExtResource("11_sh3wf")
 float_force = 35.0
 
-[node name="HitchFront" parent="Bardge2" instance=ExtResource("15_kx8x5")]
+[node name="HitchFront" parent="Bardge2" instance=ExtResource("16_jikcx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, -7.5)
 
 [node name="AttachmentPointFL" type="Marker3D" parent="Bardge2/HitchFront"]
@@ -360,7 +360,7 @@ gizmo_extents = 1.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.901, 0)
 gizmo_extents = 1.0
 
-[node name="HitchBack" parent="Bardge2" instance=ExtResource("15_kx8x5")]
+[node name="HitchBack" parent="Bardge2" instance=ExtResource("16_jikcx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, 7.5)
 
 [node name="AttachmentPointFL" type="Marker3D" parent="Bardge2/HitchBack"]
@@ -373,7 +373,7 @@ gizmo_extents = 1.0
 
 [node name="BuoyancyProbeFL" type="Node3D" parent="Bardge2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, -7.73619)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeFL"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -381,7 +381,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeFR" type="Node3D" parent="Bardge2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, -7.73619)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeFR"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -389,7 +389,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBL" type="Node3D" parent="Bardge2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, 8.28667)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeBL"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -397,7 +397,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBR" type="Node3D" parent="Bardge2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, 8.28667)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Bardge2/BuoyancyProbeBR"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -428,7 +428,7 @@ mesh = SubResource("BoxMesh_rhdxx")
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.83566, 5.4765, 60.7233)
 mass = 10.0
-script = ExtResource("4_wqy3j")
+script = ExtResource("11_sh3wf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("BoxShape3D_ayviy")
@@ -438,7 +438,7 @@ mesh = SubResource("BoxMesh_y0c0t")
 
 [node name="BuoyancyProbeFL2" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.08165e-12, 2.5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbeFL2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -446,7 +446,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeFR2" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.08165e-12, 2.5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbeFR2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -454,7 +454,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBL2" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.08165e-12, -2.5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbeBL2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -462,7 +462,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBR2" type="Node3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.08165e-12, -2.5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/BuoyancyProbeBR2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -471,7 +471,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 [node name="RigidBody3D2" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.83566, 5.4765, 53.8474)
 mass = 10.0
-script = ExtResource("4_wqy3j")
+script = ExtResource("11_sh3wf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2"]
 shape = SubResource("BoxShape3D_ayviy")
@@ -481,7 +481,7 @@ mesh = SubResource("BoxMesh_y0c0t")
 
 [node name="BuoyancyProbeFL2" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.08165e-12, 2.5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbeFL2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -489,7 +489,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeFR2" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.08165e-12, 2.5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbeFR2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -497,7 +497,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBL2" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.08165e-12, -2.5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbeBL2"]
 mesh = SubResource("SphereMesh_hylnw")
@@ -505,16 +505,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
 [node name="BuoyancyProbeBR2" type="Node3D" parent="RigidBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.08165e-12, -2.5)
-script = ExtResource("6_qu8c6")
+script = ExtResource("17_jsk0u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2/BuoyancyProbeBR2"]
 mesh = SubResource("SphereMesh_hylnw")
 surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
 
-[node name="Buoy" parent="." instance=ExtResource("12_43pcp")]
+[node name="Buoy" parent="." instance=ExtResource("18_tqxts")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.55621, 5.11431, 13.5349)
 
-[node name="Hitch" parent="Buoy" instance=ExtResource("15_kx8x5")]
+[node name="Hitch" parent="Buoy" instance=ExtResource("16_jikcx")]
 
 [node name="AttachmentPointBL2" type="Marker3D" parent="Buoy/Hitch"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.546308, 0.403996, -0.00508022)
@@ -527,7 +527,7 @@ gizmo_extents = 1.0
 [node name="Rain" type="Node3D" parent="."]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 0, 0, 0)
 visible = false
-script = ExtResource("18_bidd2")
+script = ExtResource("19_hf5os")
 
 [node name="RainParticles" type="CPUParticles3D" parent="Rain"]
 transform = Transform3D(1, -1.21652e-31, 0, -1.21652e-31, 1, 0, 0, 0, 1, 2.08165e-12, 25, 2.08165e-12)
@@ -543,13 +543,13 @@ initial_velocity_min = 100.0
 initial_velocity_max = 100.0
 scale_amount_min = 0.8
 
-[node name="WindTurbine" parent="." instance=ExtResource("14_k7g24")]
+[node name="WindTurbine" parent="." instance=ExtResource("20_xjyiy")]
 
-[node name="WindTurbine2" parent="." instance=ExtResource("14_k7g24")]
+[node name="WindTurbine2" parent="." instance=ExtResource("20_xjyiy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -103.63, -1.39438, -127.673)
 
-[node name="WindTurbine3" parent="." instance=ExtResource("14_k7g24")]
+[node name="WindTurbine3" parent="." instance=ExtResource("20_xjyiy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 91.762, -1.39438, -209.788)
 
-[node name="WindTurbine4" parent="." instance=ExtResource("14_k7g24")]
+[node name="WindTurbine4" parent="." instance=ExtResource("20_xjyiy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.5112, -1.39438, -209.788)
