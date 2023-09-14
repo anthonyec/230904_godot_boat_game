@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://ddc3ska1ni8ya"
-path="res://.godot/imported/buoy_1.glb-45c71735440d945a40993efae99bff1a.scn"
+path="res://.godot/imported/buoy_1.glb-760a5f0b77b9fd096130288a9af4d787.scn"
 
 [deps]
 
-source_file="res://buoy_1.glb"
-dest_files=["res://.godot/imported/buoy_1.glb-45c71735440d945a40993efae99bff1a.scn"]
+source_file="res://entities/buoy/buoy_1.glb"
+dest_files=["res://.godot/imported/buoy_1.glb-760a5f0b77b9fd096130288a9af4d787.scn"]
 
 [params]
 

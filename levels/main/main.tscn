@@ -1,12 +1,12 @@
 [gd_scene load_steps=36 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_o5n6o"]
-[ext_resource type="Script" path="res://world.gd" id="2_vnvn0"]
+[ext_resource type="PackedScene" uid="uid://dj31heqsourdp" path="res://entities/world/world.tscn" id="2_4n3kf"]
 [ext_resource type="Script" path="res://ui/ui.gd" id="3_wendr"]
 [ext_resource type="Script" path="res://ui/components/compass.gd" id="4_wdsws"]
 [ext_resource type="Script" path="res://ui/components/map.gd" id="5_hcp8c"]
-[ext_resource type="Script" path="res://player_marker.gd" id="6_tyttt"]
-[ext_resource type="Script" path="res://clock.gd" id="7_o0vd7"]
+[ext_resource type="Script" path="res://ui/components/player_marker.gd" id="6_cxx7b"]
+[ext_resource type="Script" path="res://ui/components/clock.gd" id="7_gndvi"]
 [ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="8_vs8rq"]
 [ext_resource type="PackedScene" uid="uid://v7u1ci5w4e5x" path="res://entities/debug_cam/debug_cam.tscn" id="9_c7767"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="10_cmtmm"]
@@ -19,7 +19,7 @@
 [ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="17_jsk0u"]
 [ext_resource type="PackedScene" uid="uid://cu8kgbo5oalxy" path="res://entities/buoy/buoy.tscn" id="18_tqxts"]
 [ext_resource type="Script" path="res://entities/rain/rain.gd" id="19_hf5os"]
-[ext_resource type="PackedScene" path="res://wind_turbine.tscn" id="20_xjyiy"]
+[ext_resource type="PackedScene" uid="uid://jncyhw3e5i20" path="res://entities/wind_turbine/wind_turbine.tscn" id="20_xjyiy"]
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
@@ -84,8 +84,7 @@ size = Vector2(0.1, 3)
 
 [node name="Debug" parent="." instance=ExtResource("1_o5n6o")]
 
-[node name="World" type="Node" parent="."]
-script = ExtResource("2_vnvn0")
+[node name="World" parent="." instance=ExtResource("2_4n3kf")]
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -132,7 +131,7 @@ offset_top = 62.0
 offset_right = 72.0
 offset_bottom = 77.0
 pivot_offset = Vector2(5, 7.5)
-script = ExtResource("6_tyttt")
+script = ExtResource("6_cxx7b")
 map = NodePath("..")
 player = NodePath("../../../Player")
 
@@ -142,7 +141,7 @@ offset_left = 1069.0
 offset_top = 717.0
 offset_right = 1109.0
 offset_bottom = 757.0
-script = ExtResource("7_o0vd7")
+script = ExtResource("7_gndvi")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")

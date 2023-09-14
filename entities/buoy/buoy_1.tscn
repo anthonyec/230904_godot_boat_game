@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c42yh8kckxtks"]
 
-[ext_resource type="PackedScene" uid="uid://ddc3ska1ni8ya" path="res://buoy_1.glb" id="1_sqie2"]
+[ext_resource type="PackedScene" uid="uid://ddc3ska1ni8ya" path="res://entities/buoy/buoy_1.glb" id="1_sqie2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n0kao"]
 albedo_color = Color(0.627451, 0.239216, 0.14902, 1)
