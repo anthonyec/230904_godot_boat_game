@@ -39,7 +39,7 @@ func _process(delta: float) -> void:
 		hitch_front.toggle_nearby_attachment()
 		hitch_back.toggle_nearby_attachment()
 	
-	if Debug.is_flag_enabled(Debug.Flag.PLAYER_CONTROLS):
+	if Flags.is_enabled(Flags.PLAYER_CONTROLS):
 		DebugDraw.set_text("input_direction", input_direction)
 		DebugDraw.set_text("throttle", throttle)
 	
@@ -62,7 +62,7 @@ func _physics_process(delta: float) -> void:
 		player.apply_central_force(forward * max_engine_power * throttle)
 		player.apply_torque(up * max_engine_power * -input_direction * turn_percent)
 	
-	if Debug.is_flag_enabled(Debug.Flag.PLAYER_CONTROLS):
+	if Flags.is_enabled(Flags.PLAYER_CONTROLS):
 		DebugDraw.set_text("position", global_position.round())
 		DebugDraw.set_text("speed (kph)", heading_velocity)
 		

@@ -57,12 +57,12 @@ func update_shader_params(delta: float) -> void:
 	
 	wave_offset_1 += wave_direction_1 * 0.1 * delta
 	
-	if Debug.is_flag_enabled(Debug.Flag.OCEAN_SHADER_PARAMS):
+	if Flags.is_enabled(Flags.OCEAN_SHADER_PARAMS):
 		DebugDraw.set_text("WaveHeightPercent", simulation_material.get_shader_parameter("WaveHeightPercent"))
 		DebugDraw.set_text("MaxWaveHeight", plane_material.get_shader_parameter("MaxWaveHeight"))
 
 func update_simulation_image() -> void:
-	if Debug.is_flag_enabled(Debug.Flag.WATER_RENDER_TIME):
+	if Flags.is_enabled(Flags.WATER_RENDER_TIME):
 		DebugDraw.set_text("water image time: ", str(time_to_render_image) + "ms")
 	
 	# Update texture image cache.
@@ -89,7 +89,7 @@ func update_infinite_planes() -> void:
 		(round(camera.global_position.z / plane_size.y) * plane_size.y) + plane_origin.x,
 	)
 	
-	if Debug.is_flag_enabled(Debug.Flag.OCEAN_PLANES):
+	if Flags.is_enabled(Flags.OCEAN_PLANES):
 		DebugDraw.draw_box(nearest_plane_position, Vector3(1, 20, 1), Color.RED)
 	
 	var index: int = 0
@@ -105,7 +105,7 @@ func update_infinite_planes() -> void:
 			planes[index].global_position = duplicate_position
 			index += 1
 			
-			if Debug.is_flag_enabled(Debug.Flag.OCEAN_PLANES):
+			if Flags.is_enabled(Flags.OCEAN_PLANES):
 				DebugDraw.draw_ray_3d(duplicate_position, Vector3.UP, 10, Color.BLUE)
 				DebugDraw.draw_box(duplicate_position + Vector3.UP * 25, Vector3(plane_size.x, 50, plane_size.y), Color.BLACK)
 
