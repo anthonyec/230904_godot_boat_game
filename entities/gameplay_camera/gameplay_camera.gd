@@ -11,6 +11,7 @@ extends Node3D
 @onready var camera: Camera3D = %Camera3D
 
 var mouse_relative: Vector2
+var pitch_angle: float = 0
 
 func _process(_delta: float) -> void:
 	camera.current = current
@@ -24,11 +25,19 @@ func _physics_process(delta: float) -> void:
 	)
 	
 	rotation.y -= deg_to_rad(mouse_relative.x * 0.5)
-	rig.rotation.x -= deg_to_rad(mouse_relative.y * 0.5)
 	
-	rig.rotation.x = clamp(rig.rotation.x, deg_to_rad(-80), deg_to_rad(-5))
-	mouse_relative = Vector2.ZERO
+	pitch_angle -= deg_to_rad(mouse_relative.y * 0.5)
+	pitch_angle = clamp(pitch_angle, deg_to_rad(-80), deg_to_rad(80))
+	
+	if pitch_angle > deg_to_rad(5):
+		var angle_offset = pitch_angle - deg_to_rad(5)
+		camera.rotation.x = angle_offset / 2
+	else:
+		camera.rotation.x = 0
+		rig.rotation.x = pitch_angle
 
+	mouse_relative = Vector2.ZERO
+	
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_relative = event.relative

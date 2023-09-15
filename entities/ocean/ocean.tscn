@@ -1,8 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://bki4o2smxksy7"]
+[gd_scene load_steps=9 format=3 uid="uid://bki4o2smxksy7"]
 
 [ext_resource type="Script" path="res://entities/ocean/ocean.gd" id="1_73v6r"]
+[ext_resource type="Shader" path="res://entities/ocean/wave_simulation.gdshader" id="2_6yuco"]
 [ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="2_f6fc1"]
 [ext_resource type="Shader" uid="uid://3k5tqhuvd85x" path="res://entities/ocean/plane.tres" id="3_bivtf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_he5n6"]
+shader = ExtResource("2_6yuco")
+shader_parameter/direction = Vector2(2.08165e-12, 1)
+shader_parameter/offset = 1.96
+shader_parameter/amplitude = 0.72
+shader_parameter/frequency = 6.149
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_3vjlp"]
 viewport_path = NodePath("Simulation")
@@ -24,6 +32,14 @@ subdivide_depth = 256
 
 [node name="Ocean" type="Node3D"]
 script = ExtResource("1_73v6r")
+
+[node name="SimulationTexture" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_he5n6")
+offset_left = -68.0
+offset_top = -95.0
+offset_right = 956.0
+offset_bottom = 929.0
 
 [node name="Simulation" type="SubViewport" parent="."]
 disable_3d = true

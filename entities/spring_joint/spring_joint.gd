@@ -7,7 +7,7 @@ extends Node
 @export var attachment_point_a: Node3D
 @export var attachment_point_b: Node3D
 @export var max_length: float = 10
-@export var stiffness: float = 80
+@export var stiffness: float = 800
 @export var rigid: bool = false
 
 func _process(_delta: float) -> void:

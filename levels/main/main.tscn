@@ -88,7 +88,7 @@ size = Vector2(0.1, 3)
 hour = null
 minute = null
 wave_direction = null
-wave_height = null
+wave_height = 7
 wave_length = null
 
 [node name="UI" type="Control" parent="."]
@@ -267,9 +267,9 @@ mesh = SubResource("BoxMesh_gttni")
 
 [node name="Bardge" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, 0.70556, 56.6924)
-mass = 25.0
+mass = 300.0
 script = ExtResource("11_sh3wf")
-float_force = 35.0
+float_force = 200.0
 
 [node name="HitchFront" parent="Bardge" instance=ExtResource("16_jikcx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, -7.5)
@@ -349,9 +349,9 @@ mesh = SubResource("BoxMesh_rhdxx")
 
 [node name="Bardge2" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.0045, 0.70556, 70.2187)
-mass = 25.0
+mass = 300.0
 script = ExtResource("11_sh3wf")
-float_force = 35.0
+float_force = 200.0
 
 [node name="HitchFront" parent="Bardge2" instance=ExtResource("16_jikcx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1.35, -7.5)

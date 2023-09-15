@@ -1,7 +1,6 @@
 [gd_resource type="VisualShader" load_steps=12 format=3 uid="uid://brdqvtxba714h"]
 
 [sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_ubl3i"]
-output_port_for_preview = 0
 default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
 op_type = 2
 operator = 2
@@ -27,7 +26,7 @@ function = 1
 [sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_78f4h"]
 parameter_name = "WaveHeightPercent"
 default_value_enabled = true
-default_value = 0.3
+default_value = 1.0
 
 [sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_4dovd"]
 parameter_name = "BigGradient1"
@@ -41,7 +40,7 @@ default_value = Vector2(2.08165e-12, 2.08165e-12)
 [sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_q7i2c"]
 parameter_name = "WaveScale"
 default_value_enabled = true
-default_value = 0.3
+default_value = 1.0
 
 [sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_6now1"]
 default_input_values = [0, 0.0, 1, 1.0, 2, 0.0]
@@ -52,9 +51,9 @@ code = "shader_type canvas_item;
 render_mode blend_mix;
 
 uniform vec2 WaveOffset1 = vec2(0.000000, 0.000000);
-uniform float WaveScale = 0.30000001192093;
+uniform float WaveScale = 1;
 uniform sampler2D BigGradient1 : repeat_enable;
-uniform float WaveHeightPercent = 0.30000001192093;
+uniform float WaveHeightPercent = 1;
 
 
 
@@ -121,4 +120,4 @@ nodes/fragment/63/node = SubResource("VisualShaderNodeFloatParameter_q7i2c")
 nodes/fragment/63/position = Vector2(-3860, 2320)
 nodes/fragment/64/node = SubResource("VisualShaderNodeVectorCompose_6now1")
 nodes/fragment/64/position = Vector2(-3280, 2160)
-nodes/fragment/connections = PackedInt32Array(60, 0, 55, 2, 55, 0, 54, 0, 59, 0, 54, 1, 56, 0, 55, 0, 57, 0, 56, 0, 62, 0, 57, 2, 54, 0, 0, 0, 63, 0, 64, 0, 64, 0, 56, 1, 62, 0, 56, 2)
+nodes/fragment/connections = PackedInt32Array(60, 0, 55, 2, 55, 0, 54, 0, 59, 0, 54, 1, 56, 0, 55, 0, 57, 0, 56, 0, 62, 0, 57, 2, 63, 0, 64, 0, 64, 0, 56, 1, 62, 0, 56, 2, 54, 0, 0, 0)
