@@ -148,9 +148,15 @@ func get_time_percent() -> float:
 	
 func get_player() -> Node3D:
 	return player
+	
+func get_camera() -> Camera3D:
+	return get_viewport().get_camera_3d()
 
 func get_water_height(position: Vector3) -> float:
 	return ocean.get_height(position)
 	
 func get_precipitation(position: Vector3) -> float:
 	return precipitation_grid.get_tile_at_position(position)
+	
+func get_grid_tile_size() -> Vector2:
+	return Vector2(300, 300)

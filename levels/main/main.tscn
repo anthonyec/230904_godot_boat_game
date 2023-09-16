@@ -1,7 +1,8 @@
-[gd_scene load_steps=37 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=38 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_o5n6o"]
 [ext_resource type="PackedScene" uid="uid://dj31heqsourdp" path="res://entities/world/world.tscn" id="2_4n3kf"]
+[ext_resource type="Script" path="res://weather_effects.gd" id="3_i3rib"]
 [ext_resource type="Script" path="res://ui/ui.gd" id="3_wendr"]
 [ext_resource type="Script" path="res://ui/components/debug_simulation_grid.gd" id="4_jc4on"]
 [ext_resource type="Script" path="res://ui/components/compass.gd" id="4_wdsws"]
@@ -25,7 +26,6 @@
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
 background_color = Color(0.819608, 0.94902, 0.94902, 1)
-fog_enabled = true
 fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
 fog_density = 0.012
 fog_height = 2.13163e-14
@@ -87,6 +87,9 @@ size = Vector2(0.1, 3)
 
 [node name="World" parent="." instance=ExtResource("2_4n3kf")]
 
+[node name="WeatherEffects" type="Node3D" parent="."]
+script = ExtResource("3_i3rib")
+
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -97,6 +100,7 @@ grow_vertical = 2
 script = ExtResource("3_wendr")
 
 [node name="DebugSimulationGrid" type="Control" parent="UI"]
+visible = false
 anchors_preset = 0
 offset_left = 28.0
 offset_top = 84.0

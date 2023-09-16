@@ -63,12 +63,17 @@ func for_neighbours_at_row_column(row: int, column: int, callback: Callable) -> 
 			var neighbour = get_tile_at_row_column(row + neighbour_row, column + neighbour_column)
 			callback.call(neighbour_row, neighbour_column, neighbour)
 
-func simulate_step(callback: Callable) -> void:
+func simulate_step(callback: Callable, dry_run: bool = false) -> Array[Array]:
 	var previous_grid = Grid.new(tiles.duplicate(true))
 	var next_grid = Grid.new(tiles.duplicate(true))
 	
 	for row in get_row_count():
 		for column in get_column_count():
 			callback.call(previous_grid, next_grid, row, column)
-
-	self.tiles = next_grid.tiles.duplicate(true)
+	
+	var next_tiles = next_grid.tiles.duplicate(true)
+	
+	if not dry_run:
+		self.tiles = next_grid.tiles.duplicate(true)
+		
+	return next_tiles
