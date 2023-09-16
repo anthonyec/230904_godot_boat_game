@@ -1,6 +1,9 @@
 class_name World
 extends Node
 
+signal minute_tick
+signal hour_tick
+
 static var instance: World
 
 # Based on: https://www.metoffice.gov.uk/weather/guides/coast-and-sea/glossary
@@ -33,8 +36,19 @@ enum WaveLength {
 
 var player: Node3D
 var ocean: Ocean
-
 var last_time: int = 0
+
+var precipitation_grid = Grid.new([
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 1, 1, 1, 0, 0, 0, 0],
+	[0, 0, 1, 2, 1, 1, 0, 0, 0],
+	[0, 0, 1, 1, 1, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 1, 0, 0],
+	[0, 1, 2, 1, 0, 1, 1, 1, 0],
+	[0, 0, 1, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0]
+])
 
 func _ready() -> void:
 	if instance != null:
@@ -43,6 +57,8 @@ func _ready() -> void:
 	instance = self
 	player = get_parent().get_node("Player")
 	ocean = get_parent().get_node("Ocean")
+	
+	minute_tick.connect(_on_minute_tick)
 
 func _process(delta: float) -> void:
 	update_time()
@@ -87,6 +103,7 @@ func update_time() -> void:
 	if now - last_time > 1000:
 		minute += 1
 		last_time = now
+		minute_tick.emit()
 	
 	if minute > 59:
 		hour += 1
@@ -95,9 +112,25 @@ func update_time() -> void:
 	if hour > 23:
 		hour = 0
 		minute = 0
+		hour_tick.emit()
 		
 	if Flags.is_enabled(Flags.DEBUG_TIME):
 		DebugDraw.set_text("time", get_display_time())
+
+func _on_minute_tick() -> void:
+	var energy_loss_per_tile: float = 0.5 / 8
+	
+	precipitation_grid.simulate_step(func(previous_grid: Grid, next_grid: Grid, row: int, column: int):
+		var tile = previous_grid.get_tile_at_row_column(row, column)
+		var new_tile: float = tile
+		
+		previous_grid.for_neighbours_at_row_column(row, column, func(neighbour_row, neighbour_column, neighbour_tile):
+			pass
+		)
+		
+		next_grid.set_tile_at_row_column(row, column, clamp(tile - 0.05, 0, 10))
+	)
+
 	
 func get_display_time() -> String:
 	return str(hour).lpad(2, "0") + ":" + str(minute).lpad(2, "0")
@@ -110,3 +143,9 @@ func get_player() -> Node3D:
 
 func get_water_height(position: Vector3) -> float:
 	return ocean.get_height(position)
+	
+func get_precipitation(position: Vector3) -> int:
+	var a = precipitation_grid.get_tile_at_position(position)
+	var b = precipitation_grid.get_row_column_at_position(position)
+#	print(b)
+	return 0

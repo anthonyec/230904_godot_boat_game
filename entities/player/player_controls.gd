@@ -5,7 +5,8 @@ extends Node3D
 @onready var hitch_front: Hitch = $"../HitchFront" as Hitch
 @onready var hitch_back: Hitch = $"../HitchBack" as Hitch
 
-var max_engine_power: float = 10000
+var max_engine_power: float = 12000
+var max_turn_power: float = 16000
 var max_rudder_rotation: float = deg_to_rad(60)
 var rudder_rotation_speed: float = 3
 
@@ -43,6 +44,8 @@ func _process(delta: float) -> void:
 		DebugDraw.set_text("input_direction", input_direction)
 		DebugDraw.set_text("throttle", throttle)
 	
+	DebugDraw.set_text("position", global_position.round())
+	
 func _physics_process(delta: float) -> void:
 	var forward = -player.global_transform.basis.z
 	var back = player.global_transform.basis.z
@@ -60,7 +63,7 @@ func _physics_process(delta: float) -> void:
 	
 	if is_engined_submerged:
 		player.apply_central_force(forward * max_engine_power * throttle)
-		player.apply_torque(up * max_engine_power * -input_direction * turn_percent)
+		player.apply_torque(up * max_turn_power * -input_direction * turn_percent)
 	
 	if Flags.is_enabled(Flags.DEBUG_PLAYER_CONTROLS):
 		DebugDraw.set_text("position", global_position.round())
