@@ -38,17 +38,20 @@ var player: Node3D
 var ocean: Ocean
 var last_time: int = 0
 
-var precipitation_grid = Grid.new([
-	[0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 1, 1, 1, 0, 0, 0, 0],
-	[0, 0, 1, 10, 1, 1, 0, 0, 0],
-	[0, 0, 1, 1, 1, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 1, 0, 0],
-	[0, 1, 2, 1, 0, 1, 1, 1, 0],
-	[0, 0, 1, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0]
-])
+var precipitation_grid = Grid.new()
+
+#var precipitation_grid = Grid.new([
+#	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#	[0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+#	[0, 0, 1, 50, 1, 1, 0, 0, 0, 0],
+#	[0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+#	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#	[0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+#	[0, 1, 2, 1, 0, 1, 1, 1, 0, 0],
+#	[0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+#	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#])
 
 #var precipitation_grid = Grid.new([
 #	[1, 2, 3],
@@ -82,6 +85,9 @@ func _ready() -> void:
 	instance = self
 	player = get_parent().get_node("Player")
 	ocean = get_parent().get_node("Ocean")
+	
+	precipitation_grid.create_and_fill(30, 30, 0)
+	precipitation_grid.set_tile_at_row_column(50, 50, 1000)
 	
 	minute_tick.connect(_on_minute_tick)
 

@@ -6,8 +6,19 @@ var tiles: Array[Array] = [[]]
 var origin: Vector3 = Vector3.ZERO
 var tile_size: Vector2 = Vector2(300, 300)
 
-func _init(tiles: Array[Array]) -> void:
+func _init(tiles: Array[Array] = [[]]) -> void:
 	self.tiles = tiles
+	
+func create_and_fill(rows: int, columns: int, value: float) -> void:	
+	var rows_array: Array[Array] = []
+	rows_array.resize(rows)
+	
+	var single_row = []
+	single_row.resize(columns)
+	single_row.fill(value)
+	
+	rows_array.fill(single_row)
+	self.tiles = rows_array.duplicate(true)
 	
 func get_row_count() -> int:
 	return tiles.size()
