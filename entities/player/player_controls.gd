@@ -44,6 +44,10 @@ func _process(delta: float) -> void:
 		DebugDraw.set_text("input_direction", input_direction)
 		DebugDraw.set_text("throttle", throttle)
 	
+	if Flags.is_enabled(Flags.DEBUG_SIMULATION_GRIDS):
+		DebugDraw.set_text("precipitation", World.instance.get_precipitation(global_position))
+		DebugDraw.set_text("precipitation r/c", World.instance.precipitation_grid.get_row_column_at_position(global_position))
+		
 	DebugDraw.set_text("position", global_position.round())
 	
 func _physics_process(delta: float) -> void:

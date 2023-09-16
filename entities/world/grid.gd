@@ -9,7 +9,7 @@ var tile_size: Vector2 = Vector2(300, 300)
 func _init(tiles: Array[Array] = [[]]) -> void:
 	self.tiles = tiles
 	
-func create_and_fill(rows: int, columns: int, value: float) -> void:	
+func create_and_fill(rows: int, columns: int, value: float) -> void:
 	var rows_array: Array[Array] = []
 	rows_array.resize(rows)
 	
@@ -27,8 +27,11 @@ func get_column_count() -> int:
 	return tiles[0].size()
 
 func get_row_column_at_position(position: Vector3) -> Array[int]:
-	var row = int(round(origin.x + position.x / tile_size.x))
-	var column = int(round(origin.z + position.z / tile_size.y))
+	# Flipped on purpose so that moving in the world forward (-z) and right (+x), 
+	# will be relative to the top left origin of the grid. World forward will 
+	# be down on the grid and right is right.
+	var row = int(round(-position.z / tile_size.y))
+	var column = int(round(position.x / tile_size.x))
 	
 	return [
 		wrapi(row, 0, get_row_count()),

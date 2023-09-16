@@ -39,44 +39,7 @@ var ocean: Ocean
 var last_time: int = 0
 
 var precipitation_grid = Grid.new()
-
-#var precipitation_grid = Grid.new([
-#	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#	[0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
-#	[0, 0, 1, 50, 1, 1, 0, 0, 0, 0],
-#	[0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
-#	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#	[0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-#	[0, 1, 2, 1, 0, 1, 1, 1, 0, 0],
-#	[0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-#	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#])
-
-#var precipitation_grid = Grid.new([
-#	[1, 2, 3],
-#	[4, 5, 6],
-#	[7, 8, 9],
-#])
-
-#var precipitation_grid = Grid.new([
-#	[0, 0, 0],
-#	[0, 5, 0],
-#	[0, 0, 0],
-#])
-
-#var precipitation_grid = Grid.new([
-#	[1, 2, 3, 4],
-#	[5, 6, 7, 8],
-#	[9, 10, 11, 12],
-#])
-
-#var precipitation_grid = Grid.new([
-#	[0, 0, 0, 0],
-#	[0, 5, 0, 0],
-#	[0, 0, 0, 0],
-#])
-
+#var wind_grid = Grid.new()
 
 func _ready() -> void:
 	if instance != null:
@@ -86,10 +49,14 @@ func _ready() -> void:
 	player = get_parent().get_node("Player")
 	ocean = get_parent().get_node("Ocean")
 	
-	precipitation_grid.create_and_fill(30, 30, 0)
-	precipitation_grid.set_tile_at_row_column(50, 50, 1000)
+	precipitation_grid.create_and_fill(20, 20, 0.0)
+	precipitation_grid.set_tile_at_row_column(2, 2, 10)
 	
-	minute_tick.connect(_on_minute_tick)
+#	wind_grid.create_and_fill(25, 25, Vector2.RIGHT)
+	
+#	minute_tick.connect(_on_minute_tick)
+	_on_minute_tick()
+	_on_minute_tick()
 
 func _process(delta: float) -> void:
 	update_time()
@@ -152,11 +119,24 @@ func _on_minute_tick() -> void:
 	var energy_loss_per_tile: float = 0.5 / 8
 	
 	precipitation_grid.simulate_step(func(previous_grid: Grid, next_grid: Grid, row: int, column: int):
+		# Diffusion
 		var neighbour_values = previous_grid.get_neighbours_at_row_column(row, column)
 		var sum: float = neighbour_values.reduce(func(accum, value): return accum + value, 0)
 		var average: float = sum / neighbour_values.size()
 		
 		next_grid.set_tile_at_row_column(row, column, average * 0.95)
+		
+		# Advection
+#		var wind_direction = wind_grid.get_neighbours_at_row_column(row, column)
+#		var next_row_column = [row, column + 1] # Todo: Calculate this from vector2.
+		
+#		var center_value = previous_grid.get_tile_at_row_column(row, column)
+#		var right_value = previous_grid.get_tile_at_row_column(row, column + 1)
+		
+#		if center_value != 0 and right_value == 0:
+#			next_grid.set_tile_at_row_column(row, column, float(center_value) - 0.5)
+#			next_grid.set_tile_at_row_column(row, column + 1, float(right_value) + 0.5)
+#			next_grid.set_tile_at_row_column(row, column + 2, center_value)
 	)
 
 	
@@ -172,8 +152,5 @@ func get_player() -> Node3D:
 func get_water_height(position: Vector3) -> float:
 	return ocean.get_height(position)
 	
-func get_precipitation(position: Vector3) -> int:
-	var a = precipitation_grid.get_tile_at_position(position)
-	var b = precipitation_grid.get_row_column_at_position(position)
-#	print(b)
-	return 0
+func get_precipitation(position: Vector3) -> float:
+	return precipitation_grid.get_tile_at_position(position)
