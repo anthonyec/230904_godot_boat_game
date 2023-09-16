@@ -33,13 +33,19 @@ func get_tile_at_row_column(row: int, column: int) -> float:
 	
 func set_tile_at_row_column(row: int, column: int, value: float) -> void:
 	tiles[wrapi(row, 0, get_row_count())][wrapi(column, 0, get_column_count())] = value
+
+func get_neighbours_at_row_column(row: int, column: int) -> Array[float]:
+	var values: Array[float] = []
+	
+	for_neighbours_at_row_column(row, column, func(neighbour_row, neighbour_column, neighbour):
+		values.append(neighbour)
+	)
+	
+	return values
 	
 func for_neighbours_at_row_column(row: int, column: int, callback: Callable) -> void:
 	for neighbour_row in range(-1, 2):
 		for neighbour_column in range(-1, 2):
-			if neighbour_row == 0 and neighbour_column == 0:
-				continue
-				
 			var neighbour = get_tile_at_row_column(row + neighbour_row, column + neighbour_column)
 			callback.call(neighbour_row, neighbour_column, neighbour)
 

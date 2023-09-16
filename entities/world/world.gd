@@ -41,7 +41,7 @@ var last_time: int = 0
 var precipitation_grid = Grid.new([
 	[0, 0, 0, 0, 0, 0, 0, 0, 0],
 	[0, 0, 1, 1, 1, 0, 0, 0, 0],
-	[0, 0, 1, 2, 1, 1, 0, 0, 0],
+	[0, 0, 1, 10, 1, 1, 0, 0, 0],
 	[0, 0, 1, 1, 1, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 1, 0, 0],
@@ -49,6 +49,31 @@ var precipitation_grid = Grid.new([
 	[0, 0, 1, 0, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0, 0, 0]
 ])
+
+#var precipitation_grid = Grid.new([
+#	[1, 2, 3],
+#	[4, 5, 6],
+#	[7, 8, 9],
+#])
+
+#var precipitation_grid = Grid.new([
+#	[0, 0, 0],
+#	[0, 5, 0],
+#	[0, 0, 0],
+#])
+
+#var precipitation_grid = Grid.new([
+#	[1, 2, 3, 4],
+#	[5, 6, 7, 8],
+#	[9, 10, 11, 12],
+#])
+
+#var precipitation_grid = Grid.new([
+#	[0, 0, 0, 0],
+#	[0, 5, 0, 0],
+#	[0, 0, 0, 0],
+#])
+
 
 func _ready() -> void:
 	if instance != null:
@@ -121,14 +146,11 @@ func _on_minute_tick() -> void:
 	var energy_loss_per_tile: float = 0.5 / 8
 	
 	precipitation_grid.simulate_step(func(previous_grid: Grid, next_grid: Grid, row: int, column: int):
-		var tile = previous_grid.get_tile_at_row_column(row, column)
-		var new_tile: float = tile
+		var neighbour_values = previous_grid.get_neighbours_at_row_column(row, column)
+		var sum: float = neighbour_values.reduce(func(accum, value): return accum + value, 0)
+		var average: float = sum / neighbour_values.size()
 		
-		previous_grid.for_neighbours_at_row_column(row, column, func(neighbour_row, neighbour_column, neighbour_tile):
-			pass
-		)
-		
-		next_grid.set_tile_at_row_column(row, column, clamp(tile - 0.05, 0, 10))
+		next_grid.set_tile_at_row_column(row, column, average * 0.95)
 	)
 
 	

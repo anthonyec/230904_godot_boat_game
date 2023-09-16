@@ -105,6 +105,7 @@ offset_bottom = 383.0
 script = ExtResource("4_jc4on")
 
 [node name="Compass" type="Control" parent="UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -145,6 +146,7 @@ map = NodePath("..")
 player = NodePath("../../../Player")
 
 [node name="Clock" type="Control" parent="UI"]
+visible = false
 anchors_preset = 0
 offset_left = 1069.0
 offset_top = 717.0

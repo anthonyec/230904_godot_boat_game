@@ -8,15 +8,22 @@ func _draw() -> void:
 	
 	for row in grid.get_row_count():
 		for column in grid.get_column_count():
-			var tile = grid.tiles[row][column]
+			var tile = grid.get_tile_at_row_column(row, column)
 			
-			draw_rect(Rect2(20 * row, 20 * column, 20, 20), Color(tile, tile, tile))
+			var tile_size = Vector2(30, 30)
+			var gutter = 2
+			var tile_position = Vector2(
+				((tile_size.x + gutter) * column) + tile_size.x,
+				((tile_size.y + gutter) * row) + tile_size.y
+			)
+			
+			draw_rect(Rect2(tile_position, tile_size), Color(tile, tile, tile))
 			draw_string(
 				get_parent().font,
-				Vector2(20 * row, 20 * column),
-				str(tile),
+				tile_position + Vector2(5, 10),
+				str(round(tile)),
 				HORIZONTAL_ALIGNMENT_CENTER,
 				-1,
-				8,
+				10,
 				Color.RED
 			)
