@@ -37,6 +37,7 @@ enum WaveLength {
 var player: Node3D
 var ocean: Ocean
 var last_time: int = 0
+var last_step_duration: int = 0
 
 var precipitation_grid = Grid.new(20, 20)
 
@@ -50,9 +51,12 @@ func _ready() -> void:
 	
 	precipitation_grid.set_cell_at_coordinate(2, 2, 10)
 	
-	minute_tick.connect(_on_minute_tick)
-#	_on_minute_tick()
-#	_on_minute_tick()
+#	minute_tick.connect(_on_minute_tick)
+#	hour_tick.connect(step_grid_simulation)
+	
+	step_grid_simulation()
+	step_grid_simulation()
+	
 
 func _process(delta: float) -> void:
 	update_time()
@@ -91,6 +95,9 @@ func _process(delta: float) -> void:
 	ocean.wave_height = move_toward(ocean.wave_height, target_wave_height, delta)
 	ocean.wave_length = move_toward(ocean.wave_length, target_wave_length, delta)
 	
+	if Flags.is_enabled(Flags.DEBUG_SIMULATION_GRIDS):
+		DebugDraw.set_text("sim step time (ms)", last_step_duration)
+	
 func update_time() -> void:
 	var now = Time.get_ticks_msec()
 	
@@ -111,8 +118,10 @@ func update_time() -> void:
 	if Flags.is_enabled(Flags.DEBUG_TIME):
 		DebugDraw.set_text("time", get_display_time())
 
-func _on_minute_tick() -> void:
+func step_grid_simulation() -> void:
 	var energy_loss_per_tile: float = 0.5 / 8
+	
+	var now = Time.get_ticks_msec()
 	
 	precipitation_grid.step(func(previous_grid: Grid, next_grid: Grid, x: int, y: int):
 		# Diffusion
@@ -134,6 +143,9 @@ func _on_minute_tick() -> void:
 #			next_grid.set_tile_at_row_column(row, column + 1, float(right_value) + 0.5)
 #			next_grid.set_tile_at_row_column(row, column + 2, center_value)
 	)
+	
+	var duration = Time.get_ticks_msec() - now
+	last_step_duration = duration
 
 	
 func get_display_time() -> String:
