@@ -1,79 +1,86 @@
 class_name Grid
 extends Node
 
-var tiles: Array[Array] = [[]]
+var cells: Array[float] = []
 
-var origin: Vector3 = Vector3.ZERO
-var tile_size: Vector2 = Vector2(300, 300)
+var size: Vector2i = Vector2(50, 50)
+var world_cell_size: Vector2 = Vector2(300, 300)
 
-func _init(tiles: Array[Array] = [[]]) -> void:
-	self.tiles = tiles
-	
-func create_and_fill(rows: int, columns: int, value: float) -> void:
-	var rows_array: Array[Array] = []
-	rows_array.resize(rows)
-	
-	var single_row = []
-	single_row.resize(columns)
-	single_row.fill(value)
-	
-	rows_array.fill(single_row)
-	self.tiles = rows_array.duplicate(true)
-	
-func get_row_count() -> int:
-	return tiles.size()
-	
-func get_column_count() -> int:
-	return tiles[0].size()
+func _init(width: int, height: int, value: float = 0) -> void:
+	size = Vector2i(width, height)
+	resize(width, height)
+	fill(value)
 
-func get_row_column_at_position(position: Vector3) -> Array[int]:
-	# Flipped on purpose so that moving in the world forward (-z) and right (+x), 
-	# will be relative to the top left origin of the grid. World forward will 
-	# be down on the grid and right is right.
-	var row = int(round(-position.z / tile_size.y))
-	var column = int(round(position.x / tile_size.x))
+static func clone(other_grid: Grid) -> Grid:
+	var duplicate_grid = Grid.new(other_grid.size.x, other_grid.size.y)
+	var duplicate_cells = other_grid.cells.duplicate(true)
+	duplicate_grid.cells = duplicate_cells
+	return duplicate_grid
 	
-	return [
-		wrapi(row, 0, get_row_count()),
-		wrapi(column, 0, get_column_count())
-	]
+func resize(width: int, height: int) -> void:
+	cells.resize(width * height)
+	
+func fill(value: float) -> void:
+	cells.fill(value)
+	
+func for_each_cell(callback: Callable) -> void:
+	for index in cells.size():
+		var coordinate = get_cell_coordinate(index)
+		callback.call(coordinate[0], coordinate[1], cells[index])
+		
+func get_cell_index(x: int, y: int) -> int:
+	var x_w = wrapi(x, 0, size.x)
+	var y_w = wrapi(y, 0, size.y)
+	return x_w + size.x * y_w
+	
+func get_cell_coordinate(index: int) -> Array[int]:
+	return [index % size.x, index / size.x]
+	
+func get_coordinate_at_world_position(position: Vector3) -> Array[int]:
+	var x = int(round(position.x / world_cell_size.x))
+	var y = int(round(-position.z / world_cell_size.y))
+	var x_w = wrapi(x, 0, size.x)
+	var y_w = wrapi(y, 0, size.y)
+	return [x_w, y_w]
 
-func get_tile_at_position(position: Vector3) -> float:
-	var row_column = get_row_column_at_position(position)
-	return tiles[row_column[0]][row_column[1]]
-	
-func get_tile_at_row_column(row: int, column: int) -> float:
-	return tiles[wrapi(row, 0, get_row_count())][wrapi(column, 0, get_column_count())]
-	
-func set_tile_at_row_column(row: int, column: int, value: float) -> void:
-	tiles[wrapi(row, 0, get_row_count())][wrapi(column, 0, get_column_count())] = value
+func get_cell_at_world_position(position: Vector3) -> float:
+	var coordinate = get_coordinate_at_world_position(position)
+	return get_cell_at_coordinate(coordinate[0], coordinate[1])
 
-func get_neighbours_at_row_column(row: int, column: int) -> Array[float]:
+func get_cell_at_coordinate(x: int, y: int) -> float:
+	return cells[get_cell_index(x, y)]
+	
+func set_cell_at_coordinate(x: int, y: int, value: float) -> void:
+	cells[get_cell_index(x, y)] = value
+	
+func get_neihbours_at_coordinate(x: int, y: int) -> Array[float]:
 	var values: Array[float] = []
 	
-	for_neighbours_at_row_column(row, column, func(neighbour_row, neighbour_column, neighbour):
-		values.append(neighbour)
+	for_neighbours_at_coordinate(x, y, func(x_n, y_n, neighbour_value):
+		values.append(neighbour_value)
 	)
 	
 	return values
-	
-func for_neighbours_at_row_column(row: int, column: int, callback: Callable) -> void:
-	for neighbour_row in range(-1, 2):
-		for neighbour_column in range(-1, 2):
-			var neighbour = get_tile_at_row_column(row + neighbour_row, column + neighbour_column)
-			callback.call(neighbour_row, neighbour_column, neighbour)
 
-func simulate_step(callback: Callable, dry_run: bool = false) -> Array[Array]:
-	var previous_grid = Grid.new(tiles.duplicate(true))
-	var next_grid = Grid.new(tiles.duplicate(true))
+func for_neighbours_at_coordinate(x: int, y: int, callback: Callable) -> void:
+	for x_n in range(-1, 2):
+		for y_n in range(-1, 2):
+			var neighbour_value = get_cell_at_coordinate(x + x_n, y + y_n)
+			callback.call(x_n, y_n, neighbour_value)
+
+func step(callback: Callable, dry_run: bool = false) -> Array[float]:
+	var previous_grid = Grid.clone(self)
+	var next_grid = Grid.clone(self)
 	
-	for row in get_row_count():
-		for column in get_column_count():
-			callback.call(previous_grid, next_grid, row, column)
-	
-	var next_tiles = next_grid.tiles.duplicate(true)
+	for_each_cell(func(x: int, y: int, _value: float):
+		callback.call(previous_grid, next_grid, x, y)
+	)
+		
+	var next_cells = next_grid.cells.duplicate(true)
 	
 	if not dry_run:
-		self.tiles = next_grid.tiles.duplicate(true)
+		cells = next_cells
 		
-	return next_tiles
+	previous_grid.queue_free()
+	next_grid.queue_free()
+	return next_cells

@@ -38,8 +38,7 @@ var player: Node3D
 var ocean: Ocean
 var last_time: int = 0
 
-var precipitation_grid = Grid.new()
-#var wind_grid = Grid.new()
+var precipitation_grid = Grid.new(20, 20)
 
 func _ready() -> void:
 	if instance != null:
@@ -49,14 +48,11 @@ func _ready() -> void:
 	player = get_parent().get_node("Player")
 	ocean = get_parent().get_node("Ocean")
 	
-	precipitation_grid.create_and_fill(20, 20, 0.0)
-	precipitation_grid.set_tile_at_row_column(2, 2, 10)
+	precipitation_grid.set_cell_at_coordinate(2, 2, 10)
 	
-#	wind_grid.create_and_fill(25, 25, Vector2.RIGHT)
-	
-#	minute_tick.connect(_on_minute_tick)
-	_on_minute_tick()
-	_on_minute_tick()
+	minute_tick.connect(_on_minute_tick)
+#	_on_minute_tick()
+#	_on_minute_tick()
 
 func _process(delta: float) -> void:
 	update_time()
@@ -118,13 +114,13 @@ func update_time() -> void:
 func _on_minute_tick() -> void:
 	var energy_loss_per_tile: float = 0.5 / 8
 	
-	precipitation_grid.simulate_step(func(previous_grid: Grid, next_grid: Grid, row: int, column: int):
+	precipitation_grid.step(func(previous_grid: Grid, next_grid: Grid, x: int, y: int):
 		# Diffusion
-		var neighbour_values = previous_grid.get_neighbours_at_row_column(row, column)
+		var neighbour_values = previous_grid.get_neihbours_at_coordinate(x, y)
 		var sum: float = neighbour_values.reduce(func(accum, value): return accum + value, 0)
 		var average: float = sum / neighbour_values.size()
 		
-		next_grid.set_tile_at_row_column(row, column, average * 0.95)
+		next_grid.set_cell_at_coordinate(x, y, average * 0.95)
 		
 		# Advection
 #		var wind_direction = wind_grid.get_neighbours_at_row_column(row, column)
@@ -156,7 +152,7 @@ func get_water_height(position: Vector3) -> float:
 	return ocean.get_height(position)
 	
 func get_precipitation(position: Vector3) -> float:
-	return precipitation_grid.get_tile_at_position(position)
+	return precipitation_grid.get_cell_at_world_position(position)
 	
 func get_grid_tile_size() -> Vector2:
 	return Vector2(300, 300)

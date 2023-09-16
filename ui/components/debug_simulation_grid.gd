@@ -12,7 +12,7 @@ func _process(_delta: float) -> void:
 
 func _draw() -> void:
 	var player_position = World.instance.get_player().global_position
-	var player_row_column = World.instance.precipitation_grid.get_row_column_at_position(player_position)
+	var player_grid_coordinate = World.instance.precipitation_grid.get_coordinate_at_world_position(player_position)
 	var grid = World.instance.precipitation_grid
 	
 	if grid_type == GridType.WIND:
@@ -21,33 +21,26 @@ func _draw() -> void:
 	var tile_size = Vector2(25, 25)
 	var gutter = 0
 	
-	for row in grid.get_row_count():
-		for column in grid.get_column_count():
-			var tile = grid.get_tile_at_row_column(row, column)
-	
-			var tile_position = Vector2(
-				((tile_size.x + gutter) * column) + tile_size.x,
-				((tile_size.y + gutter) * row) + tile_size.y
-			)
-			var center = tile_position + (tile_size / 2)
+	grid.for_each_cell(func(x: int, y: int, value: float):
+		var tile_position = Vector2(
+			((tile_size.x + gutter) * x) + tile_size.x,
+			((tile_size.y + gutter) * y) + tile_size.y
+		)
+		var center = tile_position + (tile_size / 2)
+		
+		draw_rect(Rect2(tile_position, tile_size), Color(value, value, value))
+		draw_string(
+			get_parent().font,
+			tile_position + Vector2(5, 10),
+			str(value),
+			HORIZONTAL_ALIGNMENT_CENTER,
+			-1,
+			10,
+			Color.RED
+		)
 			
-			if typeof(tile) == TYPE_INT or typeof(tile) == TYPE_FLOAT:
-				draw_rect(Rect2(tile_position, tile_size), Color(tile, tile, tile))
-				draw_string(
-					get_parent().font,
-					tile_position + Vector2(5, 10),
-					str(tile),
-					HORIZONTAL_ALIGNMENT_CENTER,
-					-1,
-					10,
-					Color.RED
-				)
-				
-			if typeof(tile) == TYPE_VECTOR2:
-				draw_rect(Rect2(tile_position, tile_size), Color(0, 0, 0))
-				draw_line(center, center + tile * 5, Color.WHITE)
-				
-			if player_row_column[0] == row and player_row_column[1] == column:
-				draw_rect(Rect2(tile_position, tile_size), Color.CYAN, false)
+		if player_grid_coordinate[0] == x and player_grid_coordinate[1] == y:
+			draw_rect(Rect2(tile_position, tile_size), Color.CYAN, false)
+	)
 				
 			

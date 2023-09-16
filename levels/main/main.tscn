@@ -108,16 +108,6 @@ offset_right = 161.0
 offset_bottom = 214.0
 script = ExtResource("4_jc4on")
 
-[node name="DebugSimulationGrid2" type="Control" parent="UI"]
-visible = false
-anchors_preset = 0
-offset_left = 28.0
-offset_top = 444.0
-offset_right = 161.0
-offset_bottom = 574.0
-script = ExtResource("4_jc4on")
-grid_type = 1
-
 [node name="Compass" type="Control" parent="UI"]
 visible = false
 layout_mode = 1
