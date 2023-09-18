@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=39 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_o5n6o"]
 [ext_resource type="PackedScene" uid="uid://dj31heqsourdp" path="res://entities/world/world.tscn" id="2_4n3kf"]
@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://cu8kgbo5oalxy" path="res://entities/buoy/buoy.tscn" id="18_tqxts"]
 [ext_resource type="Script" path="res://entities/rain/rain.gd" id="19_hf5os"]
 [ext_resource type="PackedScene" uid="uid://jncyhw3e5i20" path="res://entities/wind_turbine/wind_turbine.tscn" id="20_xjyiy"]
+[ext_resource type="PackedScene" uid="uid://cp1m4a3ivg14j" path="res://entities/repeater/repeater.tscn" id="23_putrn"]
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
@@ -100,6 +101,7 @@ grow_vertical = 2
 script = ExtResource("3_wendr")
 
 [node name="DebugSimulationGrid" type="Control" parent="UI"]
+visible = false
 anchors_preset = 0
 offset_left = 28.0
 offset_top = 84.0
@@ -174,6 +176,10 @@ offset = Vector3(2.08165e-12, 5, 2.08165e-12)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.467651, 0.548516, 0.693132, -0.798373, -0.0744178, 0.597547, 0.379346, -0.832822, 0.403119, -0.00466442, 2.23942, 0.0191052)
 light_energy = 0.8
+
+[node name="Repeater" parent="." instance=ExtResource("23_putrn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.8601, 0)
+debug = true
 
 [node name="Player" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 39.6514)

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cp1m4a3ivg14j"]
+
+[ext_resource type="Script" path="res://entities/repeater/repeater.gd" id="1_5yreo"]
+
+[node name="Repeater" type="Node3D"]
+script = ExtResource("1_5yreo")
