@@ -42,7 +42,7 @@ movie_writer/movie_file="/Users/anthony/projects/misc/230904_godot_boat_game/mov
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/anthonyec.sfx/plugin.cfg")
+enabled=PackedStringArray("res://addons/anthonyec.powerlet/plugin.cfg", "res://addons/anthonyec.sfx/plugin.cfg")
 
 [input]
 
