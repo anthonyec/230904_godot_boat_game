@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 	
 	var target_particle_amount = remap(preciptation, 0, 1, 1, 500)
 	
-	particle_amount = lerp(particle_amount, target_particle_amount, delta)
+	particle_amount = lerp(particle_amount, target_particle_amount, delta * 5)
 	DebugDraw.set_text("particle_amount", particle_amount)
 	
 	for child in repeater.get_duplicates():

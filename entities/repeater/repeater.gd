@@ -11,6 +11,8 @@ signal tile_removed(tile_position: Vector3)
 @export var frustum_cull: bool = false
 @export var prevent_below_ground: bool = true
 @export var lock_to_ground: bool = false
+@export var minimum_distance: float = 0
+# TODO: Rename this to tile count coz that's what it is.
 @export var tile_radius: Vector3i = Vector3i(2, 1, 2)
 @export var tile_size: Vector3 = Vector3(100, 100, 100)
 @export var tile_offset: Vector3 = Vector3(0, 0, 0)
@@ -18,6 +20,7 @@ signal tile_removed(tile_position: Vector3)
 var camera: Camera3D
 var existing_tile_positions: Array[Vector3] = []
 var duplicates: Dictionary = {}
+var tile_count: int = 0
 
 func _ready() -> void:
 	camera = get_viewport().get_camera_3d()
@@ -27,6 +30,11 @@ func _ready() -> void:
 	
 	tile_created.connect(_on_tile_created)
 	tile_removed.connect(_on_tile_removed)
+	
+	# TODO: DIRTTY HACKY
+	if get_child_count() > 0:
+		get_child(0).visible = false
+		get_child(0).global_position += Vector3.DOWN * 1000
 
 func _process(delta: float) -> void:
 	var nearest_position = (viewer.global_position / tile_size).round() * tile_size
@@ -42,6 +50,9 @@ func _process(delta: float) -> void:
 	for_each_tiles(func(x: int, y: int, z: int):
 		var tile_position = nearest_position + Vector3(x * tile_size.x, y * tile_size.y, z * tile_size.z)
 		tile_position -= tile_offset
+		
+		if minimum_distance != 0 and viewer.global_position.distance_to(tile_position) < minimum_distance:
+			return false
 		
 		if prevent_below_ground and y < 0:
 			return false
@@ -115,6 +126,7 @@ func _on_tile_created(tile_position: Vector3) -> void:
 	var duplicate_child = child.duplicate() as Node3D
 	
 	add_child(duplicate_child)
+	duplicate_child.visible = true
 	duplicates[tile_position] = duplicate_child
 	duplicate_child.global_position = tile_position
 	

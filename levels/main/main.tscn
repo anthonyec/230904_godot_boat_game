@@ -27,7 +27,7 @@ background_mode = 1
 background_color = Color(0.819608, 0.94902, 0.94902, 1)
 fog_enabled = true
 fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
-fog_density = 0.005
+fog_density = 0.002
 fog_height = 2.13163e-14
 
 [sub_resource type="SphereMesh" id="SphereMesh_hylnw"]

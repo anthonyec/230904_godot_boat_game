@@ -1,9 +1,99 @@
-[gd_scene load_steps=3 format=3 uid="uid://cf5ho2l6641c7"]
+[gd_scene load_steps=14 format=3 uid="uid://cf5ho2l6641c7"]
 
 [ext_resource type="Script" path="res://entities/weather_effects/weather_effects.gd" id="1_4x7yr"]
+[ext_resource type="PackedScene" uid="uid://cp1m4a3ivg14j" path="res://entities/repeater/repeater.tscn" id="2_17mra"]
+[ext_resource type="Script" path="res://entities/weather_effects/distant_weather_effect.gd" id="3_4h6m2"]
 [ext_resource type="PackedScene" uid="uid://biq1yrce20v3n" path="res://entities/weather_effects/rain.tscn" id="3_lmnst"]
+[ext_resource type="Script" path="res://entities/weather_effects/cloud.gd" id="3_va8ru"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_31pmc"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_8oiym"]
+material = SubResource("StandardMaterial3D_31pmc")
+size = Vector2(300, 150)
+
+[sub_resource type="Gradient" id="Gradient_1ubqe"]
+offsets = PackedFloat32Array(0, 0.272487, 0.791005, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.658824, 1, 1, 1, 0.658824, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_1of12"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gc6cc"]
+gradient = SubResource("Gradient_1of12")
+fill = 1
+fill_from = Vector2(0.5, 0.55)
+fill_to = Vector2(0.747685, 0.164352)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ju4k"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("GradientTexture2D_gc6cc")
+billboard_mode = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_pil3a"]
+material = SubResource("StandardMaterial3D_3ju4k")
+size = Vector2(100, 200)
+
+[sub_resource type="Gradient" id="Gradient_fndi5"]
+offsets = PackedFloat32Array(0, 0.23545, 0.73545, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.690196, 1, 1, 1, 0.682353, 1, 1, 1, 0)
 
 [node name="WeatherEffects" type="Node3D"]
 script = ExtResource("1_4x7yr")
+
+[node name="CloudRepeater" parent="." instance=ExtResource("2_17mra")]
+tile_radius = Vector3i(4, 0, 4)
+tile_size = Vector3(300, 100, 300)
+tile_offset = Vector3(2.08165e-12, -300, 2.08165e-12)
+
+[node name="Cloud" type="Node3D" parent="CloudRepeater"]
+script = ExtResource("3_va8ru")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="CloudRepeater/Cloud"]
+amount = 3
+lifetime = 30.0
+local_coords = true
+mesh = SubResource("QuadMesh_8oiym")
+emission_shape = 3
+emission_box_extents = Vector3(300, 50, 300)
+direction = Vector3(5, 2.08165e-12, 2.08165e-12)
+spread = 10.0
+gravity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+color_ramp = SubResource("Gradient_1ubqe")
+
+[node name="Repeater" parent="." instance=ExtResource("2_17mra")]
+lock_to_ground = true
+minimum_distance = 600.0
+tile_radius = Vector3i(4, 0, 4)
+tile_size = Vector3(300, 300, 300)
+
+[node name="DistantWeatherEffect" type="Node3D" parent="Repeater"]
+script = ExtResource("3_4h6m2")
+
+[node name="DistantRainParticles" type="CPUParticles3D" parent="Repeater/DistantWeatherEffect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 100, 2.08165e-12)
+amount = 10
+lifetime = 8.0
+mesh = SubResource("QuadMesh_pil3a")
+emission_shape = 3
+emission_box_extents = Vector3(150, 50, 150)
+direction = Vector3(2.08165e-12, -10, 2.08165e-12)
+spread = 0.0
+gravity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+scale_amount_max = 2.0
+color_ramp = SubResource("Gradient_fndi5")
 
 [node name="Rain" parent="." instance=ExtResource("3_lmnst")]

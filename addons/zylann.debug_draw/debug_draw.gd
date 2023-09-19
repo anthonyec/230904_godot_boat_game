@@ -176,7 +176,7 @@ func _get_line_material() -> StandardMaterial3D:
 		mat = StandardMaterial3D.new()
 		mat.flags_unshaded = true
 		mat.vertex_color_use_as_albedo = true
-		mat.no_depth_test = true
+		mat.no_depth_test = Flags.is_enabled(Flags.DEBUG_DRAW_NO_DEPTH_TEST)
 	else:
 		mat = _line_material_pool[-1]
 		_line_material_pool.pop_back()
