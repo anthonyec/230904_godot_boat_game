@@ -25,7 +25,7 @@ func _physics_process(delta: float) -> void:
 	rotation.y -= deg_to_rad(mouse_relative.x * 0.5)
 	
 	pitch_angle -= deg_to_rad(mouse_relative.y * 0.5)
-	pitch_angle = clamp(pitch_angle, deg_to_rad(-80), deg_to_rad(80))
+	pitch_angle = clamp(pitch_angle, deg_to_rad(-50), deg_to_rad(80))
 	
 	var target_distance = distance
 	

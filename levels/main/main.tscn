@@ -1,8 +1,8 @@
-[gd_scene load_steps=39 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=33 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_o5n6o"]
 [ext_resource type="PackedScene" uid="uid://dj31heqsourdp" path="res://entities/world/world.tscn" id="2_4n3kf"]
-[ext_resource type="Script" path="res://weather_effects.gd" id="3_i3rib"]
+[ext_resource type="PackedScene" uid="uid://cf5ho2l6641c7" path="res://entities/weather_effects/weather_effects.tscn" id="3_76yy2"]
 [ext_resource type="Script" path="res://ui/ui.gd" id="3_wendr"]
 [ext_resource type="Script" path="res://ui/components/debug_simulation_grid.gd" id="4_jc4on"]
 [ext_resource type="Script" path="res://ui/components/compass.gd" id="4_wdsws"]
@@ -20,15 +20,14 @@
 [ext_resource type="PackedScene" uid="uid://dalg0mdmrt0p0" path="res://entities/hitch/hitch.tscn" id="16_jikcx"]
 [ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="17_jsk0u"]
 [ext_resource type="PackedScene" uid="uid://cu8kgbo5oalxy" path="res://entities/buoy/buoy.tscn" id="18_tqxts"]
-[ext_resource type="Script" path="res://entities/rain/rain.gd" id="19_hf5os"]
 [ext_resource type="PackedScene" uid="uid://jncyhw3e5i20" path="res://entities/wind_turbine/wind_turbine.tscn" id="20_xjyiy"]
-[ext_resource type="PackedScene" uid="uid://cp1m4a3ivg14j" path="res://entities/repeater/repeater.tscn" id="23_putrn"]
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
 background_color = Color(0.819608, 0.94902, 0.94902, 1)
+fog_enabled = true
 fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
-fog_density = 0.012
+fog_density = 0.005
 fog_height = 2.13163e-14
 
 [sub_resource type="SphereMesh" id="SphereMesh_hylnw"]
@@ -62,34 +61,13 @@ size = Vector3(5, 5, 5)
 [sub_resource type="BoxMesh" id="BoxMesh_y0c0t"]
 size = Vector3(5, 5, 5)
 
-[sub_resource type="Gradient" id="Gradient_rrsm6"]
-offsets = PackedFloat32Array(0, 0.583904)
-colors = PackedColorArray(0.831373, 0.937255, 0.913725, 0.513726, 0.831373, 0.937255, 0.913725, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_7w5eb"]
-gradient = SubResource("Gradient_rrsm6")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ydvss"]
-transparency = 1
-albedo_texture = SubResource("GradientTexture2D_7w5eb")
-billboard_mode = 2
-proximity_fade_distance = 60.02
-distance_fade_max_distance = 116.23
-
-[sub_resource type="QuadMesh" id="QuadMesh_fsv3v"]
-material = SubResource("StandardMaterial3D_ydvss")
-size = Vector2(0.1, 3)
-
 [node name="Main" type="Node3D"]
 
 [node name="Debug" parent="." instance=ExtResource("1_o5n6o")]
 
 [node name="World" parent="." instance=ExtResource("2_4n3kf")]
 
-[node name="WeatherEffects" type="Node3D" parent="."]
-script = ExtResource("3_i3rib")
+[node name="WeatherEffects" parent="." instance=ExtResource("3_76yy2")]
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -101,12 +79,10 @@ grow_vertical = 2
 script = ExtResource("3_wendr")
 
 [node name="DebugSimulationGrid" type="Control" parent="UI"]
-visible = false
 anchors_preset = 0
-offset_left = 28.0
-offset_top = 84.0
-offset_right = 161.0
-offset_bottom = 214.0
+offset_top = 237.0
+offset_right = 133.0
+offset_bottom = 367.0
 script = ExtResource("4_jc4on")
 
 [node name="Compass" type="Control" parent="UI"]
@@ -176,10 +152,6 @@ offset = Vector3(2.08165e-12, 5, 2.08165e-12)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.467651, 0.548516, 0.693132, -0.798373, -0.0744178, 0.597547, 0.379346, -0.832822, 0.403119, -0.00466442, 2.23942, 0.0191052)
 light_energy = 0.8
-
-[node name="Repeater" parent="." instance=ExtResource("23_putrn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.8601, 0)
-debug = true
 
 [node name="Player" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 39.6514)
@@ -543,25 +515,6 @@ gizmo_extents = 1.0
 [node name="AttachmentPointBR2" type="Marker3D" parent="Buoy/Hitch"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545414, 0.420013, -0.0112848)
 gizmo_extents = 1.0
-
-[node name="Rain" type="Node3D" parent="."]
-transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 0, 0, 0)
-visible = false
-script = ExtResource("19_hf5os")
-
-[node name="RainParticles" type="CPUParticles3D" parent="Rain"]
-transform = Transform3D(1, -1.21652e-31, 0, -1.21652e-31, 1, 0, 0, 0, 1, 2.08165e-12, 25, 2.08165e-12)
-amount = 500
-lifetime = 0.2
-draw_order = 2
-mesh = SubResource("QuadMesh_fsv3v")
-emission_shape = 3
-emission_box_extents = Vector3(30, 10, 30)
-direction = Vector3(2.08165e-12, -10, 2.08165e-12)
-spread = 0.0
-initial_velocity_min = 100.0
-initial_velocity_max = 100.0
-scale_amount_min = 0.8
 
 [node name="WindTurbine" parent="." instance=ExtResource("20_xjyiy")]
 

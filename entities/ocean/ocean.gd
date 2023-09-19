@@ -13,7 +13,8 @@ const plane_grid_size: int = 6 # E.g 4x4 or 10x10
 
 @onready var simulation: SubViewport = $Simulation
 @onready var simulation_texture: ColorRect = $Simulation/Texture
-@onready var plane: MeshInstance3D = $Plane
+@onready var plane: MeshInstance3D = $Repeater/Plane
+@onready var repeater: Repeater = $Repeater
 
 var time_to_render_image: int = 0
 var last_call_time: int = 0
@@ -29,24 +30,14 @@ func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 
 func _ready() -> void:
-	# Spawn plane pool for moving them around to simulate infinite planes.
-	var number_of_planes = plane_grid_size * plane_grid_size
-	
-	for index in number_of_planes:
-		var duplicated_plane = plane.duplicate()
-		add_child(duplicated_plane)
-		planes.append(duplicated_plane)
-		
 	plane_material = plane.mesh.surface_get_material(0)
 	simulation_material = simulation_texture.material
-	
-	# Remove the original plane used to duplicate.
-	remove_child(plane)
 
 func _process(delta: float) -> void:
 	update_shader_params(delta)
 	update_simulation_image()
-	update_infinite_planes()
+	
+	repeater.debug = Flags.is_enabled(Flags.DEBUG_OCEAN_PLANES)
 
 func update_shader_params(delta: float) -> void:
 	plane_material.set_shader_parameter("MaxWaveHeight", max_wave_height)
@@ -78,36 +69,6 @@ func update_simulation_image() -> void:
 		
 		image_size = Vector2(float(image.get_width()), float(image.get_height()))
 		last_call_time = Time.get_ticks_msec()
-
-func update_infinite_planes() -> void:
-	var camera = get_viewport().get_camera_3d()
-	
-	var nearest_plane_position: Vector3 = Vector3(
-		# Adding the origin surrounds the player with even number of planes.
-		(round(camera.global_position.x / plane_size.x) * plane_size.x) + plane_origin.x,
-		global_position.y,
-		(round(camera.global_position.z / plane_size.y) * plane_size.y) + plane_origin.x,
-	)
-	
-	if Flags.is_enabled(Flags.DEBUG_OCEAN_PLANES):
-		DebugDraw.draw_box(nearest_plane_position, Vector3(1, 20, 1), Color.RED)
-	
-	var index: int = 0
-		
-	for x in plane_grid_size:
-		for z in plane_grid_size:
-			var duplicate_position = Vector3(
-				(nearest_plane_position.x + plane_size.x * x) - (plane_size.x / 2 * plane_grid_size),
-				0,
-				(nearest_plane_position.z + plane_size.y * z) - (plane_size.y / 2 * plane_grid_size)
-			)
-			
-			planes[index].global_position = duplicate_position
-			index += 1
-			
-			if Flags.is_enabled(Flags.DEBUG_OCEAN_PLANES):
-				DebugDraw.draw_ray_3d(duplicate_position, Vector3.UP, 10, Color.BLUE)
-				DebugDraw.draw_box(duplicate_position + Vector3.UP * 25, Vector3(plane_size.x, 50, plane_size.y), Color.BLACK)
 
 func get_position_on_plane(target: Vector3) -> Vector2:
 	# Note if ` + plane_origin.x` is removed from plane positioning, it needs to

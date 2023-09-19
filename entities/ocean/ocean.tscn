@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://bki4o2smxksy7"]
+[gd_scene load_steps=10 format=3 uid="uid://bki4o2smxksy7"]
 
 [ext_resource type="Script" path="res://entities/ocean/ocean.gd" id="1_73v6r"]
 [ext_resource type="Shader" path="res://entities/ocean/wave_simulation.gdshader" id="2_6yuco"]
 [ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="2_f6fc1"]
 [ext_resource type="Shader" uid="uid://3k5tqhuvd85x" path="res://entities/ocean/plane.tres" id="3_bivtf"]
+[ext_resource type="PackedScene" uid="uid://cp1m4a3ivg14j" path="res://entities/repeater/repeater.tscn" id="4_5tjlh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_he5n6"]
 shader = ExtResource("2_6yuco")
@@ -57,8 +58,13 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Plane" type="MeshInstance3D" parent="."]
+[node name="Repeater" parent="." instance=ExtResource("4_5tjlh")]
+lock_to_ground = true
+tile_radius = Vector3i(4, 0, 4)
+
+[node name="Plane" type="MeshInstance3D" parent="Repeater"]
 mesh = SubResource("PlaneMesh_wgfkp")
+skeleton = NodePath("../..")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.79927, 26.1871)

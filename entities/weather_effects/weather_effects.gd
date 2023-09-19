@@ -1,0 +1,2 @@
+class_name WeatherEffects
+extends Node3D

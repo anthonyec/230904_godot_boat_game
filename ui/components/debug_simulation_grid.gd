@@ -8,6 +8,11 @@ enum GridType {
 @export var grid_type: GridType = GridType.PRECIPITATION
 
 func _process(_delta: float) -> void:
+	visible = Flags.is_enabled(Flags.DEBUG_SIMULATION_GRIDS)
+		
+	if not Flags.is_enabled(Flags.DEBUG_SIMULATION_GRIDS):
+		return
+		
 	queue_redraw()
 
 func _draw() -> void:
