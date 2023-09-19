@@ -14,7 +14,7 @@ const plane_grid_size: int = 6 # E.g 4x4 or 10x10
 @onready var simulation: SubViewport = $Simulation
 @onready var simulation_texture: ColorRect = $Simulation/Texture
 @onready var plane: MeshInstance3D = $Repeater/Plane
-@onready var repeater: Repeater = $Repeater
+@onready var repeater: Repeater = $Repeater as Repeater
 
 var time_to_render_image: int = 0
 var last_call_time: int = 0
@@ -71,11 +71,9 @@ func update_simulation_image() -> void:
 		last_call_time = Time.get_ticks_msec()
 
 func get_position_on_plane(target: Vector3) -> Vector2:
-	# Note if ` + plane_origin.x` is removed from plane positioning, it needs to
-	# added here like `target.x + plane_origin.x`. This keeps them in sync.
 	return Vector2(
-		wrapf(target.x, 0, plane_size.x),
-		wrapf(target.z, 0, plane_size.y)
+		wrapf(target.x + (repeater.tile_size.x / 2), 0, plane_size.x),
+		wrapf(target.z + (repeater.tile_size.z / 2), 0, plane_size.y)
 	)
 
 func get_percent_on_plane(other_position: Vector3) -> Vector2:

@@ -51,7 +51,7 @@ func _ready() -> void:
 	
 	precipitation_grid.set_cell_at_coordinate(2, 2, 10)
 	
-#	minute_tick.connect(_on_minute_tick)
+#	minute_tick.connect(step_grid_simulation)
 #	hour_tick.connect(step_grid_simulation)
 	
 	step_grid_simulation()
@@ -129,6 +129,9 @@ func step_grid_simulation() -> void:
 		var sum: float = neighbour_values.reduce(func(accum, value): return accum + value, 0)
 		var average: float = sum / neighbour_values.size()
 		
+		if average < 0.1:
+			average = 0
+			
 		next_grid.set_cell_at_coordinate(x, y, average * 0.95)
 		
 		# Advection
@@ -165,6 +168,11 @@ func get_water_height(position: Vector3) -> float:
 	
 func get_precipitation(position: Vector3) -> float:
 	return precipitation_grid.get_cell_at_world_position(position)
+	
+func is_player_surrounded_by_rain() -> bool:
+	var player_position = get_player().global_position
+	var coordinates = precipitation_grid.get_coordinate_at_world_position(player_position)
+	return precipitation_grid.is_cell_surrounded(coordinates[0], coordinates[1], 1)
 	
 func get_grid_tile_size() -> Vector2:
 	return Vector2(300, 300)

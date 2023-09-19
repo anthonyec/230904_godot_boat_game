@@ -61,6 +61,15 @@ func get_neihbours_at_coordinate(x: int, y: int) -> Array[float]:
 	)
 	
 	return values
+	
+func is_cell_surrounded(x: int, y: int, min_value: float) -> bool:
+	var values = get_neihbours_at_coordinate(x, y)
+	
+	for value in values:
+		if value > min_value:
+			return true
+
+	return false
 
 func for_neighbours_at_coordinate(x: int, y: int, callback: Callable) -> void:
 	for x_n in range(-1, 2):

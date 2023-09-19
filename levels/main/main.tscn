@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=36 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_o5n6o"]
 [ext_resource type="PackedScene" uid="uid://dj31heqsourdp" path="res://entities/world/world.tscn" id="2_4n3kf"]
@@ -21,13 +21,14 @@
 [ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="17_jsk0u"]
 [ext_resource type="PackedScene" uid="uid://cu8kgbo5oalxy" path="res://entities/buoy/buoy.tscn" id="18_tqxts"]
 [ext_resource type="PackedScene" uid="uid://jncyhw3e5i20" path="res://entities/wind_turbine/wind_turbine.tscn" id="20_xjyiy"]
+[ext_resource type="Shader" uid="uid://ca61440od5qaf" path="res://entities/weather_effects/cloud.tres" id="22_i1q03"]
 
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
 background_color = Color(0.819608, 0.94902, 0.94902, 1)
 fog_enabled = true
 fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
-fog_density = 0.002
+fog_density = 0.001
 fog_height = 2.13163e-14
 
 [sub_resource type="SphereMesh" id="SphereMesh_hylnw"]
@@ -60,6 +61,14 @@ size = Vector3(5, 5, 5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_y0c0t"]
 size = Vector3(5, 5, 5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ujq7p"]
+render_priority = 0
+shader = ExtResource("22_i1q03")
+
+[sub_resource type="QuadMesh" id="QuadMesh_3xf6o"]
+material = SubResource("ShaderMaterial_ujq7p")
+size = Vector2(600, 600)
 
 [node name="Main" type="Node3D"]
 
@@ -144,10 +153,34 @@ environment = SubResource("Environment_h648m")
 current = true
 enabled = false
 
+[node name="DebugWater" type="Node3D" parent="DebugCam" node_paths=PackedStringArray("water")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 39.6514)
+visible = false
+script = ExtResource("13_cvgv5")
+water = NodePath("../../Ocean")
+
+[node name="SimulationTexture" type="ColorRect" parent="DebugCam/DebugWater"]
+visible = false
+material = ExtResource("14_no4cm")
+offset_left = 11.0
+offset_top = 528.0
+offset_right = 267.0
+offset_bottom = 784.0
+
+[node name="Overlay" type="Control" parent="DebugCam/DebugWater"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 11.0
+offset_top = 528.0
+offset_right = 267.0
+offset_bottom = 784.0
+script = ExtResource("15_5uyer")
+
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("10_cmtmm")]
 target = NodePath("../Player/CameraTarget")
 distance = 30.0
-offset = Vector3(2.08165e-12, 5, 2.08165e-12)
+offset = Vector3(2.08165e-12, 10, 2.08165e-12)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.467651, 0.548516, 0.693132, -0.798373, -0.0744178, 0.597547, 0.379346, -0.832822, 0.403119, -0.00466442, 2.23942, 0.0191052)
@@ -162,29 +195,6 @@ float_force = 200.0
 [node name="PlayerControls" type="Node3D" parent="Player" node_paths=PackedStringArray("engine_marker")]
 script = ExtResource("12_wccre")
 engine_marker = NodePath("../EnginePosition")
-
-[node name="DebugWater" type="Node3D" parent="Player" node_paths=PackedStringArray("water")]
-visible = false
-script = ExtResource("13_cvgv5")
-water = NodePath("../../Ocean")
-
-[node name="SimulationTexture" type="ColorRect" parent="Player/DebugWater"]
-visible = false
-material = ExtResource("14_no4cm")
-offset_left = 11.0
-offset_top = 528.0
-offset_right = 267.0
-offset_bottom = 784.0
-
-[node name="Overlay" type="Control" parent="Player/DebugWater"]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_left = 11.0
-offset_top = 528.0
-offset_right = 267.0
-offset_bottom = 784.0
-script = ExtResource("15_5uyer")
 
 [node name="CameraTarget" type="Marker3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34955, 5.0515)
@@ -526,3 +536,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 91.762, -1.39438, -209.788)
 
 [node name="WindTurbine4" parent="." instance=ExtResource("20_xjyiy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.5112, -1.39438, -209.788)
+
+[node name="Cloud" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, 2.08165e-12, 100, 2.08165e-12)
+visible = false
+mesh = SubResource("QuadMesh_3xf6o")

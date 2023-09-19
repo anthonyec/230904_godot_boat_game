@@ -1,0 +1,74 @@
+[gd_resource type="VisualShader" load_steps=10 format=3 uid="uid://ca61440od5qaf"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_naqcm"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7s086"]
+width = 128
+height = 128
+seamless = true
+noise = SubResource("FastNoiseLite_naqcm")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_mcni4"]
+texture = SubResource("NoiseTexture2D_7s086")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4q7v8"]
+noise_type = 2
+seed = 5
+fractal_type = 0
+cellular_jitter = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tktf7"]
+width = 128
+height = 128
+invert = true
+seamless = true
+noise = SubResource("FastNoiseLite_4q7v8")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_k7cga"]
+texture = SubResource("NoiseTexture2D_tktf7")
+
+[sub_resource type="Gradient" id="Gradient_vw4pq"]
+offsets = PackedFloat32Array(0, 0.69403)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_twuqp"]
+gradient = SubResource("Gradient_vw4pq")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_r2u5c"]
+texture = SubResource("GradientTexture2D_twuqp")
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tex_frg_2;
+uniform sampler2D tex_frg_4;
+
+
+
+void fragment() {
+// Texture2D:2
+	vec4 n_out2p0 = texture(tex_frg_2, UV);
+
+
+// Texture2D:4
+	vec4 n_out4p0 = texture(tex_frg_4, UV);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+	ALPHA = n_out4p0.x;
+
+
+}
+"
+graph_offset = Vector2(-224.162, -25.9888)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_mcni4")
+nodes/fragment/2/position = Vector2(-700, 200)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_k7cga")
+nodes/fragment/3/position = Vector2(-740, 1240)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_r2u5c")
+nodes/fragment/4/position = Vector2(-700, 680)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0, 4, 0, 0, 1)

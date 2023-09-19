@@ -5,23 +5,15 @@
 [ext_resource type="Script" path="res://entities/weather_effects/distant_weather_effect.gd" id="3_4h6m2"]
 [ext_resource type="PackedScene" uid="uid://biq1yrce20v3n" path="res://entities/weather_effects/rain.tscn" id="3_lmnst"]
 [ext_resource type="Script" path="res://entities/weather_effects/cloud.gd" id="3_va8ru"]
+[ext_resource type="Shader" uid="uid://ca61440od5qaf" path="res://entities/weather_effects/cloud.tres" id="4_ecuj4"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_31pmc"]
-transparency = 1
-shading_mode = 0
-vertex_color_use_as_albedo = true
-billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nyk57"]
+render_priority = 0
+shader = ExtResource("4_ecuj4")
 
-[sub_resource type="QuadMesh" id="QuadMesh_8oiym"]
-material = SubResource("StandardMaterial3D_31pmc")
-size = Vector2(300, 150)
-
-[sub_resource type="Gradient" id="Gradient_1ubqe"]
-offsets = PackedFloat32Array(0, 0.272487, 0.791005, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.658824, 1, 1, 1, 0.658824, 1, 1, 1, 0)
+[sub_resource type="QuadMesh" id="QuadMesh_wcq0c"]
+material = SubResource("ShaderMaterial_nyk57")
+size = Vector2(900, 900)
 
 [sub_resource type="Gradient" id="Gradient_1of12"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -36,6 +28,7 @@ fill_to = Vector2(0.747685, 0.164352)
 transparency = 1
 shading_mode = 0
 vertex_color_use_as_albedo = true
+albedo_color = Color(0.329412, 0.356863, 0.360784, 1)
 albedo_texture = SubResource("GradientTexture2D_gc6cc")
 billboard_mode = 2
 
@@ -50,50 +43,41 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.690196, 1, 1, 1, 0.682353, 1, 1
 [node name="WeatherEffects" type="Node3D"]
 script = ExtResource("1_4x7yr")
 
+[node name="Rain" parent="." instance=ExtResource("3_lmnst")]
+
 [node name="CloudRepeater" parent="." instance=ExtResource("2_17mra")]
 tile_radius = Vector3i(4, 0, 4)
-tile_size = Vector3(300, 100, 300)
+tile_size = Vector3(600, 100, 600)
 tile_offset = Vector3(2.08165e-12, -300, 2.08165e-12)
 
 [node name="Cloud" type="Node3D" parent="CloudRepeater"]
 script = ExtResource("3_va8ru")
 
-[node name="CPUParticles3D" type="CPUParticles3D" parent="CloudRepeater/Cloud"]
-amount = 3
-lifetime = 30.0
-local_coords = true
-mesh = SubResource("QuadMesh_8oiym")
-emission_shape = 3
-emission_box_extents = Vector3(300, 50, 300)
-direction = Vector3(5, 2.08165e-12, 2.08165e-12)
-spread = 10.0
-gravity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
-initial_velocity_min = 10.0
-initial_velocity_max = 10.0
-color_ramp = SubResource("Gradient_1ubqe")
+[node name="Cloud" type="MeshInstance3D" parent="CloudRepeater/Cloud"]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_wcq0c")
+skeleton = NodePath("")
 
-[node name="Repeater" parent="." instance=ExtResource("2_17mra")]
+[node name="DistantWeatherRepeater" parent="." instance=ExtResource("2_17mra")]
 lock_to_ground = true
 minimum_distance = 600.0
 tile_radius = Vector3i(4, 0, 4)
 tile_size = Vector3(300, 300, 300)
 
-[node name="DistantWeatherEffect" type="Node3D" parent="Repeater"]
+[node name="DistantWeatherEffect" type="Node3D" parent="DistantWeatherRepeater"]
 script = ExtResource("3_4h6m2")
 
-[node name="DistantRainParticles" type="CPUParticles3D" parent="Repeater/DistantWeatherEffect"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 100, 2.08165e-12)
+[node name="DistantRainParticles" type="CPUParticles3D" parent="DistantWeatherRepeater/DistantWeatherEffect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 150, 2.08165e-12)
 amount = 10
 lifetime = 8.0
 mesh = SubResource("QuadMesh_pil3a")
 emission_shape = 3
 emission_box_extents = Vector3(150, 50, 150)
-direction = Vector3(2.08165e-12, -10, 2.08165e-12)
+direction = Vector3(2.08165e-12, -20, 2.08165e-12)
 spread = 0.0
 gravity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
 initial_velocity_min = 10.0
-initial_velocity_max = 10.0
+initial_velocity_max = 30.0
 scale_amount_max = 2.0
 color_ramp = SubResource("Gradient_fndi5")
-
-[node name="Rain" parent="." instance=ExtResource("3_lmnst")]

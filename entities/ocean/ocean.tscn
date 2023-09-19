@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bki4o2smxksy7"]
+[gd_scene load_steps=12 format=3 uid="uid://bki4o2smxksy7"]
 
 [ext_resource type="Script" path="res://entities/ocean/ocean.gd" id="1_73v6r"]
 [ext_resource type="Shader" path="res://entities/ocean/wave_simulation.gdshader" id="2_6yuco"]
@@ -30,6 +30,14 @@ material = SubResource("ShaderMaterial_0anan")
 size = Vector2(100, 100)
 subdivide_width = 256
 subdivide_depth = 256
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kgm53"]
+albedo_color = Color(0.313726, 0.415686, 0.384314, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ytjjb"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_kgm53")
+size = Vector2(5000, 5000)
 
 [node name="Ocean" type="Node3D"]
 script = ExtResource("1_73v6r")
@@ -66,5 +74,6 @@ tile_radius = Vector3i(4, 0, 4)
 mesh = SubResource("PlaneMesh_wgfkp")
 skeleton = NodePath("../..")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.79927, 26.1871)
+[node name="BigPlane" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1, 2.08165e-12)
+mesh = SubResource("PlaneMesh_ytjjb")

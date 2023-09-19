@@ -97,7 +97,7 @@ func for_each_tiles(callback: Callable) -> void:
 				
 				if typeof(result) == TYPE_BOOL and result == false:
 					continue
-				
+	
 func add_duplicate() -> void:
 	pass
 	
