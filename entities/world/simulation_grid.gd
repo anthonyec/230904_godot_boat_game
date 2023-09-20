@@ -1,18 +1,18 @@
-class_name Grid
+class_name SimulationGrid
 extends Node
 
-var cells: Array[float] = []
+var cells: Array[Variant] = []
 
 var size: Vector2i = Vector2(50, 50)
 var world_cell_size: Vector2 = Vector2(300, 300)
 
-func _init(width: int, height: int, value: float = 0) -> void:
+func _init(width: int, height: int, value: Variant = 0) -> void:
 	size = Vector2i(width, height)
 	resize(width, height)
 	fill(value)
 
-static func clone(other_grid: Grid) -> Grid:
-	var duplicate_grid = Grid.new(other_grid.size.x, other_grid.size.y)
+static func clone(other_grid: SimulationGrid) -> SimulationGrid:
+	var duplicate_grid = SimulationGrid.new(other_grid.size.x, other_grid.size.y)
 	var duplicate_cells = other_grid.cells.duplicate(true)
 	duplicate_grid.cells = duplicate_cells
 	return duplicate_grid
@@ -20,7 +20,7 @@ static func clone(other_grid: Grid) -> Grid:
 func resize(width: int, height: int) -> void:
 	cells.resize(width * height)
 	
-func fill(value: float) -> void:
+func fill(value: Variant) -> void:
 	cells.fill(value)
 	
 func for_each_cell(callback: Callable) -> void:
@@ -43,18 +43,18 @@ func get_coordinate_at_world_position(position: Vector3) -> Array[int]:
 	var y_w = wrapi(y, 0, size.y)
 	return [x_w, y_w]
 
-func get_cell_at_world_position(position: Vector3) -> float:
+func get_cell_at_world_position(position: Vector3) -> Variant:
 	var coordinate = get_coordinate_at_world_position(position)
 	return get_cell_at_coordinate(coordinate[0], coordinate[1])
 
-func get_cell_at_coordinate(x: int, y: int) -> float:
+func get_cell_at_coordinate(x: int, y: int) -> Variant:
 	return cells[get_cell_index(x, y)]
 	
-func set_cell_at_coordinate(x: int, y: int, value: float) -> void:
+func set_cell_at_coordinate(x: int, y: int, value: Variant) -> void:
 	cells[get_cell_index(x, y)] = value
 	
-func get_neihbours_at_coordinate(x: int, y: int) -> Array[float]:
-	var values: Array[float] = []
+func get_neihbours_at_coordinate(x: int, y: int) -> Array[Variant]:
+	var values: Array[Variant] = []
 	
 	for_neighbours_at_coordinate(x, y, func(x_n, y_n, neighbour_value):
 		values.append(neighbour_value)
@@ -62,11 +62,13 @@ func get_neihbours_at_coordinate(x: int, y: int) -> Array[float]:
 	
 	return values
 	
-func is_cell_surrounded(x: int, y: int, min_value: float) -> bool:
+func is_cell_surrounded(x: int, y: int, condition: Callable) -> bool:
 	var values = get_neihbours_at_coordinate(x, y)
 	
 	for value in values:
-		if value > min_value:
+		var result = condition.call(value)
+		
+		if result:
 			return true
 
 	return false
@@ -77,11 +79,11 @@ func for_neighbours_at_coordinate(x: int, y: int, callback: Callable) -> void:
 			var neighbour_value = get_cell_at_coordinate(x + x_n, y + y_n)
 			callback.call(x_n, y_n, neighbour_value)
 
-func step(callback: Callable, dry_run: bool = false) -> Array[float]:
-	var previous_grid = Grid.clone(self)
-	var next_grid = Grid.clone(self)
+func step(callback: Callable, dry_run: bool = false) -> Array[Variant]:
+	var previous_grid = SimulationGrid.clone(self)
+	var next_grid = SimulationGrid.clone(self)
 	
-	for_each_cell(func(x: int, y: int, _value: float):
+	for_each_cell(func(x: int, y: int, _value: Variant):
 		callback.call(previous_grid, next_grid, x, y)
 	)
 		

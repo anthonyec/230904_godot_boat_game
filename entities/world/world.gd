@@ -39,7 +39,7 @@ var ocean: Ocean
 var last_time: int = 0
 var last_step_duration: int = 0
 
-var precipitation_grid = Grid.new(20, 20)
+var precipitation_grid = SimulationGrid.new(20, 20)
 
 func _ready() -> void:
 	if instance != null:
@@ -123,7 +123,7 @@ func step_grid_simulation() -> void:
 	
 	var now = Time.get_ticks_msec()
 	
-	precipitation_grid.step(func(previous_grid: Grid, next_grid: Grid, x: int, y: int):
+	precipitation_grid.step(func(previous_grid: SimulationGrid, next_grid: SimulationGrid, x: int, y: int):
 		# Diffusion
 		var neighbour_values = previous_grid.get_neihbours_at_coordinate(x, y)
 		var sum: float = neighbour_values.reduce(func(accum, value): return accum + value, 0)
@@ -172,7 +172,10 @@ func get_precipitation(position: Vector3) -> float:
 func is_player_surrounded_by_rain() -> bool:
 	var player_position = get_player().global_position
 	var coordinates = precipitation_grid.get_coordinate_at_world_position(player_position)
-	return precipitation_grid.is_cell_surrounded(coordinates[0], coordinates[1], 1)
+	
+	return precipitation_grid.is_cell_surrounded(coordinates[0], coordinates[1], func(value: float):
+		return value > 1
+	)
 	
 func get_grid_tile_size() -> Vector2:
 	return Vector2(300, 300)
