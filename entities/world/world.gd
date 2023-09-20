@@ -43,7 +43,7 @@ var precipitation_grid = Grid.new(20, 20)
 var wind_grid = VectorField.new(20, 20)
 
 var wind_direction_noise = FastNoiseLite.new()
-var wind_direction_noise_image = wind_direction_noise.get_seamless_image(20, 20)
+var wind_direction_noise_image: Image
 var wind_direction_noise_offset = Vector2i(0, 0)
 
 var wind_strength_noise = FastNoiseLite.new()
@@ -58,6 +58,9 @@ func _ready() -> void:
 	player = get_parent().get_node("Player")
 	ocean = get_parent().get_node("Ocean")
 	
+	wind_direction_noise.frequency = 0.05
+	wind_direction_noise_image = wind_direction_noise.get_seamless_image(20, 20)
+	
 	wind_strength_noise.seed = 1000
 	
 	precipitation_grid.set_cell_at_coordinate(2, 2, 10)
@@ -65,12 +68,11 @@ func _ready() -> void:
 	
 	wind_grid.set_cell_at_coordinate(Vector2i(2, 2), Vector2.RIGHT)
 	
-	minute_tick.connect(step_grid_simulation)
-#	hour_tick.connect(step_grid_simulation)
+#	minute_tick.connect(step_grid_simulation)
+	hour_tick.connect(step_grid_simulation)
 	
-#	step_grid_simulation()
-#	step_grid_simulation()
-	
+	step_grid_simulation()
+	step_grid_simulation()
 
 func _process(delta: float) -> void:
 	update_time()
@@ -202,6 +204,10 @@ func get_water_height(position: Vector3) -> float:
 	
 func get_precipitation(position: Vector3) -> float:
 	return precipitation_grid.get_cell_at_world_position(position)
+	
+func get_wind(position: Vector3) -> Vector3:
+	var wind = wind_grid.get_cell_value_at_world_position(position)
+	return Vector3(wind.x, 0, wind.y)
 	
 func is_player_surrounded_by_rain() -> bool:
 	var player_position = get_player().global_position

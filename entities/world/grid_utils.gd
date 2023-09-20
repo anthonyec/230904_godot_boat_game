@@ -14,7 +14,7 @@ static func get_cell_index(grid_size: Vector2i, coordinate: Vector2i) -> int:
 	
 static func get_cell_value_at_coordinate(cells: Array, grid_size: Vector2i, coordinate: Vector2i) -> Variant:
 	return cells[get_cell_index(grid_size, coordinate)]
-	
+		
 static func get_coordinate_at_world_position(world_cell_size: Vector2i, grid_size: Vector2i, world_position: Vector3) -> Vector2i:
 	var x = int(round(world_position.x / world_cell_size.x))
 	var y = int(round(-world_position.z / world_cell_size.y))
@@ -22,6 +22,10 @@ static func get_coordinate_at_world_position(world_cell_size: Vector2i, grid_siz
 	var y_w = wrapi(y, 0, grid_size.y)
 	
 	return Vector2i(x_w, y_w)
+	
+static func get_cell_value_at_world_position(cells: Array, world_cell_size: Vector2i, grid_size: Vector2i, world_position: Vector3) -> Variant:
+	var coordinate = get_coordinate_at_world_position(world_cell_size, grid_size, world_position)
+	return get_cell_value_at_coordinate(cells, grid_size, coordinate)
 
 static func get_cell_coordinate(grid_size: Vector2i, index: int) -> Vector2i:
 	return Vector2i(index % grid_size.x, index / grid_size.y)

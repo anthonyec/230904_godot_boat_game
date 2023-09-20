@@ -24,6 +24,9 @@ func get_cell_value_at_coordinate(coordinate: Vector2i) -> Vector2:
 	
 func get_coordinate_at_world_position(world_position: Vector3) -> Vector2i:
 	return GridUtils.get_coordinate_at_world_position(world_cell_size, size, world_position)
+	
+func get_cell_value_at_world_position(world_position: Vector3) -> Vector2:
+	return GridUtils.get_cell_value_at_world_position(cells, world_cell_size, size, world_position)
 
 func get_cell_coordinate(index: int) -> Vector2i:
 	return GridUtils.get_cell_coordinate(size, index)

@@ -43,6 +43,15 @@ func _process(delta: float) -> void:
 	if Flags.is_enabled(Flags.DEBUG_PLAYER_CONTROLS):
 		DebugDraw.set_text("input_direction", input_direction)
 		DebugDraw.set_text("throttle", throttle)
+		
+		var wind = World.instance.get_wind(global_position)
+		
+		DebugDraw.draw_ray_3d(
+			global_position + Vector3.UP * 10,
+			wind,
+			wind.length() * 10,
+			Color.RED
+		)
 	
 	if Flags.is_enabled(Flags.DEBUG_SIMULATION_GRIDS):
 		DebugDraw.set_text("precipitation", World.instance.get_precipitation(global_position))
@@ -64,6 +73,8 @@ func _physics_process(delta: float) -> void:
 	var turn_percent = clamp(abs(heading_velocity) / 5, 0, 1)
 	
 	var is_engined_submerged = engine_marker.global_position.y < get_parent().water.get_height(engine_marker.global_position)
+	
+	player.apply_central_force(World.instance.get_wind(global_position) * 1500)
 	
 	if is_engined_submerged:
 		player.apply_central_force(forward * max_engine_power * throttle)
