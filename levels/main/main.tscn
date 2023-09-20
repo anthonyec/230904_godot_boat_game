@@ -89,10 +89,20 @@ script = ExtResource("3_wendr")
 
 [node name="DebugSimulationGrid" type="Control" parent="UI"]
 anchors_preset = 0
-offset_top = 237.0
-offset_right = 133.0
-offset_bottom = 367.0
+offset_left = 22.0
+offset_top = 1016.0
+offset_right = 155.0
+offset_bottom = 1146.0
 script = ExtResource("4_jc4on")
+
+[node name="DebugSimulationGrid2" type="Control" parent="UI"]
+anchors_preset = 0
+offset_left = 9.0
+offset_top = 220.0
+offset_right = 142.0
+offset_bottom = 350.0
+script = ExtResource("4_jc4on")
+grid_type = 1
 
 [node name="Compass" type="Control" parent="UI"]
 visible = false

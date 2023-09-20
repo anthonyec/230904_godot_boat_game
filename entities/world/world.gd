@@ -40,6 +40,15 @@ var last_time: int = 0
 var last_step_duration: int = 0
 
 var precipitation_grid = Grid.new(20, 20)
+var wind_grid = VectorField.new(20, 20)
+
+var wind_direction_noise = FastNoiseLite.new()
+var wind_direction_noise_image = wind_direction_noise.get_seamless_image(20, 20)
+var wind_direction_noise_offset = Vector2i(0, 0)
+
+var wind_strength_noise = FastNoiseLite.new()
+var wind_strength_noise_image = wind_direction_noise.get_seamless_image(20, 20)
+var wind_strength_noise_offset = Vector2i(0, 0)
 
 func _ready() -> void:
 	if instance != null:
@@ -49,14 +58,18 @@ func _ready() -> void:
 	player = get_parent().get_node("Player")
 	ocean = get_parent().get_node("Ocean")
 	
+	wind_strength_noise.seed = 1000
+	
 	precipitation_grid.set_cell_at_coordinate(2, 2, 10)
 	precipitation_grid.set_cell_at_coordinate(15, 15, 10)
 	
-#	minute_tick.connect(step_grid_simulation)
+	wind_grid.set_cell_at_coordinate(Vector2i(2, 2), Vector2.RIGHT)
+	
+	minute_tick.connect(step_grid_simulation)
 #	hour_tick.connect(step_grid_simulation)
 	
-	step_grid_simulation()
-	step_grid_simulation()
+#	step_grid_simulation()
+#	step_grid_simulation()
 	
 
 func _process(delta: float) -> void:
@@ -119,6 +132,8 @@ func update_time() -> void:
 	if Flags.is_enabled(Flags.DEBUG_TIME):
 		DebugDraw.set_text("time", get_display_time())
 
+var last_angle: float = 0
+
 func step_grid_simulation() -> void:
 	var energy_loss_per_tile: float = 0.5 / 8
 	
@@ -147,6 +162,24 @@ func step_grid_simulation() -> void:
 #			next_grid.set_tile_at_row_column(row, column + 1, float(right_value) + 0.5)
 #			next_grid.set_tile_at_row_column(row, column + 2, center_value)
 	)
+	
+	wind_grid.step(func(previous_grid: VectorField, next_grid: VectorField, coordinate: Vector2i):
+		var strength = wind_strength_noise_image.get_pixelv(coordinate).r
+		var angle = PI * 2 * wind_direction_noise_image.get_pixelv(coordinate).r
+		
+		next_grid.set_cell_at_coordinate(coordinate + wind_direction_noise_offset, Vector2.RIGHT.rotated(angle) * strength)
+		
+#		next_grid.set_cell_at_coordinate(coordinate + wind_direction_noise_offset, Vector2.RIGHT.rotated(last_angle))
+#		last_angle += randf_range(-0.05, 0.05) + (angle / 10)
+		
+		pass
+	)
+	
+	wind_direction_noise_offset.x += randi_range(-1, 1)
+	wind_direction_noise_offset.y += randi_range(-1, 1)
+	
+	wind_direction_noise_offset.x += randi_range(-1, 1)
+	wind_direction_noise_offset.y += randi_range(-1, 1)
 	
 	var duration = Time.get_ticks_msec() - now
 	last_step_duration = duration
