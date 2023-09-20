@@ -5,7 +5,7 @@ extends Node3D
 @onready var hitch_front: Hitch = $"../HitchFront" as Hitch
 @onready var hitch_back: Hitch = $"../HitchBack" as Hitch
 
-var max_engine_power: float = 12000
+var max_engine_power: float = 15000
 var max_turn_power: float = 16000
 var max_rudder_rotation: float = deg_to_rad(60)
 var rudder_rotation_speed: float = 3

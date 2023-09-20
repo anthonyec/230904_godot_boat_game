@@ -50,6 +50,7 @@ func _ready() -> void:
 	ocean = get_parent().get_node("Ocean")
 	
 	precipitation_grid.set_cell_at_coordinate(2, 2, 10)
+	precipitation_grid.set_cell_at_coordinate(15, 15, 10)
 	
 #	minute_tick.connect(step_grid_simulation)
 #	hour_tick.connect(step_grid_simulation)

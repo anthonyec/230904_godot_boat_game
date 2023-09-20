@@ -46,8 +46,8 @@ script = ExtResource("1_4x7yr")
 [node name="Rain" parent="." instance=ExtResource("3_lmnst")]
 
 [node name="CloudRepeater" parent="." instance=ExtResource("2_17mra")]
-tile_radius = Vector3i(4, 0, 4)
-tile_size = Vector3(600, 100, 600)
+tile_radius = Vector3i(3, 0, 3)
+tile_size = Vector3(300, 100, 300)
 tile_offset = Vector3(2.08165e-12, -300, 2.08165e-12)
 
 [node name="Cloud" type="Node3D" parent="CloudRepeater"]
@@ -59,6 +59,7 @@ mesh = SubResource("QuadMesh_wcq0c")
 skeleton = NodePath("")
 
 [node name="DistantWeatherRepeater" parent="." instance=ExtResource("2_17mra")]
+visible = false
 lock_to_ground = true
 minimum_distance = 600.0
 tile_radius = Vector3i(4, 0, 4)
