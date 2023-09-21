@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://dh77a1aoq3jky"]
+
+[ext_resource type="Script" path="res://entities/weather_effects/distant_weather_effect.gd" id="1_tcmo2"]
+
+[sub_resource type="Gradient" id="Gradient_1of12"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gc6cc"]
+gradient = SubResource("Gradient_1of12")
+fill = 1
+fill_from = Vector2(0.5, 0.55)
+fill_to = Vector2(0.747685, 0.164352)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ju4k"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.329412, 0.356863, 0.360784, 1)
+albedo_texture = SubResource("GradientTexture2D_gc6cc")
+billboard_mode = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_pil3a"]
+material = SubResource("StandardMaterial3D_3ju4k")
+size = Vector2(100, 200)
+
+[sub_resource type="Gradient" id="Gradient_fndi5"]
+offsets = PackedFloat32Array(0, 0.23545, 0.73545, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.690196, 1, 1, 1, 0.682353, 1, 1, 1, 0)
+
+[node name="DistantWeatherEffect" type="Node3D"]
+script = ExtResource("1_tcmo2")
+
+[node name="DistantRainParticles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 150, 2.08165e-12)
+amount = 10
+lifetime = 8.0
+local_coords = true
+mesh = SubResource("QuadMesh_pil3a")
+emission_shape = 3
+emission_box_extents = Vector3(150, 50, 150)
+direction = Vector3(2.08165e-12, -20, 2.08165e-12)
+spread = 0.0
+gravity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+scale_amount_max = 2.0
+color_ramp = SubResource("Gradient_fndi5")

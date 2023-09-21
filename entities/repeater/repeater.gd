@@ -5,6 +5,7 @@ signal tile_created(tile_position: Vector3)
 signal tile_removed(tile_position: Vector3)
 
 @export var debug: bool = false
+@export var repeat_scene: PackedScene
 @export var viewer: Node3D
 # TODO: Frustum culling is a bit broken because it does not take into account 
 # the bounding box of a tile, only the point position.
@@ -20,7 +21,6 @@ signal tile_removed(tile_position: Vector3)
 var camera: Camera3D
 var existing_tile_positions: Array[Vector3] = []
 var duplicates: Dictionary = {}
-var tile_count: int = 0
 
 func _ready() -> void:
 	camera = get_viewport().get_camera_3d()
@@ -88,6 +88,7 @@ func _process(delta: float) -> void:
 			
 	if debug:
 		DebugDraw.draw_box(nearest_position - tile_offset, tile_size - Vector3(1, 1, 1), Color.WHITE)
+		print(duplicates.keys().size())
 
 func for_each_tiles(callback: Callable) -> void:
 	for x in range(-tile_radius.x, tile_radius.x + 1):
@@ -97,12 +98,6 @@ func for_each_tiles(callback: Callable) -> void:
 				
 				if typeof(result) == TYPE_BOOL and result == false:
 					continue
-	
-func add_duplicate() -> void:
-	pass
-	
-func remove_duplicate() -> void:
-	pass
 
 func get_duplicates() -> Array[Node3D]:
 	var children: Array[Node3D] = []
@@ -119,16 +114,23 @@ func stop() -> void:
 	pass
 	
 func _on_tile_created(tile_position: Vector3) -> void:
-	if get_child_count() == 0:
-		return
+	if repeat_scene != null:
+		var scene_instance = repeat_scene.instantiate() as Node3D
 		
-	var child = get_child(0)
-	var duplicate_child = child.duplicate() as Node3D
+		add_child(scene_instance)
+		
+		scene_instance.global_position = tile_position
+		duplicates[tile_position] = scene_instance
+		return
 	
-	add_child(duplicate_child)
-	duplicate_child.visible = true
-	duplicates[tile_position] = duplicate_child
-	duplicate_child.global_position = tile_position
+	if get_child_count() != 0:
+		var child = get_child(0)
+		var duplicate_child = child.duplicate() as Node3D
+		
+		add_child(duplicate_child)
+		duplicate_child.visible = true
+		duplicates[tile_position] = duplicate_child
+		duplicate_child.global_position = tile_position
 	
 func _on_tile_removed(tile_position: Vector3) -> void:
 	if not duplicates.has(tile_position):
