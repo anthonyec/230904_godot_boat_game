@@ -53,6 +53,17 @@ static func for_neighbours_at_coordinate(cells: Array, grid_size: Vector2i, coor
 			var neihbour_coordinate = Vector2i(coordinate.x + x_n, coordinate.y + y_n)
 			var neighbour_value = get_cell_value_at_coordinate(cells, grid_size, neihbour_coordinate)
 			callback.call(x_n, y_n, neighbour_value)
+			
+static func is_cell_surrounded(cells: Array, grid_size: Vector2i, coordinate: Vector2i, condition: Callable) -> bool:
+	var values = get_neihbours_at_coordinate(cells, grid_size, coordinate)
+	
+	for value in values:
+		var result = condition.call(value)
+		
+		if typeof(result) == TYPE_BOOL and result:
+			return true
+
+	return false
 
 static func step(cells: Array, grid_size: Vector2i, callback: Callable) -> Array:
 	var previous_cells = cells.duplicate(true)

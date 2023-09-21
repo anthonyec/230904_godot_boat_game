@@ -41,7 +41,7 @@ var last_time: int = 0
 var last_step_duration: int = 0
 
 var precipitation_grid = Grid.new(20, 20)
-var wind_grid = VectorField.new(20, 20)
+var wind_grid = VectorField2D.new(20, 20, 300, 300)
 
 var wind_direction_noise = FastNoiseLite.new()
 var wind_direction_noise_image: Image
@@ -69,8 +69,8 @@ func _ready() -> void:
 	
 	wind_grid.set_cell_at_coordinate(Vector2i(2, 2), Vector2.RIGHT)
 	
-#	minute_tick.connect(step_grid_simulation)
-	decasecond_tick.connect(step_grid_simulation)
+	minute_tick.connect(step_grid_simulation)
+#	decasecond_tick.connect(step_grid_simulation)
 	
 	step_grid_simulation()
 	step_grid_simulation()
@@ -169,13 +169,13 @@ func step_grid_simulation() -> void:
 #			next_grid.set_tile_at_row_column(row, column + 2, center_value)
 	)
 	
-	wind_grid.step(func(previous_grid: VectorField, next_grid: VectorField, coordinate: Vector2i):
+	wind_grid.step(func(_previous_grid: VectorField2D, next_field: VectorField2D, coordinate: Vector2i, value: Vector2):
 		var strength = wind_strength_noise_image.get_pixelv(coordinate).r
 		var angle = PI * 2 * wind_direction_noise_image.get_pixelv(coordinate).r
 		
-		next_grid.set_cell_at_coordinate(coordinate + wind_direction_noise_offset, Vector2.RIGHT.rotated(angle) * strength)
+		next_field.set_cell_at_coordinate(coordinate + wind_direction_noise_offset, Vector2.RIGHT.rotated(angle) * strength)
 		
-#		next_grid.set_cell_at_coordinate(coordinate + wind_direction_noise_offset, Vector2.RIGHT.rotated(last_angle))
+#		next_field.set_cell_at_coordinate(coordinate + wind_direction_noise_offset, Vector2.RIGHT.rotated(last_angle))
 #		last_angle += randf_range(-0.05, 0.05) + (angle / 10)
 		
 		pass
