@@ -34,27 +34,31 @@ func get_tile_position(coordinate: Vector2i) -> Vector2:
 
 func draw_preciptation_grid() -> void:
 	var grid = World.instance.precipitation_grid
+	var background_size = (Vector2(grid.size.x + gutter, grid.size.y + gutter) * tile_size)
+	
+	draw_rect(Rect2(Vector2(-gutter, -gutter), background_size), Color.BLACK)
 	
 	grid.for_each_cell(func(x: int, y: int, value: float):
-		var tile_position = Vector2(
-			((tile_size.x + gutter) * x) + tile_size.x,
-			((tile_size.y + gutter) * y) + tile_size.y
-		)
-		var center = tile_position + (tile_size / 2)
+		var tile_position = get_tile_position(Vector2i(x, y))
+		var tile_center = tile_position + (tile_size / 2)
+		var player_coordinate = grid.get_coordinate_at_world_position(player_position)
 		
-		draw_rect(Rect2(tile_position, tile_size), Color(value, value, value))
+		draw_rect(Rect2(tile_position, tile_size), Color.GRAY)
+		draw_rect(Rect2(tile_position, tile_size), Color(0, 0, 1, value))
+		
+		if player_coordinate == [x, y]:
+			draw_rect(Rect2(tile_position, tile_size), Color.RED, false, 2)
+		
 		draw_string(
 			get_parent().font,
-			tile_position + Vector2(5, 10),
+			tile_position + Vector2(2, 8),
 			str(value),
 			HORIZONTAL_ALIGNMENT_CENTER,
 			-1,
-			10,
-			Color.RED
+			9,
+			Color.BLACK
 		)
 			
-#		if player_grid_coordinate[0] == x and player_grid_coordinate[1] == y:
-#			draw_rect(Rect2(tile_position, tile_size), Color.CYAN, false)
 	)
 
 func draw_wind_grid() -> void:

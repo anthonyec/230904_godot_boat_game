@@ -41,6 +41,7 @@ func _process(delta: float) -> void:
 		hitch_back.toggle_nearby_attachment()
 	
 	if Flags.is_enabled(Flags.DEBUG_PLAYER_CONTROLS):
+		DebugDraw.set_text("position", global_position.round())
 		DebugDraw.set_text("input_direction", input_direction)
 		DebugDraw.set_text("throttle", throttle)
 		
@@ -57,7 +58,6 @@ func _process(delta: float) -> void:
 		DebugDraw.set_text("precipitation", World.instance.get_precipitation(global_position))
 		DebugDraw.set_text("precipitation r/c", World.instance.precipitation_grid.get_coordinate_at_world_position(global_position))
 		
-	DebugDraw.set_text("position", global_position.round())
 	
 func _physics_process(delta: float) -> void:
 	var forward = -player.global_transform.basis.z
@@ -67,14 +67,14 @@ func _physics_process(delta: float) -> void:
 	var right = player.global_transform.basis.x
 	var left = -player.global_transform.basis.x
 	
+	var wind = World.instance.get_wind(global_position)
 	var heading_velocity = player.linear_velocity.dot(forward)
 	var side_velocity = player.linear_velocity.dot(right)
-	
 	var turn_percent = clamp(abs(heading_velocity) / 5, 0, 1)
 	
 	var is_engined_submerged = engine_marker.global_position.y < get_parent().water.get_height(engine_marker.global_position)
 	
-	player.apply_central_force(World.instance.get_wind(global_position) * 1500)
+	player.apply_central_force(wind * 1500)
 	
 	if is_engined_submerged:
 		player.apply_central_force(forward * max_engine_power * throttle)

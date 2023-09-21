@@ -89,10 +89,10 @@ script = ExtResource("3_wendr")
 
 [node name="DebugSimulationGrid" type="Control" parent="UI"]
 anchors_preset = 0
-offset_left = 22.0
-offset_top = 1016.0
-offset_right = 155.0
-offset_bottom = 1146.0
+offset_left = 787.0
+offset_top = 51.0
+offset_right = 920.0
+offset_bottom = 181.0
 script = ExtResource("4_jc4on")
 
 [node name="DebugSimulationGrid2" type="Control" parent="UI"]
@@ -146,7 +146,6 @@ map = NodePath("..")
 player = NodePath("../../../Player")
 
 [node name="Clock" type="Control" parent="UI"]
-visible = false
 anchors_preset = 0
 offset_left = 1069.0
 offset_top = 717.0

@@ -2,6 +2,7 @@ class_name World
 extends Node
 
 signal minute_tick
+signal decasecond_tick
 signal hour_tick
 
 static var instance: World
@@ -69,7 +70,7 @@ func _ready() -> void:
 	wind_grid.set_cell_at_coordinate(Vector2i(2, 2), Vector2.RIGHT)
 	
 #	minute_tick.connect(step_grid_simulation)
-	hour_tick.connect(step_grid_simulation)
+	decasecond_tick.connect(step_grid_simulation)
 	
 	step_grid_simulation()
 	step_grid_simulation()
@@ -121,15 +122,18 @@ func update_time() -> void:
 		minute += 1
 		last_time = now
 		minute_tick.emit()
+		
+		if minute % 10 == 0:
+			decasecond_tick.emit()
 	
 	if minute > 59:
 		hour += 1
 		minute = 0
+		hour_tick.emit()
 		
 	if hour > 23:
 		hour = 0
 		minute = 0
-		hour_tick.emit()
 		
 	if Flags.is_enabled(Flags.DEBUG_TIME):
 		DebugDraw.set_text("time", get_display_time())
