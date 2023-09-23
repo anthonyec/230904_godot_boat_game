@@ -1,29 +1,21 @@
 class_name VectorField2D
 extends Node
 
-var cells_a: PackedVector2Array = []
-var cells_b: PackedVector2Array = []
-var cells: PackedVector2Array = cells_a
-
-var previous_field: VectorField2D
-var next_field: VectorField2D
+var cells: PackedVector2Array = []
 
 var size: Vector2i
 var world_cell_size: Vector2i
 
-func _init(width: int, height: int, world_cell_width: int, world_cell_height: int, internal: bool = false) -> void:
+func _init(width: int, height: int, world_cell_width: int, world_cell_height: int) -> void:
 	size = Vector2i(width, height)
 	world_cell_size = Vector2i(world_cell_width, world_cell_height)
+	cells.resize(width * height)
+	cells.fill(Vector2.ZERO)
 	
-	if not internal:
-		previous_field = VectorField2D.new(width, height, world_cell_width, world_cell_height, true)
-		next_field = VectorField2D.new(width, height, world_cell_width, world_cell_height, true)
-	
-	cells_a.resize(size.x * size.y)
-	cells_b.resize(size.x * size.y)
-	
-	cells_a.fill(Vector2.ZERO)
-	cells_b.fill(Vector2.ZERO)
+func clone() -> VectorField2D:
+	var new_vector_field = VectorField2D.new(size.x, size.y, world_cell_size.x, world_cell_size.y)
+	new_vector_field.cells = cells.duplicate()
+	return new_vector_field
 	
 func get_cell_index(coordinate: Vector2i) -> int:
 	var x_w = wrapi(coordinate.x, 0, size.x)
@@ -71,7 +63,7 @@ func for_neighbours_at_coordinate(coordinate: Vector2i, callback: Callable) -> v
 		for y_n in range(-1, 2):
 			var neighbour_coordinate = Vector2i(coordinate.x + x_n, coordinate.y + y_n)
 			var neighbour_value = get_cell_value_at_coordinate(neighbour_coordinate)
-			callback.call(x_n, y_n, neighbour_value)
+			callback.call(neighbour_coordinate, neighbour_value)
 			
 func is_cell_surrounded(coordinate: Vector2i, condition: Callable) -> bool:
 	var values = get_neighbours_at_coordinate(coordinate)
@@ -83,23 +75,16 @@ func is_cell_surrounded(coordinate: Vector2i, condition: Callable) -> bool:
 			return true
 
 	return false
-	
-func swap_current_cells() -> void:
-	var is_using_cells_a = cells == cells_a
-	cells = cells_b if is_using_cells_a else cells_b
 
 func step(callback: Callable) -> void:
-	var is_using_cells_a = cells == cells_a
-	
-	# Use B if currently using A and vice versa.
-	var previous_cells = cells_b if is_using_cells_a else cells_a
-	var next_cells = cells
-	
-	previous_field.cells = previous_cells
-	next_field.cells = next_cells
+	# TODO: Check this doesn't leak memory and create objects.
+	var previous_field = clone()
+	var next_field = clone()
 	
 	for_each_cell(func(coordinate: Vector2i, value: Vector2):
 		callback.call(previous_field, next_field, coordinate, value)
 	)
 	
-	swap_current_cells()
+	cells = next_field.cells
+	previous_field.queue_free()
+	next_field.queue_free()

@@ -40,7 +40,7 @@ var ocean: Ocean
 var last_time: int = 0
 var last_step_duration: int = 0
 
-var precipitation_grid = Grid.new(20, 20)
+var precipitation_grid = VectorField2D.new(20, 20, 300, 300)
 var wind_grid = VectorField2D.new(20, 20, 300, 300)
 
 var wind_direction_noise = FastNoiseLite.new()
@@ -64,16 +64,16 @@ func _ready() -> void:
 	
 	wind_strength_noise.seed = 1000
 	
-	precipitation_grid.set_cell_at_coordinate(2, 2, 10)
-	precipitation_grid.set_cell_at_coordinate(15, 15, 10)
+	precipitation_grid.set_cell_at_coordinate(Vector2i(0, 0), Vector2.RIGHT * 10)
+	precipitation_grid.set_cell_at_coordinate(Vector2i(15, 15), Vector2.RIGHT * 10)
 	
 	wind_grid.set_cell_at_coordinate(Vector2i(2, 2), Vector2.RIGHT)
 	
 	minute_tick.connect(step_grid_simulation)
 #	decasecond_tick.connect(step_grid_simulation)
 	
-	step_grid_simulation()
-	step_grid_simulation()
+#	step_grid_simulation()
+#	step_grid_simulation()
 
 func _process(delta: float) -> void:
 	update_time()
@@ -145,16 +145,21 @@ func step_grid_simulation() -> void:
 	
 	var now = Time.get_ticks_msec()
 	
-	precipitation_grid.step(func(previous_grid: Grid, next_grid: Grid, x: int, y: int):
+	precipitation_grid.step(func(previous_field: VectorField2D, next_field: VectorField2D, coordinate: Vector2i, value: Vector2):
 		# Diffusion
-		var neighbour_values = previous_grid.get_neihbours_at_coordinate(x, y)
-		var sum: float = neighbour_values.reduce(func(accum, value): return accum + value, 0)
-		var average: float = sum / neighbour_values.size()
+		var neighbour_values = previous_field.get_neighbours_at_coordinate(coordinate)
+		
+		var sum: float = 0
+		
+		for neighbour_value in neighbour_values:
+			sum += neighbour_value.length()
+		
+		var average = sum / float(neighbour_values.size())
 		
 		if average < 0.1:
 			average = 0
 			
-		next_grid.set_cell_at_coordinate(x, y, average * 0.95)
+		next_field.set_cell_at_coordinate(coordinate, Vector2.RIGHT * average)
 		
 		# Advection
 #		var wind_direction = wind_grid.get_neighbours_at_row_column(row, column)
@@ -169,7 +174,7 @@ func step_grid_simulation() -> void:
 #			next_grid.set_tile_at_row_column(row, column + 2, center_value)
 	)
 	
-	wind_grid.step(func(_previous_grid: VectorField2D, next_field: VectorField2D, coordinate: Vector2i, value: Vector2):
+	wind_grid.step(func(_previous_field: VectorField2D, next_field: VectorField2D, coordinate: Vector2i, value: Vector2):
 		var strength = wind_strength_noise_image.get_pixelv(coordinate).r
 		var angle = PI * 2 * wind_direction_noise_image.get_pixelv(coordinate).r
 		
@@ -207,7 +212,7 @@ func get_water_height(position: Vector3) -> float:
 	return ocean.get_height(position)
 	
 func get_precipitation(position: Vector3) -> float:
-	return precipitation_grid.get_cell_at_world_position(position)
+	return precipitation_grid.get_cell_value_at_world_position(position).length()
 	
 func get_wind(position: Vector3) -> Vector3:
 	var wind = wind_grid.get_cell_value_at_world_position(position)
@@ -215,8 +220,10 @@ func get_wind(position: Vector3) -> Vector3:
 	
 func is_player_surrounded_by_rain() -> bool:
 	var player_position = get_player().global_position
-	var coordinates = precipitation_grid.get_coordinate_at_world_position(player_position)
-	return precipitation_grid.is_cell_surrounded(coordinates[0], coordinates[1], 1)
+	var coordinate = precipitation_grid.get_coordinate_at_world_position(player_position)
+	return precipitation_grid.is_cell_surrounded(coordinate, func(value: Vector2):
+		return value.length() > 1
+	)
 	
 func get_grid_tile_size() -> Vector2:
 	return Vector2(300, 300)

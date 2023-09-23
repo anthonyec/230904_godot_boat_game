@@ -38,27 +38,26 @@ func draw_preciptation_grid() -> void:
 	
 	draw_rect(Rect2(Vector2(-gutter, -gutter), background_size), Color.BLACK)
 	
-	grid.for_each_cell(func(x: int, y: int, value: float):
-		var tile_position = get_tile_position(Vector2i(x, y))
+	grid.for_each_cell(func(coordinate: Vector2i, value: Vector2):
+		var tile_position = get_tile_position(coordinate)
 		var tile_center = tile_position + (tile_size / 2)
 		var player_coordinate = grid.get_coordinate_at_world_position(player_position)
 		
 		draw_rect(Rect2(tile_position, tile_size), Color.GRAY)
-		draw_rect(Rect2(tile_position, tile_size), Color(0, 0, 1, value))
+		draw_rect(Rect2(tile_position, tile_size), Color(0, 0, 1, value.length()))
 		
-		if player_coordinate == [x, y]:
+		if player_coordinate == coordinate:
 			draw_rect(Rect2(tile_position, tile_size), Color.RED, false, 2)
 		
 		draw_string(
 			get_parent().font,
 			tile_position + Vector2(2, 8),
-			str(value),
+			str(value.length()),
 			HORIZONTAL_ALIGNMENT_CENTER,
 			-1,
 			9,
 			Color.BLACK
 		)
-			
 	)
 
 func draw_wind_grid() -> void:
