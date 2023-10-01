@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://be3homwduf1qf"]
+[gd_scene load_steps=32 format=3 uid="uid://be3homwduf1qf"]
 
 [ext_resource type="PackedScene" uid="uid://cihgfqv57iqjr" path="res://entities/debug/debug.tscn" id="1_o5n6o"]
 [ext_resource type="PackedScene" uid="uid://dj31heqsourdp" path="res://entities/world/world.tscn" id="2_4n3kf"]
@@ -6,17 +6,15 @@
 [ext_resource type="Script" path="res://ui/ui.gd" id="3_wendr"]
 [ext_resource type="Script" path="res://ui/components/debug_simulation_grid.gd" id="4_jc4on"]
 [ext_resource type="Script" path="res://ui/components/compass.gd" id="4_wdsws"]
-[ext_resource type="Script" path="res://ui/components/map.gd" id="5_hcp8c"]
-[ext_resource type="Script" path="res://ui/components/player_marker.gd" id="6_cxx7b"]
 [ext_resource type="Script" path="res://ui/components/clock.gd" id="7_gndvi"]
 [ext_resource type="PackedScene" uid="uid://bki4o2smxksy7" path="res://entities/ocean/ocean.tscn" id="8_vs8rq"]
 [ext_resource type="PackedScene" uid="uid://v7u1ci5w4e5x" path="res://entities/debug_cam/debug_cam.tscn" id="9_c7767"]
 [ext_resource type="PackedScene" uid="uid://x4a4si75gp2x" path="res://entities/gameplay_camera/gameplay_camera.tscn" id="10_cmtmm"]
+[ext_resource type="Script" path="res://entities/debug/debug_water.gd" id="10_ix57o"]
+[ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="11_ksi14"]
 [ext_resource type="Script" path="res://entities/buoyant_object/buoyancy.gd" id="11_sh3wf"]
-[ext_resource type="Script" path="res://entities/player/player_controls.gd" id="12_wccre"]
-[ext_resource type="Script" path="res://entities/debug/debug_water.gd" id="13_cvgv5"]
-[ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="14_no4cm"]
-[ext_resource type="Script" path="res://debug_water_overlay.gd" id="15_5uyer"]
+[ext_resource type="Script" path="res://debug_water_overlay.gd" id="12_qnfpg"]
+[ext_resource type="PackedScene" uid="uid://hv2xks2bd1bw" path="res://entities/player/player.tscn" id="13_yd4fa"]
 [ext_resource type="PackedScene" uid="uid://dalg0mdmrt0p0" path="res://entities/hitch/hitch.tscn" id="16_jikcx"]
 [ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="17_jsk0u"]
 [ext_resource type="PackedScene" uid="uid://cu8kgbo5oalxy" path="res://entities/buoy/buoy.tscn" id="18_tqxts"]
@@ -26,7 +24,6 @@
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
 background_color = Color(0.819608, 0.94902, 0.94902, 1)
-fog_enabled = true
 fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
 fog_density = 0.001
 fog_height = 2.13163e-14
@@ -37,12 +34,6 @@ height = 0.4
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skvv8"]
 no_depth_test = true
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_pf6gs"]
-size = Vector3(6, 5, 10)
-
-[sub_resource type="BoxMesh" id="BoxMesh_gttni"]
-size = Vector3(6, 5, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0dx3b"]
 size = Vector3(8, 3, 15)
@@ -89,10 +80,10 @@ script = ExtResource("3_wendr")
 
 [node name="DebugSimulationGrid" type="Control" parent="UI"]
 anchors_preset = 0
-offset_left = 787.0
-offset_top = 51.0
-offset_right = 920.0
-offset_bottom = 181.0
+offset_left = 1354.0
+offset_top = 39.0
+offset_right = 1487.0
+offset_bottom = 169.0
 script = ExtResource("4_jc4on")
 
 [node name="DebugSimulationGrid2" type="Control" parent="UI"]
@@ -103,6 +94,15 @@ offset_right = 142.0
 offset_bottom = 350.0
 script = ExtResource("4_jc4on")
 grid_type = 1
+
+[node name="DebugSimulationGrid3" type="Control" parent="UI"]
+anchors_preset = 0
+offset_left = 721.0
+offset_top = 80.0
+offset_right = 854.0
+offset_bottom = 210.0
+script = ExtResource("4_jc4on")
+grid_type = 2
 
 [node name="Compass" type="Control" parent="UI"]
 visible = false
@@ -120,57 +120,33 @@ grow_horizontal = 0
 grow_vertical = 0
 script = ExtResource("4_wdsws")
 
-[node name="Map" type="Control" parent="UI"]
-visible = false
-layout_mode = 2
-anchors_preset = 0
-offset_left = 203.0
-offset_top = 92.0
-offset_right = 1003.0
-offset_bottom = 692.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("5_hcp8c")
-center = Vector2(400, 300)
-
-[node name="PlayerMarker" type="Control" parent="UI/Map" node_paths=PackedStringArray("map", "player")]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 62.0
-offset_top = 62.0
-offset_right = 72.0
-offset_bottom = 77.0
-pivot_offset = Vector2(5, 7.5)
-script = ExtResource("6_cxx7b")
-map = NodePath("..")
-player = NodePath("../../../Player")
-
 [node name="Clock" type="Control" parent="UI"]
 anchors_preset = 0
-offset_left = 1069.0
-offset_top = 717.0
-offset_right = 1109.0
-offset_bottom = 757.0
+offset_left = 1055.0
+offset_top = 707.0
+offset_right = 1134.0
+offset_bottom = 758.0
 script = ExtResource("7_gndvi")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h648m")
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.467651, 0.548516, 0.693133, -0.798373, -0.0744182, 0.597547, 0.379346, -0.832822, 0.403119, 2.08165e-12, 10, 2.08165e-12)
+light_energy = 0.8
+
 [node name="Ocean" parent="." instance=ExtResource("8_vs8rq")]
 
 [node name="DebugCam" parent="." instance=ExtResource("9_c7767")]
 current = true
-enabled = false
 
-[node name="DebugWater" type="Node3D" parent="DebugCam" node_paths=PackedStringArray("water")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 39.6514)
+[node name="DebugWater" type="Node3D" parent="DebugCam"]
 visible = false
-script = ExtResource("13_cvgv5")
-water = NodePath("../../Ocean")
+script = ExtResource("10_ix57o")
 
 [node name="SimulationTexture" type="ColorRect" parent="DebugCam/DebugWater"]
 visible = false
-material = ExtResource("14_no4cm")
+material = ExtResource("11_ksi14")
 offset_left = 11.0
 offset_top = 528.0
 offset_right = 267.0
@@ -184,93 +160,15 @@ offset_left = 11.0
 offset_top = 528.0
 offset_right = 267.0
 offset_bottom = 784.0
-script = ExtResource("15_5uyer")
+script = ExtResource("12_qnfpg")
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("10_cmtmm")]
-target = NodePath("../Player/CameraTarget")
-distance = 30.0
-offset = Vector3(2.08165e-12, 10, 2.08165e-12)
+current = false
+target = NodePath("../Player")
+distance = 25.0
+offset = Vector3(2.08165e-12, 5, 2.08165e-12)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.467651, 0.548516, 0.693132, -0.798373, -0.0744178, 0.597547, 0.379346, -0.832822, 0.403119, -0.00466442, 2.23942, 0.0191052)
-light_energy = 0.8
-
-[node name="Player" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, -0.645392, 39.6514)
-mass = 700.0
-script = ExtResource("11_sh3wf")
-float_force = 200.0
-
-[node name="PlayerControls" type="Node3D" parent="Player" node_paths=PackedStringArray("engine_marker")]
-script = ExtResource("12_wccre")
-engine_marker = NodePath("../EnginePosition")
-
-[node name="CameraTarget" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34955, 5.0515)
-
-[node name="EnginePosition" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 5.051)
-
-[node name="HitchFront" parent="Player" instance=ExtResource("16_jikcx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.92891)
-rope_max_length = 1.0
-
-[node name="AttachmentPointBR2" type="Marker3D" parent="Player/HitchFront"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.99989, 1.25, -0.0559883)
-gizmo_extents = 1.0
-
-[node name="AttachmentPointBL2" type="Marker3D" parent="Player/HitchFront"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96301, 1.25, -0.0559883)
-gizmo_extents = 1.0
-
-[node name="HitchBack" parent="Player" instance=ExtResource("16_jikcx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
-
-[node name="AttachmentPointBL2" type="Marker3D" parent="Player/HitchBack"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -0.0559883)
-gizmo_extents = 1.0
-
-[node name="AttachmentPointBR2" type="Marker3D" parent="Player/HitchBack"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -0.0559883)
-gizmo_extents = 1.0
-
-[node name="BuoyancyProbeFL" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, -5)
-script = ExtResource("17_jsk0u")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeFL"]
-mesh = SubResource("SphereMesh_hylnw")
-surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
-
-[node name="BuoyancyProbeFR" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, -5)
-script = ExtResource("17_jsk0u")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeFR"]
-mesh = SubResource("SphereMesh_hylnw")
-surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
-
-[node name="BuoyancyProbeBL" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, 5)
-script = ExtResource("17_jsk0u")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeBL"]
-mesh = SubResource("SphereMesh_hylnw")
-surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
-
-[node name="BuoyancyProbeBR" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, 5)
-script = ExtResource("17_jsk0u")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/BuoyancyProbeBR"]
-mesh = SubResource("SphereMesh_hylnw")
-surface_material_override/0 = SubResource("StandardMaterial3D_skvv8")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
-shape = SubResource("BoxShape3D_pf6gs")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
-mesh = SubResource("BoxMesh_gttni")
+[node name="Player" parent="." instance=ExtResource("13_yd4fa")]
 
 [node name="Bardge" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.78885, 0.70556, 56.6924)

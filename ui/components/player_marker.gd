@@ -2,9 +2,9 @@
 extends Control
 
 @export var map: Map
-@export var player: Node3D
 
 func _process(_delta: float) -> void:
+	var player = World.instance.get_player()
 	var forward = -player.global_transform.basis.z
 	var heading = Vector2(forward.x, forward.z).normalized()
 	

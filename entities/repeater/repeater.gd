@@ -88,7 +88,6 @@ func _process(delta: float) -> void:
 			
 	if debug:
 		DebugDraw.draw_box(nearest_position - tile_offset, tile_size - Vector3(1, 1, 1), Color.WHITE)
-		print(duplicates.keys().size())
 
 func for_each_tiles(callback: Callable) -> void:
 	for x in range(-tile_radius.x, tile_radius.x + 1):

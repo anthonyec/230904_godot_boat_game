@@ -2,7 +2,8 @@ extends Control
 
 enum GridType {
 	PRECIPITATION,
-	WIND
+	WIND,
+	WAVE,
 }
 
 @export var grid_type: GridType = GridType.PRECIPITATION
@@ -27,7 +28,9 @@ func _draw() -> void:
 		GridType.PRECIPITATION:
 			draw_preciptation_grid()
 		GridType.WIND:
-			draw_wind_grid()
+			draw_vector_grid(World.instance.wind_grid)
+		GridType.WAVE:
+			draw_vector_grid(World.instance.wave_grid)
 			
 func get_tile_position(coordinate: Vector2i) -> Vector2:
 	return (tile_size + Vector2(gutter, gutter)) * Vector2(coordinate)
@@ -60,8 +63,7 @@ func draw_preciptation_grid() -> void:
 		)
 	)
 
-func draw_wind_grid() -> void:
-	var grid = World.instance.wind_grid
+func draw_vector_grid(grid: VectorField2D) -> void:
 	var background_size = (Vector2(grid.size.x + gutter, grid.size.y + gutter) * tile_size)
 	
 	draw_rect(Rect2(Vector2(-gutter, -gutter), background_size), Color.BLACK)

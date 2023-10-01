@@ -1,17 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://bki4o2smxksy7"]
+[gd_scene load_steps=10 format=3 uid="uid://bki4o2smxksy7"]
 
 [ext_resource type="Script" path="res://entities/ocean/ocean.gd" id="1_73v6r"]
-[ext_resource type="Shader" path="res://entities/ocean/wave_simulation.gdshader" id="2_6yuco"]
 [ext_resource type="Material" uid="uid://bdllr5cfye1l8" path="res://entities/ocean/ocean.tres" id="2_f6fc1"]
 [ext_resource type="Shader" uid="uid://3k5tqhuvd85x" path="res://entities/ocean/plane.tres" id="3_bivtf"]
 [ext_resource type="PackedScene" uid="uid://cp1m4a3ivg14j" path="res://entities/repeater/repeater.tscn" id="4_5tjlh"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_he5n6"]
-shader = ExtResource("2_6yuco")
-shader_parameter/direction = Vector2(2.08165e-12, 1)
-shader_parameter/offset = 1.96
-shader_parameter/amplitude = 0.72
-shader_parameter/frequency = 6.149
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_3vjlp"]
 viewport_path = NodePath("Simulation")
@@ -27,9 +19,9 @@ shader_parameter/Simulation = SubResource("ViewportTexture_3vjlp")
 [sub_resource type="PlaneMesh" id="PlaneMesh_wgfkp"]
 resource_local_to_scene = true
 material = SubResource("ShaderMaterial_0anan")
-size = Vector2(100, 100)
-subdivide_width = 256
-subdivide_depth = 256
+size = Vector2(512, 512)
+subdivide_width = 512
+subdivide_depth = 512
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kgm53"]
 albedo_color = Color(0.313726, 0.415686, 0.384314, 1)
@@ -41,14 +33,6 @@ size = Vector2(5000, 5000)
 
 [node name="Ocean" type="Node3D"]
 script = ExtResource("1_73v6r")
-
-[node name="SimulationTexture" type="ColorRect" parent="."]
-visible = false
-material = SubResource("ShaderMaterial_he5n6")
-offset_left = -68.0
-offset_top = -95.0
-offset_right = 956.0
-offset_bottom = 929.0
 
 [node name="Simulation" type="SubViewport" parent="."]
 disable_3d = true
@@ -68,7 +52,8 @@ size_flags_vertical = 3
 
 [node name="Repeater" parent="." instance=ExtResource("4_5tjlh")]
 lock_to_ground = true
-tile_radius = Vector3i(4, 0, 4)
+tile_radius = Vector3i(2, 0, 2)
+tile_size = Vector3(512, 100, 512)
 
 [node name="Plane" type="MeshInstance3D" parent="Repeater"]
 mesh = SubResource("PlaneMesh_wgfkp")

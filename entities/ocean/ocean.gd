@@ -3,7 +3,6 @@ extends Node3D
 
 const max_wave_height: float = 10
 const max_wave_length: float = 100
-const plane_size: Vector2 = Vector2(100, 100)
 const plane_origin: Vector2 = Vector2(50, 50)
 const plane_grid_size: int = 6 # E.g 4x4 or 10x10
 
@@ -15,7 +14,9 @@ const plane_grid_size: int = 6 # E.g 4x4 or 10x10
 @onready var simulation_texture: ColorRect = $Simulation/Texture
 @onready var plane: MeshInstance3D = $Repeater/Plane
 @onready var repeater: Repeater = $Repeater as Repeater
+@onready var big_plane: MeshInstance3D = $BigPlane
 
+var plane_size: Vector2 = Vector2(512, 512)
 var time_to_render_image: int = 0
 var last_call_time: int = 0
 var image: Image
@@ -30,6 +31,7 @@ func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 
 func _ready() -> void:
+	plane_size = Vector2(repeater.tile_size.x, repeater.tile_size.z)
 	plane_material = plane.mesh.surface_get_material(0)
 	simulation_material = simulation_texture.material
 
@@ -37,16 +39,18 @@ func _process(delta: float) -> void:
 	update_shader_params(delta)
 	update_simulation_image()
 	
+	big_plane.global_position = World.instance.get_player_position(true) + Vector3.DOWN
+	
 	repeater.debug = Flags.is_enabled(Flags.DEBUG_OCEAN_PLANES)
 
 func update_shader_params(delta: float) -> void:
 	plane_material.set_shader_parameter("MaxWaveHeight", max_wave_height)
 	
 	simulation_material.set_shader_parameter("WaveOffset1", wave_offset_1)
-	simulation_material.set_shader_parameter("WaveScale", max_wave_length / wave_length)
+#	simulation_material.set_shader_parameter("WaveScale", max_wave_length / wave_length)
 	simulation_material.set_shader_parameter("WaveHeightPercent", wave_height / max_wave_height)
 	
-	wave_offset_1 += wave_direction_1 * 0.1 * delta
+	wave_offset_1 += wave_direction_1 * 0.01 * delta
 	
 	if Flags.is_enabled(Flags.DEBUG_OCEAN_SHADER_PARAMS):
 		DebugDraw.set_text("WaveHeightPercent", simulation_material.get_shader_parameter("WaveHeightPercent"))

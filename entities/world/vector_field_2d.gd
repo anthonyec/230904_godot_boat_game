@@ -15,6 +15,7 @@ func _init(width: int, height: int, world_cell_width: int, world_cell_height: in
 func clone() -> VectorField2D:
 	var new_vector_field = VectorField2D.new(size.x, size.y, world_cell_size.x, world_cell_size.y)
 	new_vector_field.cells = cells.duplicate()
+	
 	return new_vector_field
 	
 func get_cell_index(coordinate: Vector2i) -> int:

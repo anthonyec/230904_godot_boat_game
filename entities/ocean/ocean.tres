@@ -1,11 +1,11 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://bdllr5cfye1l8"]
 
 [ext_resource type="Shader" uid="uid://brdqvtxba714h" path="res://entities/ocean/simulation_2.tres" id="1_e8chd"]
-[ext_resource type="Texture2D" uid="uid://dqoxtyfa8wt6c" path="res://entities/ocean/wave_gradient.tres" id="2_6ywdo"]
+[ext_resource type="Texture2D" uid="uid://dhij7bl6ucn10" path="res://entities/ocean/big_gradient_1.tres" id="2_7knpk"]
 
 [resource]
 shader = ExtResource("1_e8chd")
 shader_parameter/WaveOffset1 = Vector2(0, 0)
 shader_parameter/WaveScale = 1.0
 shader_parameter/WaveHeightPercent = 1.0
-shader_parameter/BigGradient1 = ExtResource("2_6ywdo")
+shader_parameter/BigGradient1 = ExtResource("2_7knpk")

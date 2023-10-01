@@ -42,6 +42,7 @@ var last_step_duration: int = 0
 
 var precipitation_grid = VectorField2D.new(20, 20, 300, 300)
 var wind_grid = VectorField2D.new(20, 20, 300, 300)
+var wave_grid = VectorField2D.new(20, 20, 300, 300)
 
 var wind_direction_noise = FastNoiseLite.new()
 var wind_direction_noise_image: Image
@@ -72,8 +73,8 @@ func _ready() -> void:
 	minute_tick.connect(step_grid_simulation)
 #	decasecond_tick.connect(step_grid_simulation)
 	
-#	step_grid_simulation()
-#	step_grid_simulation()
+	step_grid_simulation()
+	step_grid_simulation()
 
 func _process(delta: float) -> void:
 	update_time()
@@ -112,7 +113,15 @@ func _process(delta: float) -> void:
 	ocean.wave_height = move_toward(ocean.wave_height, target_wave_height, delta)
 	ocean.wave_length = move_toward(ocean.wave_length, target_wave_length, delta)
 	
+#	var wave = get_wave(get_player_position())
+#	var wave_stength = wave.length()
+#	var wave_stength_to_height = remap(wave_stength, 0, 1, 0, 10)
+#
+#	target_wave_height = wave_stength_to_height
+	
 	if Flags.is_enabled(Flags.DEBUG_SIMULATION_GRIDS):
+		DebugDraw.set_text("ocean.wave_height", ocean.wave_height)
+		DebugDraw.set_text("target_wave_height", target_wave_height)
 		DebugDraw.set_text("sim step time (ms)", last_step_duration)
 	
 func update_time() -> void:
@@ -148,13 +157,10 @@ func step_grid_simulation() -> void:
 	precipitation_grid.step(func(previous_field: VectorField2D, next_field: VectorField2D, coordinate: Vector2i, value: Vector2):
 		# Diffusion
 		var neighbour_values = previous_field.get_neighbours_at_coordinate(coordinate)
-		
-		var sum: float = 0
+		var average: float = 0
 		
 		for neighbour_value in neighbour_values:
-			sum += neighbour_value.length()
-		
-		var average = sum / float(neighbour_values.size())
+			average += neighbour_value.length() / float(neighbour_values.size())
 		
 		if average < 0.1:
 			average = 0
@@ -164,10 +170,10 @@ func step_grid_simulation() -> void:
 		# Advection
 #		var wind_direction = wind_grid.get_neighbours_at_row_column(row, column)
 #		var next_row_column = [row, column + 1] # Todo: Calculate this from vector2.
-		
+
 #		var center_value = previous_grid.get_tile_at_row_column(row, column)
 #		var right_value = previous_grid.get_tile_at_row_column(row, column + 1)
-		
+
 #		if center_value != 0 and right_value == 0:
 #			next_grid.set_tile_at_row_column(row, column, float(center_value) - 0.5)
 #			next_grid.set_tile_at_row_column(row, column + 1, float(right_value) + 0.5)
@@ -186,7 +192,19 @@ func step_grid_simulation() -> void:
 		pass
 	)
 	
-	wind_direction_noise_offset.x += randi_range(-1, 1)
+	wave_grid.step(func(previous_field: VectorField2D, next_field: VectorField2D, coordinate: Vector2i, value: Vector2):
+		var wave = previous_field.get_cell_value_at_coordinate(coordinate)
+		var wind = wind_grid.get_cell_value_at_coordinate(coordinate)
+		var difference = wind - wave
+		
+		var new_wave = wave + (wind * 0.1) + (difference * 0.3)
+		new_wave = new_wave.normalized() * clamp(new_wave.length(), 0, 1)
+		
+		next_field.set_cell_at_coordinate(coordinate, new_wave)
+	)
+	
+	
+	wind_direction_noise_offset.x += randi_range(0, 1)
 	wind_direction_noise_offset.y += randi_range(-1, 1)
 	
 	wind_direction_noise_offset.x += randi_range(-1, 1)
@@ -205,6 +223,14 @@ func get_time_percent() -> float:
 func get_player() -> Node3D:
 	return player
 	
+func get_player_position(ignore_height: bool = false) -> Vector3:
+	var player_position = get_player().global_position
+	
+	if ignore_height:
+		player_position.y = 0
+		
+	return player_position
+	
 func get_camera() -> Camera3D:
 	return get_viewport().get_camera_3d()
 
@@ -218,9 +244,17 @@ func get_wind(position: Vector3) -> Vector3:
 	var wind = wind_grid.get_cell_value_at_world_position(position)
 	return Vector3(wind.x, 0, wind.y)
 	
+func get_wave(position: Vector3) -> Vector3:
+	var wave = wave_grid.get_cell_value_at_world_position(position)
+	return Vector3(wave.x, 0, wave.y)
+	
+func get_wave_height_type(position: Vector3) -> WaveHeight:
+	return wave_height
+	
 func is_player_surrounded_by_rain() -> bool:
 	var player_position = get_player().global_position
 	var coordinate = precipitation_grid.get_coordinate_at_world_position(player_position)
+	
 	return precipitation_grid.is_cell_surrounded(coordinate, func(value: Vector2):
 		return value.length() > 1
 	)

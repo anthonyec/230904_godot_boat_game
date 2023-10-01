@@ -13,6 +13,6 @@ func _draw() -> void:
 		time,
 		HORIZONTAL_ALIGNMENT_CENTER,
 		-1,
-		18,
-		Color.BLUE
+		42,
+		Color.WHITE,
 	)

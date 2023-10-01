@@ -2,7 +2,6 @@ extends Node3D
 
 @export var engine_marker: Marker3D
 
-@onready var hitch_front: Hitch = $"../HitchFront" as Hitch
 @onready var hitch_back: Hitch = $"../HitchBack" as Hitch
 
 var max_engine_power: float = 15000
@@ -37,7 +36,6 @@ func _process(delta: float) -> void:
 		throttle = 0
 		
 	if Input.is_action_just_pressed("toggle_attachment"):
-		hitch_front.toggle_nearby_attachment()
 		hitch_back.toggle_nearby_attachment()
 	
 	if Flags.is_enabled(Flags.DEBUG_PLAYER_CONTROLS):
@@ -72,7 +70,7 @@ func _physics_process(delta: float) -> void:
 	var side_velocity = player.linear_velocity.dot(right)
 	var turn_percent = clamp(abs(heading_velocity) / 5, 0, 1)
 	
-	var is_engined_submerged = engine_marker.global_position.y < get_parent().water.get_height(engine_marker.global_position)
+	var is_engined_submerged = engine_marker.global_position.y < World.instance.get_water_height(engine_marker.global_position)
 	
 	player.apply_central_force(wind * 1500)
 	
