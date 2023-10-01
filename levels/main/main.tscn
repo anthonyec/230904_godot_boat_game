@@ -139,6 +139,7 @@ light_energy = 0.8
 
 [node name="DebugCam" parent="." instance=ExtResource("9_c7767")]
 current = true
+enabled = false
 
 [node name="DebugWater" type="Node3D" parent="DebugCam"]
 visible = false
@@ -163,7 +164,6 @@ offset_bottom = 784.0
 script = ExtResource("12_qnfpg")
 
 [node name="GameplayCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("10_cmtmm")]
-current = false
 target = NodePath("../Player")
 distance = 25.0
 offset = Vector3(2.08165e-12, 5, 2.08165e-12)
