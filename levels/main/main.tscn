@@ -24,6 +24,8 @@
 [sub_resource type="Environment" id="Environment_h648m"]
 background_mode = 1
 background_color = Color(0.819608, 0.94902, 0.94902, 1)
+background_energy_multiplier = 0.5
+fog_enabled = true
 fog_light_color = Color(0.819608, 0.94902, 0.94902, 1)
 fog_density = 0.001
 fog_height = 2.13163e-14
@@ -67,7 +69,14 @@ size = Vector2(600, 600)
 
 [node name="World" parent="." instance=ExtResource("2_4n3kf")]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h648m")
+
 [node name="WeatherEffects" parent="." instance=ExtResource("3_76yy2")]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.467651, 0.548516, 0.693133, -0.798373, -0.0744183, 0.597547, 0.379346, -0.832822, 0.403118, 2.08165e-12, 10, 2.08165e-12)
+light_energy = 0.8
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -127,13 +136,6 @@ offset_top = 707.0
 offset_right = 1134.0
 offset_bottom = 758.0
 script = ExtResource("7_gndvi")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_h648m")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.467651, 0.548516, 0.693133, -0.798373, -0.0744182, 0.597547, 0.379346, -0.832822, 0.403119, 2.08165e-12, 10, 2.08165e-12)
-light_energy = 0.8
 
 [node name="Ocean" parent="." instance=ExtResource("8_vs8rq")]
 
