@@ -1,10 +1,20 @@
-[gd_scene load_steps=9 format=3 uid="uid://hv2xks2bd1bw"]
+[gd_scene load_steps=13 format=3 uid="uid://hv2xks2bd1bw"]
 
 [ext_resource type="Script" path="res://entities/buoyant_object/buoyancy.gd" id="1_wkkl5"]
 [ext_resource type="PackedScene" uid="uid://dd3b1nv6kitp0" path="res://entities/player/stan_1606.glb" id="2_1nu7l"]
+[ext_resource type="Resource" uid="uid://buejnb5snx5se" path="res://entities/inventory/items/example_item.tres" id="3_qjsrv"]
+[ext_resource type="Script" path="res://entities/inventory/item.gd" id="3_x0jy4"]
+[ext_resource type="Script" path="res://entities/inventory/inventory.gd" id="6_rbg7e"]
 [ext_resource type="Script" path="res://entities/player/player_controls.gd" id="6_xliww"]
 [ext_resource type="PackedScene" uid="uid://dalg0mdmrt0p0" path="res://entities/hitch/hitch.tscn" id="7_bqbnf"]
 [ext_resource type="Script" path="res://entities/buoyancy_probe/probe.gd" id="8_a1l03"]
+
+[sub_resource type="Resource" id="Resource_vf6ib"]
+script = ExtResource("3_x0jy4")
+name = "Drugz"
+model = 0
+size = Vector2i(2, 3)
+weight = 1.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pf6gs"]
 size = Vector3(6, 4, 15.3)
@@ -20,6 +30,11 @@ no_depth_test = true
 mass = 700.0
 script = ExtResource("1_wkkl5")
 float_force = 200.0
+
+[node name="Inventory" type="Node" parent="."]
+script = ExtResource("6_rbg7e")
+items = Array[ExtResource("3_x0jy4")]([ExtResource("3_qjsrv"), SubResource("Resource_vf6ib")])
+positions = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0)])
 
 [node name="PlayerControls" type="Node3D" parent="." node_paths=PackedStringArray("engine_marker")]
 script = ExtResource("6_xliww")

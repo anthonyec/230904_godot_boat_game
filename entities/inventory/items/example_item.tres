@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="InventoryItemResource" load_steps=2 format=3 uid="uid://buejnb5snx5se"]
+
+[ext_resource type="Script" path="res://entities/inventory/item.gd" id="1_13lwq"]
+
+[resource]
+script = ExtResource("1_13lwq")
+name = "Example Item"
+model = 0
+size = Vector2i(1, 1)
+weight = 1.0
